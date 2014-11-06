@@ -1,4 +1,4 @@
-package infiniteviewpager;
+package cn.trinea.android.view.autoscrollviewpager;
 
 import android.content.Context;
 import android.os.Handler;
@@ -164,39 +164,8 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        int action = MotionEventCompat.getActionMasked(ev);
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN):
-                Logger.d(DEBUG_TAG, "onInterceptTouchEvent Action was DOWN");
-                break;
-            case (MotionEvent.ACTION_MOVE):
-                Logger.d(DEBUG_TAG, "onInterceptTouchEvent Action was MOVE");
-                break;
-            case (MotionEvent.ACTION_UP):
-                Logger.d(DEBUG_TAG, "onInterceptTouchEvent Action was UP");
-                break;
-        }
-        return super.onInterceptTouchEvent(ev);
-    }
-
-    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = MotionEventCompat.getActionMasked(ev);
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN):
-                Logger.d(DEBUG_TAG, "dispatchTouchEvent Action was DOWN");
-                break;
-            case (MotionEvent.ACTION_MOVE):
-                Logger.d(DEBUG_TAG, "dispatchTouchEvent Action was MOVE");
-                break;
-            case (MotionEvent.ACTION_UP):
-                Logger.d(DEBUG_TAG, "dispatchTouchEvent Action was UP");
-                break;
-        }
-
         if (stopScrollWhenTouch) {
             if ((action == MotionEvent.ACTION_DOWN ) && isAutoScroll) {
                 isStopByTouch = true;
@@ -235,31 +204,6 @@ public class AutoScrollViewPager extends ViewPager {
         getParent().requestDisallowInterceptTouchEvent(true);
 
         return super.dispatchTouchEvent(ev);
-    }
-
-    /**
-     * <ul>
-     * if stopScrollWhenTouch is true
-     * <li>if event is down, stop auto scroll.</li>
-     * <li>if event is up, start auto scroll again.</li>
-     * </ul>
-     */
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        int action = MotionEventCompat.getActionMasked(ev);
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN):
-                Logger.d(DEBUG_TAG, "Action was DOWN");
-                break;
-            case (MotionEvent.ACTION_MOVE):
-                Logger.d(DEBUG_TAG, "Action was MOVE");
-                break;
-            case (MotionEvent.ACTION_UP):
-                Logger.d(DEBUG_TAG, "Action was UP");
-                break;
-        }
-        return super.onTouchEvent(ev);
     }
 
     private class MyHandler extends Handler {
