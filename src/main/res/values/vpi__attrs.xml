@@ -19,16 +19,6 @@
     <declare-styleable name="ViewPagerIndicator">
         <!-- Style of the circle indicator. -->
         <attr name="vpiCirclePageIndicatorStyle" format="reference"/>
-        <!-- Style of the icon indicator's views. -->
-        <attr name="vpiIconPageIndicatorStyle" format="reference"/>
-        <!-- Style of the line indicator. -->
-        <attr name="vpiLinePageIndicatorStyle" format="reference"/>
-        <!-- Style of the title indicator. -->
-        <attr name="vpiTitlePageIndicatorStyle" format="reference"/>
-        <!-- Style of the tab indicator's tabs. -->
-        <attr name="vpiTabPageIndicatorStyle" format="reference"/>
-        <!-- Style of the underline indicator. -->
-        <attr name="vpiUnderlinePageIndicatorStyle" format="reference"/>
     </declare-styleable>
 
     <attr name="centered" format="boolean" />
@@ -47,8 +37,6 @@
         <attr name="android:orientation"/>
         <!-- Radius of the circles. This is also the spacing between circles. -->
         <attr name="radius" format="dimension" />
-        <!-- Whether or not the selected indicator snaps to the circles. -->
-        <attr name="snap" format="boolean" />
         <!-- Color of the open circles. -->
         <attr name="strokeColor" format="color" />
         <!-- Width of the stroke used to draw the circles. -->

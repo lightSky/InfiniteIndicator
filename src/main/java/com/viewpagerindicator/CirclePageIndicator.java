@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package viewpagerindicator;
+package com.viewpagerindicator;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.widget.LinearLayout.HORIZONTAL;
@@ -36,7 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.example.infiniteautoscroolview.R;
+import cn.lightsky.infiniteautoscroolview.R;
 
 
 /**
@@ -53,18 +53,15 @@ public class CirclePageIndicator extends View implements PageIndicator {
 	private ViewPager mViewPager;
 	private ViewPager.OnPageChangeListener mListener;
 	private int mCurrentPage;
-	private int mSnapPage;
 	private float mPageOffset;
 	private int mScrollState;
 	private int mOrientation;
 	private boolean mCentered;
-	private boolean mSnap;
-
 	private int mTouchSlop;
 	private float mLastMotionX = -1;
 	private int mActivePointerId = INVALID_POINTER;
 	private boolean mIsDragging;
-	private int mViewCount;
+	private int mRealViewCount;
 
 	private boolean isReturn;
 
@@ -124,7 +121,6 @@ public class CirclePageIndicator extends View implements PageIndicator {
 				R.styleable.CirclePageIndicator_fillColor, defaultFillColor));
 		mRadius = a.getDimension(R.styleable.CirclePageIndicator_radius,
 				defaultRadius);
-		mSnap = a.getBoolean(R.styleable.CirclePageIndicator_snap, defaultSnap);
 
 		Drawable background = a
 				.getDrawable(R.styleable.CirclePageIndicator_android_background);
@@ -211,15 +207,6 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		return mRadius;
 	}
 
-	public void setSnap(boolean snap) {
-		mSnap = snap;
-		invalidate();
-	}
-
-	public boolean isSnap() {
-		return mSnap;
-	}
-
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -227,7 +214,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		if (mViewPager == null) {
 			return;
 		}
-		// final int count = mViewCount;
+
 		final int count = mViewPager.getAdapter().getCount();
 		if (count == 0) {
 			return;
@@ -238,39 +225,37 @@ public class CirclePageIndicator extends View implements PageIndicator {
 			return;
 		}
 
-		/** ��� View �Ŀ�� */
+		/** 相对当前方向的长度*/
 		int longSize;
 
-		/** padding left */
+		/** 当前方向的起始位置 */
 		int longPaddingBefore;
 
-		/** padding right */
+		/** 当前方向的结束位置 */
 		int longPaddingAfter;
 
-		/** padding top */
+		/** 如果是水平方向，则取：padding Top ，竖直方向取：padding Left */
 		int shortPaddingBefore;
 
-		if (mOrientation == HORIZONTAL) {
+		if (mOrientation == HORIZONTAL) {//水平方向，则由上、右、左三个方向来确定绘制范围
 			longSize = getWidth();
 			longPaddingBefore = getPaddingLeft();
 			longPaddingAfter = getPaddingRight();
 			shortPaddingBefore = getPaddingTop();
-		} else {
+		} else {//垂直方向，则由左、上、下、来确定绘制的范围。
 			longSize = getHeight();
 			longPaddingBefore = getPaddingTop();
 			longPaddingAfter = getPaddingBottom();
 			shortPaddingBefore = getPaddingLeft();
 		}
 
-		// final int count = mViewCount;
+        //TODO 这里给出图，更好。。。。。。。。。
 		final float threeRadius = mRadius * 3;
-		final float shortOffset = shortPaddingBefore + mRadius;// �ϱ����
-		float longOffset = longPaddingBefore + mRadius;// ������
+		final float shortOffset = shortPaddingBefore + mRadius;//某方向的圆心坐标位置
+		float longOffset = longPaddingBefore + mRadius;//
 		if (mCentered) {
 			longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f)
-					- ((mViewCount * threeRadius) / 2.0f);
-			// longOffset += ((longSize - longPaddingBefore - longPaddingAfter)
-			// / 2.0f) - ((count * threeRadius) / 2.0f);
+					- ((mRealViewCount * threeRadius) / 2.0f);
 		}
 
 		float dX;
@@ -283,7 +268,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
 		// Draw stroked circles
 //		for (int iLoop = 0; iLoop < count; iLoop++) {
-		for (int iLoop = 0; iLoop < mViewCount; iLoop++) {
+		for (int iLoop = 0; iLoop < mRealViewCount; iLoop++) {
 			float drawLong = longOffset + (iLoop * threeRadius);
 			if (mOrientation == HORIZONTAL) {
 				dX = drawLong;
@@ -305,21 +290,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		}
 
 		// Draw the filled circle according to the current scroll
-		float cx = (mSnap ? mSnapPage % mViewCount : mCurrentPage % mViewCount)
+		float cx = (mCurrentPage % mRealViewCount)
 				* threeRadius;
-		
-//		float cx = (mSnap ? mSnapPage : mCurrentPage) * threeRadius;
-//		System.out.println("  mCurrentPage % mViewCount "+(mCurrentPage % mViewCount ));
-		
-//		if(mCurrentPage % mViewCount == 0){
-//			cx = 0;
-//			return;
-//		}
-//		
-		if (!mSnap) {
-			cx += mPageOffset % mViewCount * threeRadius;
-		}
-		
+
 		if (mOrientation == HORIZONTAL) {
 			dX = longOffset + cx;
 			dY = shortOffset;
@@ -333,9 +306,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
 	@Override
 	public void onPageSelected(int position) {
-		if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+//		if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+		if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
 			mCurrentPage = position;
-			mSnapPage = position;
 			invalidate();
 		}
 
@@ -433,13 +406,12 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		return true;
 	}
 
-	public void setViewCount(int viewCount) {
-		mViewCount = viewCount;
+	public void setRealViewCount(int viewCount) {
+		mRealViewCount = viewCount;
 	}
 
 	@Override
 	public void setViewPager(ViewPager view) {
-//        mViewCount = view.getAdapter().getCount();
 		if (mViewPager == view) {
 			return;
 		}
@@ -494,7 +466,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
 		if (mListener != null) {
 			mListener.onPageScrolled(position, positionOffset,
-					positionOffsetPixels);
+                    positionOffsetPixels);
 		}
 	}
 
@@ -537,7 +509,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		} else {
 			// Calculate the width according the views count
 // final int count = mViewPager.getAdapter().getCount();
-			final int count = mViewCount; 
+			final int count = mRealViewCount;
 			result = (int) (getPaddingLeft() + getPaddingRight()
 					+ (count * 2 * mRadius) + (count - 1) * mRadius + 1);
 			// Respect AT_MOST value if that was what is called for by
@@ -581,7 +553,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 		SavedState savedState = (SavedState) state;
 		super.onRestoreInstanceState(savedState.getSuperState());
 		mCurrentPage = savedState.currentPage;
-		mSnapPage = savedState.currentPage;
+//		mSnapPage = savedState.currentPage;
 		requestLayout();
 	}
 
