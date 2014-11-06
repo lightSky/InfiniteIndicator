@@ -1,4 +1,4 @@
-package com.jakewharton.salvage;
+package salvage;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

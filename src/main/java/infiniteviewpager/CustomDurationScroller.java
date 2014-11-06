@@ -1,4 +1,4 @@
-package cn.trinea.android.view.autoscrollviewpager;
+package infiniteviewpager;
 
 import android.content.Context;
 import android.view.animation.Interpolator;
