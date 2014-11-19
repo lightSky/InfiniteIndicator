@@ -7,7 +7,7 @@ It contains a cycle pager indicator seperated from ViewPagerIndicator.The page i
 Usage
 ===========================  
 
-There is a complete demo in my other project [CustomeViewDemo](https://github.com/lightSky/CustomeViewDemo) .You can directly check it out from github by Android Studio.
+You can directly check it out from github by Android Studio.
 
 ```
 
