@@ -3,6 +3,6 @@
 
     <string name="app_name">CustomeViewDemo</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="switch_style">switch_style</string>
 
 </resources>
