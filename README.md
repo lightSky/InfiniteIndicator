@@ -1,9 +1,9 @@
-InfiniteAutoScrollView
+InfiniteIndicator
 ===========================
 
 This project is inspired by the auto-scroll-viewpager of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib which the implementation of
 ;Generic view recycler and ViewPage PagerAdapter .
-The indicator contains two style.One is CircleIndicator seperated from ViewPagerIndicator.Another is copy from https://github.com/ongakuer/CircleIndicator.
+The indicator contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.)
 
 ## Usage
 - include this library, use
@@ -74,4 +74,10 @@ public class MainActivity extends Activity {
 - `setSlideBorderMode(int)` set how to process when sliding at the last or first item, default is `SLIDE_BORDER_MODE_NONE`.
 - `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
 - `setBorderAnimation(boolean)` set whether animating when auto scroll at the last or first item, default is true.
+
+Thanks  
+[android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager)  
+[AndroidImageSlider](https://github.com/daimajia/AndroidImageSlider)  
+[CircleIndicator](https://github.com/ongakuer/CircleIndicator)  
+[Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
