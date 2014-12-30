@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Position Style-->
+    <style name="CenterBottom">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="BottomRight">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="BottomLeft">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="CenterTop">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="CenterTopRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="CenterTopLeft">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="AnimLineIndicator">
+        <item name="ci_width">10dp</item>
+        <item name="ci_height">4dp</item>
+        <item name="ci_margin">6dp</item>
+        <item name="ci_animator">@animator/indicator_translation_and_alpha</item>
+        <item name="ci_drawable">@drawable/balck_radius_square</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

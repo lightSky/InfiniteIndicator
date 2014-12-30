@@ -1,70 +1,77 @@
 InfiniteAutoScrollView
 ===========================
 
-This project is inspired by the auto-scroll-viewpager of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib which the implementation of Generic view recycler and ViewPage PagerAdapter .
-It contains a cycle pager indicator seperated from ViewPagerIndicator.The page is still scrolling forward but the indicator is recycle.
+This project is inspired by the auto-scroll-viewpager of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib which the implementation of
+;Generic view recycler and ViewPage PagerAdapter .
+The indicator contains two style.One is CircleIndicator seperated from ViewPagerIndicator.Another is copy from https://github.com/ongakuer/CircleIndicator.
 
-Usage
-===========================  
+## Usage
+- include this library, use
 
-You can directly check it out from github by Android Studio.
+``` xml
+   <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
+        android:id="@+id/infinite_anim_circle"
+        android:layout_width="match_parent"
+        app:indicator_type="indicator_anim_circle"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 ```
 
-import android.app.Activity;
-import android.os.Bundle;
-import java.util.ArrayList;
-import java.util.List;
-import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
-import com.viewpagerindicator.CirclePageIndicator;
-
+```
 public class MainActivity extends Activity {
-    private AutoScrollViewPager mAutoScrollViewPager;
-    private CirclePageIndicator mIndicator;
+    private InfiniteIndicatorLayout mDefaultIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_view_pager);
+        HashMap<String,String> url_maps = new HashMap<String, String>();
+        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
+        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
+        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
 
-        List<Integer> mDrawableResIds = new ArrayList<Integer>();
-        mDrawableResIds.add(R.drawable.a);
-        mDrawableResIds.add(R.drawable.b);
-        mDrawableResIds.add(R.drawable.c);
-        mAutoScrollViewPager = (AutoScrollViewPager)findViewById(R.id.view_pager);
-        mAutoScrollViewPager.setAdapter(new PageAdapter(this,mDrawableResIds).setInfiniteLoop(true));
-        mAutoScrollViewPager.setInterval(5000);
-        mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(mAutoScrollViewPager);
-        mIndicator.setRealViewCount(mDrawableResIds.size());
-        mAutoScrollViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % mDrawableResIds.size());
-        mAutoScrollViewPager.startAutoScroll();
+        // initialize a SliderLayout
+        for(String name : url_maps.keySet()){
+            DefaultSliderView textSliderView = new DefaultSliderView(this);
+            textSliderView
+                    .image(url_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+            textSliderView.getBundle()
+                    .putString("extra",name);
+            mDefaultIndicator.addSlider(textSliderView);
+        }
+        mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mDefaultIndicator.startAutoScroll();
     }
+
+        @Override
+        protected void onPause() {
+            super.onPause();
+            mDefaultIndicator.stopAutoScroll();
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            mDefaultIndicator.startAutoScroll();
+        }
 }
 
 ```
 
-```
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/black"
-    android:layout_gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
+- `startAutoScroll(int)` start auto scroll delayed.
+- `stopAutoScroll()` stop auto scroll.
 
-    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+## Setting
+- `setInterval(long)` set auto scroll time in milliseconds, default is `DEFAULT_INTERVAL`.
+- `setDirection(int)` set auto scroll direction, default is `RIGHT`.
+- `setInfinite(boolean)` set whether automatic cycle when auto scroll reaching the last or first item, default is true.
+- `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
+- `setSlideBorderMode(int)` set how to process when sliding at the last or first item, default is `SLIDE_BORDER_MODE_NONE`.
+- `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
+- `setBorderAnimation(boolean)` set whether animating when auto scroll at the last or first item, default is true.
 
-    <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/view_pager"
-        android:layout_gravity="bottom"
-        android:paddingBottom="30dp"
-        />
-</FrameLayout>
-
-```

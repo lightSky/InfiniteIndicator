@@ -1,21 +1,56 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/black"
-    android:layout_gravity="center"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
-        android:id="@+id/view_pager"
+    <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
+        android:id="@+id/infinite_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+        app:indicator_type="indicator_default"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-    <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/view_pager"
-        android:layout_gravity="bottom"
-        android:paddingBottom="30dp"
-        />
-</FrameLayout>
+    <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
+        android:id="@+id/infinite_anim_circle"
+        android:layout_width="match_parent"
+        app:indicator_type="indicator_anim_circle"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
+        android:id="@+id/infinite_anim_line"
+        android:layout_width="match_parent"
+        app:indicator_type="indicator_anim_line"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+<!--
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_custom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.lightsky.infiniteindicator.indicator.AnimIndicator
+            android:id="@+id/indicator_custom"
+            app:ci_width="10dp"
+            app:ci_height="4dp"
+            app:ci_margin="6dp"
+            app:ci_animator="@animator/indicator_translation_and_alpha"
+            app:ci_drawable="@drawable/balck_radius_square"
+            android:layout_centerInParent="true"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"/>
+
+    </RelativeLayout>
+-->
+
+</LinearLayout>
+
+

@@ -1,4 +1,4 @@
-package cn.trinea.android.view.autoscrollviewpager;
+package com.lightsky.infiniteindicator;
 
 import android.content.Context;
 import android.view.animation.Interpolator;
@@ -20,18 +20,6 @@ public class CustomDurationScroller extends Scroller {
     public CustomDurationScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
-
-    /**
-     * not exist in android 2.3
-     * 
-     * @param context
-     * @param interpolator
-     * @param flywheel
-     */
-    // @SuppressLint("NewApi")
-    // public CustomDurationScroller(Context context, Interpolator interpolator, boolean flywheel){
-    // super(context, interpolator, flywheel);
-    // }
 
     /**
      * Set the factor by which the duration will change

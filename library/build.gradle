@@ -1,19 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 21
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "cn.lightsky.infiniteautoscroolview"
-        minSdkVersion 8
+//        applicationId "cn.lightsky.infiniteautoscroolview"
+        minSdkVersion 11
         targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -21,5 +21,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:19.0.+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.nineoldandroids:library:2.4.+'
+//    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }

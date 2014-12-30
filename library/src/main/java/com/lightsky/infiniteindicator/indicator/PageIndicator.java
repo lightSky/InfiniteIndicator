@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.viewpagerindicator;
+package com.lightsky.infiniteindicator.indicator;
 
 import android.support.v4.view.ViewPager;
 
@@ -24,6 +24,13 @@ import android.support.v4.view.ViewPager;
  * number and the current visible view.
  */
 public interface PageIndicator extends ViewPager.OnPageChangeListener {
+
+    public enum IndicatorType{
+        DEFAULT,
+        ANIM_LINE,
+        ANIM_CIRCLE;
+    };
+
     /**
      * Bind the indicator to a ViewPager.
      *

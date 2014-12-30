@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_center_bottom_indicator"
+        style="@style/AnimLineIndicator"
+        android:paddingBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_bottom_right_indicator"
+        style="@style/AnimLineIndicator"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        />
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_bottom_left_indicator"
+        style="@style/AnimLineIndicator"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"/>
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_center_top_indicator"
+        style="@style/AnimLineIndicator"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"/>
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_center_top_right_indicator"
+        style="@style/AnimLineIndicator"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"/>
+
+    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+        android:id="@+id/default_center_top_left_indicator"
+        style="@style/AnimLineIndicator"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"/>
+</RelativeLayout>
