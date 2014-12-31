@@ -5,4 +5,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="page_margin">10dp</dimen>
 
+    <dimen name="anim_circle_indicator_height">30dp</dimen>
+
 </resources>

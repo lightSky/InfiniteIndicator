@@ -38,30 +38,29 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
         viewInfos.add(new PageInfo("dddd", R.drawable.d));
 
         testCircleIndicator();
-        testAnimCircleIndicator();
-        testAnimLineIndicator();
+        testCustomeCircleIndicator();
     }
     @Override
     protected void onPause() {
         super.onPause();
-//        mDefaultIndicatorLayout.stopAutoScroll();
-//        mCustoemIndicatorLayout.stopAutoScroll();
+        mDefaultIndicator.stopAutoScroll();
+        mCustoemIndicatorLayout.stopAutoScroll();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        mDefaultIndicatorLayout.startAutoScroll();
-//        mCustoemIndicatorLayout.startAutoScroll();
+        mDefaultIndicator.startAutoScroll();
+        mCustoemIndicatorLayout.startAutoScroll();
     }
     private void testCircleIndicator() {
         mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_view_pager);
         HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+        url_maps.put("Hannibal", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
+        url_maps.put("Big Bang Theory", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
 //        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/30933093.jpg");//err
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+        url_maps.put("House of Cards", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
+        url_maps.put("Game of Thrones", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
 
         // initialize a SliderLayout
         for(String name : url_maps.keySet()){
@@ -77,46 +76,15 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
         mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
     }
 
-    private void testAnimCircleIndicator() {
-        mAnimCircleIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_circle);
-        for(PageInfo name : viewInfos){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(name.getDrawableRes())
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra", name.getData());
-            mAnimCircleIndicator.addSlider(textSliderView);
-        }
-        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-    }
-
-    private void testAnimLineIndicator() {
-        mAnimLineIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_line);
-        for(PageInfo name : viewInfos){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(name.getDrawableRes())
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra", name.getData());
-            mAnimLineIndicator.addSlider(textSliderView);
-        }
-        mAnimLineIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Right_Bottom);
-    }
-
     private void testCustomeCircleIndicator() {
         HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "https://raw.githubusercontent.com/lightSky/MaterialDesignCenter/master/demoRes/AlertDialogPro-a.png");
-//        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+        url_maps.put("Hannibal", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
+        url_maps.put("Big Bang Theory", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
 //        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/30933093.jpg");//err
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+        url_maps.put("House of Cards", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
+        url_maps.put("Game of Thrones", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
 
-//        mCustoemIndicatorLayout = (InfiniteIndicatorLayout)findViewById(R.id.infinite_custome_circle);
+        mCustoemIndicatorLayout = (InfiniteIndicatorLayout)findViewById(R.id.infinite_custome_circle);
         // initialize a SliderLayout
         for(String name : url_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
@@ -128,12 +96,13 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
                     .putString("extra",name);
             mCustoemIndicatorLayout.addSlider(textSliderView);
         }
-        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Left_Bottom);
+        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
         CircleIndicator circleIndicator = ((CircleIndicator)mCustoemIndicatorLayout.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;
         circleIndicator.setBackgroundColor(0xFFCCCCCC);
-        circleIndicator.setRadius(10 * density);
+        circleIndicator.setRadius(5 * density);
         circleIndicator.setPageColor(0x880000FF);
+//        circleIndicator.setFillColor(0xFF00FF);
         circleIndicator.setFillColor(0xFF888888);
         circleIndicator.setStrokeColor(0xFF000000);
         circleIndicator.setStrokeWidth(2 * density);

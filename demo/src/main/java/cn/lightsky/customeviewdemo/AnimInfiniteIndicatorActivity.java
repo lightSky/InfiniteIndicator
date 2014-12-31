@@ -77,7 +77,7 @@ public class AnimInfiniteIndicatorActivity extends FragmentActivity implements B
                     .putString("extra", name.getData());
             mAnimCircleIndicator.addSlider(textSliderView);
         }
-        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
     }
 
     private void testAnimLineIndicator() {
@@ -92,7 +92,7 @@ public class AnimInfiniteIndicatorActivity extends FragmentActivity implements B
                     .putString("extra", name.getData());
             mAnimLineIndicator.addSlider(textSliderView);
         }
-        mAnimLineIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mAnimLineIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
     }
 
     @Override

@@ -109,9 +109,9 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type,IndicatorType.Default.ordinal());
 
         if(indicatorType == 0)
-            LayoutInflater.from(context).inflate(R.layout.layout_indicator, this, true);
+            LayoutInflater.from(context).inflate(R.layout.layout_default_indicator, this, true);
         else if(indicatorType == 1)
-            LayoutInflater.from(context).inflate(R.layout.layout_anim_indicator, this, true);
+            LayoutInflater.from(context).inflate(R.layout.layout_anim_circle_indicator, this, true);
         else
             LayoutInflater.from(context).inflate(R.layout.layout_anim_line_indicator, this, true);
 
@@ -407,6 +407,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     }
 
     public enum IndicatorPosition {
+        Center("Center_Bottom", R.id.default_center_indicator),
         Center_Bottom("Center_Bottom", R.id.default_center_bottom_indicator),
         Right_Bottom("Right_Bottom", R.id.default_bottom_right_indicator),
         Left_Bottom("Left_Bottom", R.id.default_bottom_left_indicator),

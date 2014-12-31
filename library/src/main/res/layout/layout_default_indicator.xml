@@ -10,6 +10,11 @@
         />
 
     <com.lightsky.infiniteindicator.indicator.CircleIndicator
+        android:id="@+id/default_center_indicator"
+        style="@style/Center"
+        android:layout_height="wrap_content"/>
+
+    <com.lightsky.infiniteindicator.indicator.CircleIndicator
         android:id="@+id/default_center_bottom_indicator"
         style="@style/CenterBottom"
         android:layout_height="wrap_content"/>

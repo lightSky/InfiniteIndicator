@@ -44,7 +44,7 @@ import static android.widget.LinearLayout.VERTICAL;
  *
  * Thanks to : https://github.com/JakeWharton/Android-ViewPagerIndicator
  */
-public class CircleIndicator extends View implements PageIndicator{
+public class CircleIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
 
     private float mRadius;
@@ -55,14 +55,18 @@ public class CircleIndicator extends View implements PageIndicator{
     private ViewPager.OnPageChangeListener mListener;
     private int mCurrentPage;
     private int mSnapPage;
+    private float mPageOffset;
     private int mScrollState;
     private int mOrientation;
     private boolean mCentered;
+    private boolean mSnap = true;
+
     private int mTouchSlop;
     private float mLastMotionX = -1;
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
-    private float mPageOffset;
+    private int mRealCount;
+
 
     public CircleIndicator(Context context) {
         this(context, null);
@@ -110,6 +114,10 @@ public class CircleIndicator extends View implements PageIndicator{
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+    }
+
+    public void setRealViewCount(int viewCount) {
+        mRealCount = viewCount;
     }
 
     public void setCentered(boolean centered) {
@@ -183,6 +191,15 @@ public class CircleIndicator extends View implements PageIndicator{
         return mRadius;
     }
 
+    public void setSnap(boolean snap) {
+        mSnap = snap;
+        invalidate();
+    }
+
+    public boolean isSnap() {
+        return mSnap;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -191,6 +208,7 @@ public class CircleIndicator extends View implements PageIndicator{
             return;
         }
         final int count = ((RecyleAdapter)mViewPager.getAdapter()).getRealCount();
+//        final int count = (PageAdapter)mViewPager.getAdapter().getCount();
         if (count <= 1) {
             return;
         }
@@ -216,6 +234,7 @@ public class CircleIndicator extends View implements PageIndicator{
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
+//            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((mRealCount * threeRadius) / 2.0f);
         }
 
         float dX;
@@ -249,6 +268,10 @@ public class CircleIndicator extends View implements PageIndicator{
 
         //Draw the filled circle according to the current scroll
         float cx = mSnapPage % count * threeRadius;
+//        float cx = (mSnap ? mSnapPage : mCurrentPage) * threeRadius;
+//        if (!mSnap) {
+//            cx += mPageOffset * threeRadius;
+//        }
         if (mOrientation == HORIZONTAL) {
             dX = longOffset + cx;
             dY = shortOffset;
@@ -401,7 +424,7 @@ public class CircleIndicator extends View implements PageIndicator{
 
     @Override
     public void onPageSelected(int position) {
-        if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+        if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
             mCurrentPage = position;
             mSnapPage = position;
             invalidate();
@@ -485,4 +508,53 @@ public class CircleIndicator extends View implements PageIndicator{
         }
         return result;
     }
+
+//    @Override
+//    public void onRestoreInstanceState(Parcelable state) {
+//        SavedState savedState = (SavedState)state;
+//        super.onRestoreInstanceState(savedState.getSuperState());
+//        mCurrentPage = savedState.currentPage;
+//        mSnapPage = savedState.currentPage;
+//        requestLayout();
+//    }
+//
+//    @Override
+//    public Parcelable onSaveInstanceState() {
+//        Parcelable superState = super.onSaveInstanceState();
+//        SavedState savedState = new SavedState(superState);
+//        savedState.currentPage = mCurrentPage;
+//        return savedState;
+//    }
+//
+//    static class SavedState extends BaseSavedState {
+//        int currentPage;
+//
+//        public SavedState(Parcelable superState) {
+//            super(superState);
+//        }
+//
+//        private SavedState(Parcel in) {
+//            super(in);
+//            currentPage = in.readInt();
+//        }
+//
+//        @Override
+//        public void writeToParcel(Parcel dest, int flags) {
+//            super.writeToParcel(dest, flags);
+//            dest.writeInt(currentPage);
+//        }
+//
+//        @SuppressWarnings("UnusedDeclaration")
+//        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+//            @Override
+//            public SavedState createFromParcel(Parcel in) {
+//                return new SavedState(in);
+//            }
+//
+//            @Override
+//            public SavedState[] newArray(int size) {
+//                return new SavedState[size];
+//            }
+//        };
+//    }
 }
