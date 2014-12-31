@@ -1,4 +1,4 @@
-package com.lightsky.infiniteindicator;
+package cn.lightsky.infiniteindicator;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

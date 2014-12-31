@@ -1,4 +1,4 @@
-package com.lightsky.infiniteindicator.jakewharton.salvage;
+package cn.lightsky.infiniteindicator.jakewharton.salvage;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

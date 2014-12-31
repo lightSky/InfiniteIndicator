@@ -64,7 +64,7 @@
         <item name="ci_width">10dp</item>
         <item name="ci_height">4dp</item>
         <item name="ci_margin">6dp</item>
-        <item name="ci_animator">@animator/indicator_translation_and_alpha</item>
+        <item name="ci_animator">@animator/translation_and_rotate</item>
         <item name="ci_drawable">@drawable/balck_radius_square</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:padding">10dp</item>

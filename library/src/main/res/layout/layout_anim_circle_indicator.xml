@@ -10,37 +10,37 @@
         android:layout_height="wrap_content"
         />
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_indicator"
         style="@style/Center"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_bottom_indicator"
         style="@style/CenterBottom"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_bottom_right_indicator"
         style="@style/BottomRight"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_bottom_left_indicator"
         style="@style/BottomLeft"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_indicator"
         style="@style/CenterTop"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_right_indicator"
         style="@style/CenterTopRight"
         android:layout_height="@dimen/anim_circle_indicator_height"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_left_indicator"
         style="@style/CenterTopLeft"
         android:layout_height="@dimen/anim_circle_indicator_height"/>

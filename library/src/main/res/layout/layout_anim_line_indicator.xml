@@ -9,45 +9,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_indicator"
         style="@style/AnimLineIndicator"
         android:layout_centerInParent="true"
         />
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_bottom_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         />
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_bottom_right_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
 
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_bottom_left_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         />
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
        />
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_right_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         />
-    <com.lightsky.infiniteindicator.indicator.AnimIndicator
+    <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_left_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentTop="true"

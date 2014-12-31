@@ -1,4 +1,4 @@
-package cn.lightsky.customeviewdemo;
+package cn.lightsky.infiniteindicator;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +8,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import com.lightsky.infiniteindicator.indicator.CircleIndicator;
-import com.lightsky.infiniteindicator.slideview.BaseSliderView;
-import com.lightsky.infiniteindicator.slideview.DefaultSliderView;
-import com.lightsky.infiniteindicator.InfiniteIndicatorLayout;
-import sky.light.com.customeviewdemo.R;
+import cn.light.sky.infiniteindicatordemo.R;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 
 
-public class AnimInfiniteIndicatorActivity extends FragmentActivity implements BaseSliderView.OnSliderClickListener{
+public class AnimIndicatorActivity extends FragmentActivity implements BaseSliderView.OnSliderClickListener{
     private  ArrayList<PageInfo> viewInfos;
     private InfiniteIndicatorLayout mAnimCircleIndicator;
     private InfiniteIndicatorLayout mAnimLineIndicator;
@@ -28,10 +25,10 @@ public class AnimInfiniteIndicatorActivity extends FragmentActivity implements B
         setContentView(R.layout.activity_anim_indicator);
 
         viewInfos = new ArrayList<PageInfo>();
-        viewInfos.add(new PageInfo("a", R.drawable.a));
-        viewInfos.add(new PageInfo("bb", R.drawable.b));
-        viewInfos.add(new PageInfo("ccc", R.drawable.c));
-        viewInfos.add(new PageInfo("dddd", R.drawable.d));
+        viewInfos.add(new PageInfo("Page A", R.drawable.a));
+        viewInfos.add(new PageInfo("Page B", R.drawable.b));
+        viewInfos.add(new PageInfo("Page C", R.drawable.c));
+        viewInfos.add(new PageInfo("Page D", R.drawable.d));
 
         testAnimCircleIndicator();
         testAnimLineIndicator();
@@ -54,13 +51,13 @@ public class AnimInfiniteIndicatorActivity extends FragmentActivity implements B
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this,CircleDefaultActivity.class);
+        Intent intent = new Intent(this,DefaultCircleIndicatorActivity.class);
         startActivity(intent);
         return true;
     }

@@ -1,4 +1,4 @@
-package cn.lightsky.customeviewdemo;
+package cn.lightsky.infiniteindicator;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,35 +7,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.lightsky.infiniteindicator.InfiniteIndicatorLayout;
-import com.lightsky.infiniteindicator.indicator.CircleIndicator;
-import com.lightsky.infiniteindicator.slideview.BaseSliderView;
-import com.lightsky.infiniteindicator.slideview.DefaultSliderView;
+import cn.light.sky.infiniteindicatordemo.R;
+import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import sky.light.com.customeviewdemo.R;
-
-
-public class CircleDefaultActivity extends FragmentActivity  implements BaseSliderView.OnSliderClickListener{
+public class DefaultCircleIndicatorActivity extends FragmentActivity  implements BaseSliderView.OnSliderClickListener{
     private InfiniteIndicatorLayout mCustoemIndicatorLayout;
-
     private  ArrayList<PageInfo> viewInfos;
     private InfiniteIndicatorLayout mDefaultIndicator;
-    private InfiniteIndicatorLayout mAnimCircleIndicator;
-    private InfiniteIndicatorLayout mAnimLineIndicator;
+    private HashMap<String,String> url_maps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_default_circle_indicator);
 
         viewInfos = new ArrayList<PageInfo>();
-        viewInfos.add(new PageInfo("a", R.drawable.a));
-        viewInfos.add(new PageInfo("bb", R.drawable.b));
-        viewInfos.add(new PageInfo("ccc", R.drawable.c));
-        viewInfos.add(new PageInfo("dddd", R.drawable.d));
+        viewInfos.add(new PageInfo("Page A", R.drawable.a));
+        viewInfos.add(new PageInfo("Page B", R.drawable.b));
+        viewInfos.add(new PageInfo("Page C", R.drawable.c));
+        viewInfos.add(new PageInfo("Page D", R.drawable.d));
+
+        url_maps = new HashMap<String, String>();
+        url_maps.put("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
+        url_maps.put("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
+        url_maps.put("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
+        url_maps.put("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
 
         testCircleIndicator();
         testCustomeCircleIndicator();
@@ -54,15 +55,7 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
         mCustoemIndicatorLayout.startAutoScroll();
     }
     private void testCircleIndicator() {
-        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_view_pager);
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
-        url_maps.put("Big Bang Theory", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
-//        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/30933093.jpg");//err
-        url_maps.put("House of Cards", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
-        url_maps.put("Game of Thrones", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
-
-        // initialize a SliderLayout
+        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.indicator_default_circle);
         for(String name : url_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
             textSliderView
@@ -77,15 +70,7 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
     }
 
     private void testCustomeCircleIndicator() {
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
-        url_maps.put("Big Bang Theory", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
-//        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/30933093.jpg");//err
-        url_maps.put("House of Cards", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
-        url_maps.put("Game of Thrones", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
-
-        mCustoemIndicatorLayout = (InfiniteIndicatorLayout)findViewById(R.id.infinite_custome_circle);
-        // initialize a SliderLayout
+        mCustoemIndicatorLayout = (InfiniteIndicatorLayout)findViewById(R.id.indicator_custome_circle);
         for(String name : url_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
             textSliderView
@@ -102,7 +87,6 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
         circleIndicator.setBackgroundColor(0xFFCCCCCC);
         circleIndicator.setRadius(5 * density);
         circleIndicator.setPageColor(0x880000FF);
-//        circleIndicator.setFillColor(0xFF00FF);
         circleIndicator.setFillColor(0xFF888888);
         circleIndicator.setStrokeColor(0xFF000000);
         circleIndicator.setStrokeWidth(2 * density);
@@ -110,14 +94,13 @@ public class CircleDefaultActivity extends FragmentActivity  implements BaseSlid
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this,AnimInfiniteIndicatorActivity.class);
-        startActivity(intent);
+        this.finish();
         return true;
     }
 

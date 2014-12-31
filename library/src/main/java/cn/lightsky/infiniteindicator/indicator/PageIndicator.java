@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.lightsky.infiniteindicator.indicator;
+package cn.lightsky.infiniteindicator.indicator;
 
 import android.support.v4.view.ViewPager;
 

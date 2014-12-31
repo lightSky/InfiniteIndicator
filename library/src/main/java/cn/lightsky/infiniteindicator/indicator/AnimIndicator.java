@@ -1,4 +1,4 @@
-package com.lightsky.infiniteindicator.indicator;
+package cn.lightsky.infiniteindicator.indicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -143,8 +143,6 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
 
         mAnimationIn.setTarget(getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(mCurrentPage)));
         mAnimationIn.start();
-
-        Log.i("Test","position = "+position+"   mAnimationOut "+mAnimationOut+"  getChildAt(position) "+getChildAt(position));
         mAnimationOut.setTarget(getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(position)));
         mAnimationOut.start();
 
@@ -166,7 +164,6 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
         }
 
         int count = ((RecyleAdapter)viewPager.getAdapter()).getRealCount();
-        Log.i("Test", "createIndicators ...........getRealCount.... = "+count);
         if (count <= 1) {
             return;
         }

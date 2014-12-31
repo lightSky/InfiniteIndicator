@@ -1,4 +1,4 @@
-package com.lightsky.infiniteindicator;
+package cn.lightsky.infiniteindicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,10 +13,10 @@ import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 
-import com.lightsky.infiniteindicator.indicator.PageIndicator;
-import com.lightsky.infiniteindicator.indicator.RecyleAdapter;
-import com.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import com.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.indicator.PageIndicator;
+import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
+import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 
 import java.lang.reflect.Field;
 

@@ -167,3 +167,11 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+
+#############
+## Android Studio
+#############
+
+build/*
+.gradle/*

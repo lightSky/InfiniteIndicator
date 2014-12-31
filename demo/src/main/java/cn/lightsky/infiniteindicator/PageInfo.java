@@ -1,4 +1,4 @@
-package cn.lightsky.customeviewdemo;
+package cn.lightsky.infiniteindicator;
 
 /**
  * Created by xushuai on 2014/12/25.

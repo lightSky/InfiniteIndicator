@@ -1,4 +1,4 @@
-package com.lightsky.infiniteindicator.slideview;
+package cn.lightsky.infiniteindicator.slideview;
 
 import android.content.Context;
 import android.view.LayoutInflater;

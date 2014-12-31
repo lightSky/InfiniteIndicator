@@ -1,14 +1,13 @@
-package com.lightsky.infiniteindicator.indicator;
+package cn.lightsky.infiniteindicator.indicator;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lightsky.infiniteindicator.slideview.BaseSliderView;
-import com.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 
 import java.util.ArrayList;
 
