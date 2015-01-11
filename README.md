@@ -5,7 +5,7 @@ This project is inspired by the [android-auto-scroll-view-pager](https://github.
 view recycle adapter.It contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.).You can custome style and animation.
 
 ## Screenshot
-<img src="apk/demo.gif" width="400" height="600" alt="Screenshot"/> 
+<img src="apk/demo.gif" width="380" height="550" alt="Screenshot"/> 
 
 ## Demo Download
 <a href="apk/demo.apk?raw=true" target="_blank" title="APK Download">APK Donwload</a>
