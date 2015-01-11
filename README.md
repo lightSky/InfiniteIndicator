@@ -4,6 +4,13 @@ InfiniteIndicator
 This project is inspired by the [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager) of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib implement
 view recycle adapter.It contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.).You can custome style and animation.
 
+## Screenshot
+![Screenshot](apk/demo.gif) 
+
+## Demo Download
+<a href="apk/demo.apk?raw=true" target="_blank" title="APK Download">±æµÿœ¬‘ÿ</a>  
+
+
 ## Setting
 - `setInterval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
 - `setDirection(int)` set auto scroll direction, default is `RIGHT`.
