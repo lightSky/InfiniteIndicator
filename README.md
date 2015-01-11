@@ -2,13 +2,13 @@ InfiniteIndicator
 ===========================
 
 This project is inspired by the auto-scroll-viewpager of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib implement
-view recycle adapter.It contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.)
+view recycle adapter.It contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.).You can custome style and animation.
 
 ## Usage
 - include this library, use
 
 ``` xml
-   <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
+   <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
         android:id="@+id/indicator_default_circle"
         app:indicator_type="indicator_anim_circle"
         android:layout_height="wrap_content"
@@ -65,19 +65,16 @@ public class MainActivity extends Activity {
 }
 
 ```
-
-- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
-- `startAutoScroll(int)` start auto scroll delayed.
-- `stopAutoScroll()` stop auto scroll.
-
 ## Setting
 - `setInterval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
 - `setDirection(int)` set auto scroll direction, default is `RIGHT`.
 - `setInfinite(boolean)` set whether infinite scroll when auto scroll reaching the last or first item, default is true.
 - `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
-- `setSlideBorderMode(int)` set how to process when sliding at the last or first item, default is `SLIDE_BORDER_MODE_NONE`.
 - `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
-- `setBorderAnimation(boolean)` set whether animating when auto scroll at the last or first item, default is true.
+- `setIndicatorPosition` set present position of indicator.
+- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
+- `startAutoScroll(int)` start auto scroll delayed.
+- `stopAutoScroll()` stop auto scroll.
 
 Thanks  
 [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager)  

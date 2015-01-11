@@ -8,11 +8,13 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 
+import cn.lightsky.infiniteautoscroolview.R;
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
@@ -20,7 +22,6 @@ import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 
 import java.lang.reflect.Field;
 
-import cn.lightsky.infiniteautoscroolview.R;
 
 /**
  * Created by lightSky on 2014/12/22.
@@ -71,7 +72,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * whether animating when auto scroll at the last or first item *
      */
-    private boolean isBorderAnimation = true;
+//    private boolean isBorderAnimation = true;
 
     public static final int MSG_WHAT = 0;
     private Handler handler;
@@ -105,7 +106,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         super(context, attrs, defStyleAttr);
         mContext = context;
 
-        final TypedArray attributes = context.obtainStyledAttributes(attrs,R.styleable.InfiniteIndicatorLayout,0,0);
+        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicatorLayout,0,0);
         int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type,IndicatorType.Default.ordinal());
 
         if(indicatorType == 0)
@@ -215,11 +216,11 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 
         if (nextItem < 0) {
             if (isInfinite) {
-                mViewPager.setCurrentItem(totalCount - 1, isBorderAnimation);
+                mViewPager.setCurrentItem(totalCount - 1);
             }
         } else if (nextItem == totalCount) {
             if (isInfinite) {
-                mViewPager.setCurrentItem(0, isBorderAnimation);
+                mViewPager.setCurrentItem(0);
             }
         } else {
             mViewPager.setCurrentItem(nextItem, true);
@@ -257,7 +258,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {
                     if (pageCount > 1) {
-                        mViewPager.setCurrentItem(pageCount - currentItem - 1, isBorderAnimation);
+                        mViewPager.setCurrentItem(pageCount - currentItem - 1);
                     }
                     getParent().requestDisallowInterceptTouchEvent(true);
                 }
@@ -376,30 +377,12 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 
     /**
      * set how to process when sliding at the last or first item
-     *
+     * will be explore in future version
      * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
      *                        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
      */
-    public void setSlideBorderMode(int slideBorderMode) {
+    private void setSlideBorderMode(int slideBorderMode) {
         this.slideBorderMode = slideBorderMode;
-    }
-
-    /**
-     * whether animating when auto scroll at the last or first item, default is true
-     *
-     * @return
-     */
-    public boolean isBorderAnimation() {
-        return isBorderAnimation;
-    }
-
-    /**
-     * set whether animating when auto scroll at the last or first item, default is true
-     *
-     * @param isBorderAnimation
-     */
-    public void setBorderAnimation(boolean isBorderAnimation) {
-        this.isBorderAnimation = isBorderAnimation;
     }
 
     public PageIndicator getPagerIndicator() {
