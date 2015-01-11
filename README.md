@@ -92,7 +92,7 @@ Thanks
 [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)  
 
 **About me**  
-微博: [light_sky](http://www.weibo.com/lightSkyStreet)  
-Blog: [lightskystreet.com](http://www.lightskystreet.com/) &nbsp;&nbsp;&nbsp;&nbsp;[light_sky的专栏](http://blog.csdn.net/xushuaic)     
-邮箱: huberycarl@gmail.com  
+Weibo: [light_sky](http://www.weibo.com/lightSkyStreet)  
+Blog: [lightskystreet.com](http://www.lightskystreet.com/) &nbsp;&nbsp;&nbsp;&nbsp;[light_sky](http://blog.csdn.net/xushuaic)     
+Email: huberycarl@gmail.com  
 
