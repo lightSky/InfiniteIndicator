@@ -89,6 +89,10 @@ Thanks
 [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager)  
 [AndroidImageSlider](https://github.com/daimajia/AndroidImageSlider)  
 [CircleIndicator](https://github.com/ongakuer/CircleIndicator)  
-[Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
+[Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)  
 
-About me:
+**About me**  
+微博: [light_sky](http://www.weibo.com/lightSkyStreet)  
+Blog: [lightskystreet.com](http://www.lightskystreet.com/) &nbsp;&nbsp;&nbsp;&nbsp;[light_sky的专栏](http://blog.csdn.net/xushuaic)     
+邮箱: huberycarl@gmail.com  
+
