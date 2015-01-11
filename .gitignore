@@ -175,4 +175,3 @@ pip-log.txt
 
 build/*
 .gradle/*
-.idea/*
