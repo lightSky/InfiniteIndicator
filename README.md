@@ -1,8 +1,26 @@
 InfiniteIndicator
 ===========================
 
-This project is inspired by the auto-scroll-viewpager of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib implement
+This project is inspired by the [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager) of [Trinea](https://github.com/Trinea). Use the [salvage](https://github.com/JakeWharton/salvage) lib implement
 view recycle adapter.It contains two style.One is CircleIndicator seperated from [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator).Another is copy from [CircleIndicator](https://github.com/ongakuer/CircleIndicator.).You can custome style and animation.
+
+## Setting
+- `setInterval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
+- `setDirection(int)` set auto scroll direction, default is `RIGHT`.
+- `setInfinite(boolean)` set whether infinite scroll when auto scroll reaching the last or first item, default is true.
+- `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
+- `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
+- `setIndicatorPosition` set present position of indicator.
+- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
+- `startAutoScroll(int)` start auto scroll delayed.
+- `stopAutoScroll()` stop auto scroll.
+
+indicator_type:the style enum of Indicator
+- `indicator_default CirCleIndicator
+- `indicator_anim_circle is AnimCircleIndicator
+- `indicator_anim_line is AnimLineIndicator
+
+You can custome different anim and set for indicator.
 
 ## Usage
 - include this library, use
@@ -15,12 +33,6 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
         android:layout_weight="match_parent"/>
 
 ```
-indicator_type:the style enum of Indicator
-- `indicator_default CirCleIndicator
-- `indicator_anim_circle is AnimCircleIndicator
-- `indicator_anim_line is AnimLineIndicator
-
-You can custome different anim and set for indicator.
 
 ```java
 public class MainActivity extends Activity {
@@ -65,16 +77,6 @@ public class MainActivity extends Activity {
 }
 
 ```
-## Setting
-- `setInterval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
-- `setDirection(int)` set auto scroll direction, default is `RIGHT`.
-- `setInfinite(boolean)` set whether infinite scroll when auto scroll reaching the last or first item, default is true.
-- `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
-- `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
-- `setIndicatorPosition` set present position of indicator.
-- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
-- `startAutoScroll(int)` start auto scroll delayed.
-- `stopAutoScroll()` stop auto scroll.
 
 Thanks  
 [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager)  
@@ -82,3 +84,4 @@ Thanks
 [CircleIndicator](https://github.com/ongakuer/CircleIndicator)  
 [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
+About me:
