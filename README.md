@@ -16,9 +16,9 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 - `stopAutoScroll()` stop auto scroll.
 
 indicator_type:the style enum of Indicator
-- `indicator_default CirCleIndicator
-- `indicator_anim_circle is AnimCircleIndicator
-- `indicator_anim_line is AnimLineIndicator
+- `indicator_default` CirCleIndicator
+- `indicator_anim_circle`  AnimCircleIndicator
+- `indicator_anim_line` is AnimLineIndicator
 
 You can custome different anim and set for indicator.
 
