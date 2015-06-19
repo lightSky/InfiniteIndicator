@@ -176,3 +176,4 @@ pip-log.txt
 build/*
 .gradle/*
 .idea/*
+local.properties
