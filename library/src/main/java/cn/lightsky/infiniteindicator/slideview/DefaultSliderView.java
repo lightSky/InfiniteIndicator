@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import cn.lightsky.infiniteautoscroolview.R;
+import cn.lightsky.infiniteindicator.R;
 
 /**
  * a simple slider view, which just show an image. If you want to make your own slider view,

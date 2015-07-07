@@ -10,7 +10,7 @@ import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 
-import cn.lightsky.infiniteautoscroolview.R;
+import cn.lightsky.infiniteindicator.R;
 
 /**
  * When you want to make your own slider view, you must extends from this class.

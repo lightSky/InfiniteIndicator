@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.nineoldandroids.animation.AnimatorInflater;
 import com.nineoldandroids.animation.AnimatorSet;
 
-import cn.lightsky.infiniteautoscroolview.R;
+import cn.lightsky.infiniteindicator.R;
 
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 

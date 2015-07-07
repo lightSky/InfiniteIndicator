@@ -29,6 +29,12 @@ dependencies {
     compile 'com.android.support:support-v4:22.1.1'
 }
 
+
+
+//------------------------------------------------------------------------------------------
+
+
+
 def siteUrl = 'https://github.com/lightSky/InfiniteIndicator'      // 项目的主页
 
 def gitUrl = 'https://github.com/lightSky/InfiniteIndicator.git'   // Git仓库的url
@@ -75,7 +81,7 @@ install {
 
                         name 'lightsky'
 
-                        email 'huberycarl@gmail.com'
+                        email 'lightsky.cn@gmail.com'
 
                     }
 
