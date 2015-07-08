@@ -29,6 +29,9 @@ indicator_type:the style enum of Indicator
 
 You can custome different anim and set for indicator.
 
+## Including In Your Project  
+`compile 'cn.lightsky.infiniteindicator:library:1.0.1'`
+
 ## Usage
 - include this library, use
 
