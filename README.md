@@ -30,6 +30,8 @@ indicator_type:the style enum of Indicator
 You can custome different anim and set for indicator.
 
 ## Including In Your Project  
+Just add the following statement in your build.gradle  
+
 `compile 'cn.lightsky.infiniteindicator:library:1.0.1'`
 
 ## Usage
