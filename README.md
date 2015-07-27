@@ -38,7 +38,7 @@ Just add the following statement in your build.gradle
 - include this library, use
 
 ``` xml
-   <com.lightsky.infiniteindicator.InfiniteIndicatorLayout
+   <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
         android:id="@+id/indicator_default_circle"
         app:indicator_type="indicator_anim_circle"
         android:layout_height="wrap_content"
@@ -99,5 +99,5 @@ Thanks
 **About me**  
 Weibo: [light_sky](http://www.weibo.com/lightSkyStreet)  
 Blog: [lightskystreet.com](http://www.lightskystreet.com/) &nbsp;&nbsp;&nbsp;&nbsp;[light_sky](http://blog.csdn.net/xushuaic)     
-Email: huberycarl@gmail.com  
+Email: lightsky.cn@gmail.com  
 
