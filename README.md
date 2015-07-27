@@ -42,7 +42,7 @@ Just add the following statement in your build.gradle
         android:id="@+id/indicator_default_circle"
         app:indicator_type="indicator_anim_circle"
         android:layout_height="wrap_content"
-        android:layout_weight="match_parent"/>
+        android:layout_width="match_parent"/>
 
 ```
 
