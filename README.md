@@ -27,7 +27,7 @@ indicator_type:the style enum of Indicator
 - `indicator_anim_circle`  AnimCircleIndicator
 - `indicator_anim_line` is AnimLineIndicator
 
-You can custome different anim and set for indicator.
+You can custome different anim or slideview for indicator.
 
 ## Including In Your Project  
 Just add the following statement in your build.gradle  
@@ -66,6 +66,8 @@ public class MainActivity extends Activity {
             textSliderView
                     .image(url_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .showImageResForEmpty(R.drawable.img_default)
+                    .showImageResForError(R.drawable.img_error)
                     .setOnSliderClickListener(this);
             textSliderView.getBundle()
                     .putString("extra",name);
