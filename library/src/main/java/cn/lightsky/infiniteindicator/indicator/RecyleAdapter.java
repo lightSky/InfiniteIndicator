@@ -71,7 +71,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderVi
 
     public void removeAllSliders() {
         mSlederViews.clear();
-        mDataChangeListener.notifyDataChange();
         notifyDataSetChanged();
     }
 

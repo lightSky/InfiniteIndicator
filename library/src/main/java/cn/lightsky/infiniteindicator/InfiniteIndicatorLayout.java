@@ -73,7 +73,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 //    private boolean isBorderAnimation = true;
 
     public static final int MSG_WHAT = 0;
-    private Handler handler;
     private boolean isAutoScroll = false;
     private boolean isStopByTouch = false;
     private float touchX = 0f, downX = 0f;
@@ -118,7 +117,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         mRecyleAdapter = new RecyleAdapter(mContext);
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
-        handler = new ScrollHandler();
         setViewPagerScroller();
 
     }
@@ -263,8 +261,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
                 return super.dispatchTouchEvent(ev);
             }
         }
-        getParent().requestDisallowInterceptTouchEvent(true);
-
         return super.dispatchTouchEvent(ev);
     }
 
@@ -274,12 +270,10 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             mIndicator.notifyDataSetChanged();
     }
 
-    private class ScrollHandler extends Handler {
-
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
             switch (msg.what) {
                 case MSG_WHAT:
                     scrollOnce();
@@ -288,7 +282,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
                     break;
             }
         }
-    }
+    };
 
     /**
      * get auto scroll interval time in milliseconds, default is {@link #DEFAULT_INTERVAL}
@@ -427,6 +421,11 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         mIndicator = indicator;
         mIndicator.setViewPager(mViewPager);
 //        startAutoScroll();
+    }
+
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener){
+        if(onPageChangeListener!=null)
+            mIndicator.setOnPageChangeListener(onPageChangeListener);
     }
 
 }

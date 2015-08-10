@@ -1,19 +1,20 @@
 package cn.lightsky.infiniteindicator;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
 import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DefaultCircleIndicatorActivity extends FragmentActivity  implements BaseSliderView.OnSliderClickListener{
     private InfiniteIndicatorLayout mCustoemIndicatorLayout;
@@ -61,12 +62,29 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity  implements
             textSliderView
                     .image(url_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .showImageResForEmpty(R.drawable.ic_launcher)
                     .setOnSliderClickListener(this);
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
             mDefaultIndicator.addSlider(textSliderView);
         }
         mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mDefaultIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.i("TAG","onPage Scrolled .......");
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("TAG","onPage onPageSelected .......");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.i("TAG","onPage onPageScrollStateChanged .......");
+            }
+        });
     }
 
     private void testCustomeCircleIndicator() {
@@ -76,6 +94,7 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity  implements
             textSliderView
                     .image(url_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .showImageResForError(R.drawable.ic_launcher)
                     .setOnSliderClickListener(this);
             textSliderView.getBundle()
                     .putString("extra",name);

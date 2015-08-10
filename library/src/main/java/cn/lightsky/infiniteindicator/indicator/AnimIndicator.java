@@ -17,7 +17,7 @@ import cn.lightsky.infiniteindicator.R;
 
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
-public class AnimIndicator extends LinearLayout implements PageIndicator{
+public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private final static int DEFAULT_INDICATOR_WIDTH = 5;
 
@@ -124,7 +124,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
 
     @Override
     public void onPageScrolled(int position, float positionOffset,
-            int positionOffsetPixels) {
+                               int positionOffsetPixels) {
         if (mViewPagerOnPageChangeListener != null) {
             mViewPagerOnPageChangeListener.onPageScrolled(position, positionOffset,
                     positionOffsetPixels);
@@ -137,12 +137,12 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
             mViewPagerOnPageChangeListener.onPageSelected(position);
         }
 
-        if(getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(mCurrentPage))==null)
+        if (getRealChildAt(mCurrentPage) == null)
             return;
 
-        mAnimationIn.setTarget(getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(mCurrentPage)));
+        mAnimationIn.setTarget(getRealChildAt(mCurrentPage));
         mAnimationIn.start();
-        mAnimationOut.setTarget(getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(position)));
+        mAnimationOut.setTarget(getRealChildAt(position));
         mAnimationOut.start();
 
         mCurrentPage = position;
@@ -158,11 +158,11 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
     private void createIndicators(ViewPager viewPager) {
         removeAllViews();
 
-        if(((RecyleAdapter)viewPager.getAdapter())==null) {
+        if (((RecyleAdapter) viewPager.getAdapter()) == null) {
             return;
         }
 
-        int count = ((RecyleAdapter)viewPager.getAdapter()).getRealCount();
+        int count = ((RecyleAdapter) viewPager.getAdapter()).getRealCount();
         if (count <= 1) {
             return;
         }
@@ -180,8 +180,12 @@ public class AnimIndicator extends LinearLayout implements PageIndicator{
             mAnimationOut.start();
         }
 
-        mAnimationOut.setTarget(getChildAt(mCurrentPage));
+        mAnimationOut.setTarget(getRealChildAt(mCurrentPage));
         mAnimationOut.start();
+    }
+
+    private View getRealChildAt(int position) {
+        return getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(position));
     }
 
     private class ReverseInterpolator implements Interpolator {
