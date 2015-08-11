@@ -168,15 +168,15 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
         }
 
         for (int i = 0; i < count; i++) {
-            View Indicator = new View(getContext());
-            Indicator.setBackgroundResource(mIndicatorBackground);
-            addView(Indicator, mIndicatorWidth, mIndicatorHeight);
-            LayoutParams lp = (LayoutParams) Indicator.getLayoutParams();
+            View indicator = new View(getContext());
+            indicator.setBackgroundResource(mIndicatorBackground);
+            addView(indicator, mIndicatorWidth, mIndicatorHeight);
+            LayoutParams lp = (LayoutParams) indicator.getLayoutParams();
             lp.leftMargin = mIndicatorMargin;
             lp.rightMargin = mIndicatorMargin;
-            Indicator.setLayoutParams(lp);
+            indicator.setLayoutParams(lp);
 
-            mAnimationOut.setTarget(Indicator);
+            mAnimationOut.setTarget(indicator);
             mAnimationOut.start();
         }
 
