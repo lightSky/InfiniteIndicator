@@ -51,7 +51,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderVi
 
     @Override
     public View getView(final int position, View convertView, ViewGroup container) {
-        BaseSliderView sliderView = ((BaseSliderView) mSlederViews.get(getPosition(position)));
         return ((BaseSliderView) mSlederViews.get(getPosition(position))).getView();
     }
 
@@ -71,7 +70,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderVi
 
     public void removeAllSliders() {
         mSlederViews.clear();
-        mDataChangeListener.notifyDataChange();
         notifyDataSetChanged();
     }
 

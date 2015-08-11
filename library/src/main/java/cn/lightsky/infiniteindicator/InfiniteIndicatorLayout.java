@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
@@ -26,6 +27,7 @@ import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
 public class InfiniteIndicatorLayout extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+    private final ScrollHandler handler;
     private PageIndicator mIndicator;
     private ViewPager mViewPager;
     private Context mContext;
@@ -73,7 +75,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 //    private boolean isBorderAnimation = true;
 
     public static final int MSG_WHAT = 0;
-    private Handler handler;
     private boolean isAutoScroll = false;
     private boolean isStopByTouch = false;
     private float touchX = 0f, downX = 0f;
@@ -114,11 +115,11 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         else
             LayoutInflater.from(context).inflate(R.layout.layout_anim_line_indicator, this, true);
 
+        handler = new ScrollHandler(this);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mRecyleAdapter = new RecyleAdapter(mContext);
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
-        handler = new ScrollHandler();
         setViewPagerScroller();
 
     }
@@ -180,6 +181,11 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         /** remove messages before, keeps one message is running at most **/
         handler.removeMessages(MSG_WHAT);
         handler.sendEmptyMessageDelayed(MSG_WHAT, delayTimeInMills);
+    }
+
+    private void sendScrollMessage() {
+        /** remove messages before, keeps one message is running at most **/
+        sendScrollMessage(interval);
     }
 
     /**
@@ -263,8 +269,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
                 return super.dispatchTouchEvent(ev);
             }
         }
-        getParent().requestDisallowInterceptTouchEvent(true);
-
         return super.dispatchTouchEvent(ev);
     }
 
@@ -274,21 +278,30 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             mIndicator.notifyDataSetChanged();
     }
 
-    private class ScrollHandler extends Handler {
+    public static class ScrollHandler extends Handler{
+        public WeakReference<InfiniteIndicatorLayout> mLeakActivityRef;
+
+        public ScrollHandler(InfiniteIndicatorLayout infiniteIndicatorLayout) {
+            mLeakActivityRef = new WeakReference<InfiniteIndicatorLayout>(infiniteIndicatorLayout);
+        }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            switch (msg.what) {
-                case MSG_WHAT:
-                    scrollOnce();
-                    sendScrollMessage(interval);
-                default:
-                    break;
+            InfiniteIndicatorLayout infiniteIndicatorLayout = mLeakActivityRef.get();
+            if(infiniteIndicatorLayout != null){
+                switch (msg.what) {
+                    case MSG_WHAT:
+                        infiniteIndicatorLayout.scrollOnce();
+                        infiniteIndicatorLayout.sendScrollMessage();
+                    default:
+                        break;
+                }
             }
         }
     }
+
 
     /**
      * get auto scroll interval time in milliseconds, default is {@link #DEFAULT_INTERVAL}
@@ -429,4 +442,14 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 //        startAutoScroll();
     }
 
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener){
+        if(onPageChangeListener!=null)
+            mIndicator.setOnPageChangeListener(onPageChangeListener);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        handler.removeCallbacksAndMessages(null);
+    }
 }
