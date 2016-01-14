@@ -10,12 +10,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cn.light.sky.infiniteindicatordemo.R;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
-import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
+import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.slideview.PageView;
 
 
-public class AnimIndicatorActivity extends FragmentActivity implements BaseSliderView.OnSliderClickListener{
-    private  ArrayList<PageInfo> viewInfos;
+public class AnimIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener{
+    private  ArrayList<PageView> pageViews;
     private InfiniteIndicatorLayout mAnimCircleIndicator;
     private InfiniteIndicatorLayout mAnimLineIndicator;
 
@@ -24,14 +24,17 @@ public class AnimIndicatorActivity extends FragmentActivity implements BaseSlide
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anim_indicator);
 
-        viewInfos = new ArrayList<PageInfo>();
-        viewInfos.add(new PageInfo("Page A", R.drawable.a));
-        viewInfos.add(new PageInfo("Page B", R.drawable.b));
-        viewInfos.add(new PageInfo("Page C", R.drawable.c));
-        viewInfos.add(new PageInfo("Page D", R.drawable.d));
-
+        initData();
         testAnimCircleIndicator();
         testAnimLineIndicator();
+    }
+
+    private void initData() {
+        pageViews = new ArrayList<>();
+        pageViews.add(new PageView("Page A", R.drawable.a));
+        pageViews.add(new PageView("Page B", R.drawable.b));
+        pageViews.add(new PageView("Page C", R.drawable.c));
+        pageViews.add(new PageView("Page D", R.drawable.d));
     }
 
     //To avoid memory leak ,you should release the res
@@ -64,36 +67,19 @@ public class AnimIndicatorActivity extends FragmentActivity implements BaseSlide
 
     private void testAnimCircleIndicator() {
         mAnimCircleIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_circle);
-        for(PageInfo name : viewInfos){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(name.getDrawableRes())
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra", name.getData());
-            mAnimCircleIndicator.addSlider(textSliderView);
-        }
+        mAnimCircleIndicator.addSliders(pageViews);
         mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
     }
 
     private void testAnimLineIndicator() {
         mAnimLineIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_line);
-        for(PageInfo name : viewInfos){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(name.getDrawableRes())
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra", name.getData());
-            mAnimLineIndicator.addSlider(textSliderView);
-        }
+        mAnimLineIndicator.addSliders(pageViews);
+        mAnimLineIndicator.removeAllSliders();
         mAnimLineIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
     }
 
     @Override
-    public void onSliderClick(BaseSliderView slider) {
+    public void onSliderClick(SliderView slider) {
         Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
     }
 }

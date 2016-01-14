@@ -15,11 +15,12 @@ import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.List;
 
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.PageView;
 
 
 /**
@@ -69,11 +70,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
      * how to process when sliding at the last or first item, default is {@link #SLIDE_BORDER_MODE_NONE} *
      */
     private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
-    /**
-     * whether animating when auto scroll at the last or first item *
-     */
-//    private boolean isBorderAnimation = true;
-
     public static final int MSG_WHAT = 0;
     private boolean isAutoScroll = false;
     private boolean isStopByTouch = false;
@@ -87,11 +83,11 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * Indicator Style Type,default is Circle with no Anim
      */
-    public enum IndicatorType{
+    public enum IndicatorType {
         Default,
         AnimCircle,
         AnimLine;
-    };
+    }
 
     public InfiniteIndicatorLayout(Context context) {
         this(context, null);
@@ -105,12 +101,12 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         super(context, attrs, defStyleAttr);
         mContext = context;
 
-        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicatorLayout,0,0);
-        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type,IndicatorType.Default.ordinal());
+        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicatorLayout, 0, 0);
+        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type, IndicatorType.Default.ordinal());
 
-        if(indicatorType == 0)
+        if (indicatorType == 0)
             LayoutInflater.from(context).inflate(R.layout.layout_default_indicator, this, true);
-        else if(indicatorType == 1)
+        else if (indicatorType == 1)
             LayoutInflater.from(context).inflate(R.layout.layout_anim_circle_indicator, this, true);
         else
             LayoutInflater.from(context).inflate(R.layout.layout_anim_line_indicator, this, true);
@@ -124,8 +120,31 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 
     }
 
-    public <T extends BaseSliderView> void addSlider(T imageContent) {
-        mRecyleAdapter.addSlider(imageContent);
+    public void addSliders(List<PageView> pageViews) {
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.addSliders(pageViews);
+    }
+
+    public void refreshSliders(List<PageView> pageViews) {
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.refreshSliders(pageViews);
+    }
+
+    public void removeAllSliders() {
+        mRecyleAdapter.removeAllSliders();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        startAutoScroll();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        stopAutoScroll();
+        super.onDetachedFromWindow();
+
     }
 
     /**
@@ -278,7 +297,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             mIndicator.notifyDataSetChanged();
     }
 
-    public static class ScrollHandler extends Handler{
+    public static class ScrollHandler extends Handler {
         public WeakReference<InfiniteIndicatorLayout> mLeakActivityRef;
 
         public ScrollHandler(InfiniteIndicatorLayout infiniteIndicatorLayout) {
@@ -290,7 +309,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             super.handleMessage(msg);
 
             InfiniteIndicatorLayout infiniteIndicatorLayout = mLeakActivityRef.get();
-            if(infiniteIndicatorLayout != null){
+            if (infiniteIndicatorLayout != null) {
                 switch (msg.what) {
                     case MSG_WHAT:
                         infiniteIndicatorLayout.scrollOnce();
@@ -389,6 +408,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * set how to process when sliding at the last or first item
      * will be explore in future version
+     *
      * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
      *                        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
      */
@@ -426,7 +446,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         }
     }
 
-    public void setIndicatorPosition(){
+    public void setIndicatorPosition() {
         setIndicatorPosition(IndicatorPosition.Center_Bottom);
     }
 
@@ -442,14 +462,8 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 //        startAutoScroll();
     }
 
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener){
-        if(onPageChangeListener!=null)
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        if (onPageChangeListener != null)
             mIndicator.setOnPageChangeListener(onPageChangeListener);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        handler.removeCallbacksAndMessages(null);
     }
 }

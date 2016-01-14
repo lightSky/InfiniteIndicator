@@ -12,17 +12,17 @@ import cn.lightsky.infiniteindicator.R;
  *
  * just extend BaseSliderView, and implement getView() method.
  */
-public class DefaultSliderView extends BaseSliderView{
+public class SimpleSliderView extends SliderView {
 
-    public DefaultSliderView(Context context) {
+    public SimpleSliderView(Context context) {
         super(context);
     }
 
     @Override
     public View getView() {
-        View v = LayoutInflater.from(getContext()).inflate(R.layout.render_type_default,null);
+        View v = LayoutInflater.from(getContext()).inflate(R.layout.simple_slider_view,null);
         ImageView target = (ImageView)v.findViewById(R.id.slider_image);
-        bindEventAndShow(v, target);
+        bingView(v, target);
         return v;
     }
 }
