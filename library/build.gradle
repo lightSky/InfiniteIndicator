@@ -2,18 +2,18 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.3"
+version = "1.0.4"
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 23
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         resourcePrefix "lightsky"
         minSdkVersion 8
-        targetSdkVersion 20
-        versionCode 4
-        versionName "1.0.3"
+        targetSdkVersion 23
+        versionCode 5
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -25,10 +25,15 @@ android {
 
 dependencies {
     compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.nineoldandroids:library:2.4.+'
-    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:support-v4:23.1.1'
 }
 
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
 
 
 //------------------------------------------------------------------------------------------
