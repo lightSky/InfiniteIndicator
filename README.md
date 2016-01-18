@@ -32,7 +32,7 @@ You can custome different anim or slideview for indicator.
 ## Including In Your Project  
 Just add the following statement in your build.gradle  
 
-`compile 'cn.lightsky.infiniteindicator:library:1.0.3'`
+`compile 'cn.lightsky.infiniteindicator:library:1.0.5'`
 
 ## Usage
 - include this library, use
