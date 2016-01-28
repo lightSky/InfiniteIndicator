@@ -21,13 +21,15 @@ import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.slideview.PageView;
+import cn.lightsky.infiniteindicator.slideview.SimpleSliderView;
+import cn.lightsky.infiniteindicator.slideview.SliderView;
 
 
 /**
  * Created by lightSky on 2014/12/22.
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
-public class InfiniteIndicatorLayout extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
     private final ScrollHandler handler;
     private PageIndicator mIndicator;
     private ViewPager mViewPager;
@@ -122,7 +124,12 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
 
     public void addSliders(List<PageView> pageViews) {
         if (pageViews != null && !pageViews.isEmpty())
-            mRecyleAdapter.addSliders(pageViews);
+            mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
+    }
+
+    public void addSliders(List<PageView> pageViews,T type) {
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.addSliders(pageViews,type);
     }
 
     public void refreshSliders(List<PageView> pageViews) {

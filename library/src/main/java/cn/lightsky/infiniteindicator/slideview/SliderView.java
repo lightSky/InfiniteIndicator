@@ -26,7 +26,7 @@ public abstract class SliderView {
 
     private Bundle mBundle;
 
-//    public PageView pageView;
+    public PageView pageView;
 
     /**
      * image will be displayed in targetImageView if some error occurs during.

@@ -12,9 +12,8 @@ import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
 import cn.lightsky.infiniteindicator.slideview.SliderView;
 import cn.lightsky.infiniteindicator.slideview.PageView;
 
-
-public class AddSlidersActivity extends FragmentActivity implements SliderView.OnSliderClickListener{
-    private  ArrayList<PageView> pageViews;
+public class AddSlidersActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
+    private ArrayList<PageView> pageViews;
     private InfiniteIndicatorLayout mAnimCircleIndicator;
     private List refreshPageViews = new ArrayList();
 
@@ -27,7 +26,7 @@ public class AddSlidersActivity extends FragmentActivity implements SliderView.O
     }
 
     private void addSlidersTest() {
-        mAnimCircleIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator = (InfiniteIndicatorLayout) findViewById(R.id.infinite_anim_circle);
         pageViews = new ArrayList<PageView>();
         pageViews.add(new PageView("Page A", R.drawable.a));
         pageViews.add(new PageView("Page B", R.drawable.b));
@@ -56,6 +55,6 @@ public class AddSlidersActivity extends FragmentActivity implements SliderView.O
 
     @Override
     public void onSliderClick(SliderView slider) {
-        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
 }

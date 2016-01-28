@@ -14,16 +14,17 @@ import java.util.List;
 
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.slideview.PageView;
-import cn.lightsky.infiniteindicator.slideview.SimpleSliderView;
 import cn.lightsky.infiniteindicator.slideview.SliderView;
 
-public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.BitmapLoadCallBack {
+public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter implements SliderView.BitmapLoadCallBack {
 
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<SliderView> mSliderViews;
     private DataChangeListener mDataChangeListener;
     private boolean isLoop = true;
+    private List<PageView> mPageViews = new ArrayList<>();
+    private T mType;
 
     public RecyleAdapter(Context context) {
         mContext = context;
@@ -78,56 +79,51 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.B
         notifyDataSetChanged();
     }
 
-    //    public void refreshSliders(List<Object> urls) {
-//        Log.i("Test", "before   mSliderViews   size = " + mSliderViews.size());
-//        Log.i("Test", "urls  size = " + urls.size());
-//        Log.i("Test", " gap size = " + (mSliderViews.size() - urls.size()));
-//
-//        int sliderSize = mSliderViews.size();
-//        if (mSliderViews.size() > urls.size()) {
-//            for (int i = sliderSize - 1 ; i >= urls.size()  ; i--) {
-//                removeSliderAt(i);
-//            }
-//
-//        } else if(mSliderViews.size() < urls.size()){
-//            ArrayList<PageView> newSliders = new ArrayList<>();
-//            for (int i = 0; i < urls.size() - sliderSize; i++) {
-//                PageView pageView = new PageView();
-//                pageView.scaleType = templePageView.scaleType;
-//                pageView.onSliderClickListener = templePageView.onSliderClickListener;
-//
-//                Object url = urls.get(i);
-//                if (url instanceof String)
-//                    pageView.url = (String)url;
-//                else if (url instanceof Integer)
-//                    pageView.drawableRes = (Integer)url;
-//                else if (url instanceof File)
-//                    pageView.file = (File)url;
-//                else
-//                    continue;
-//
-//                newSliders.add(pageView);
-////                addSlider(pageView);
-//            }
-//            addSliders(newSliders);
-//        }
-//
-//        Log.i("Test", "after mSliderViews   size = " + mSliderViews.size());
-//
-//        for (int index = 0; index < mSliderViews.size(); index++) {
-//            mSliderViews.get(index).refreshView(urls.get(index));
-//        }
 
-    private List<PageView> mPageViews = new ArrayList<>();
-
-    public <T extends SliderView> void addSliders(List<PageView> pageViews,Class sliderType) {
+    /**
+     * Add sliders by given type
+     *
+     * @param pageViews
+     * @param sliderType
+     */
+    public  void addSliders(List<PageView> pageViews,T sliderType) {
+        mType = (T) sliderType;
 
         for (PageView pageView : pageViews) {
-            SimpleSliderView slideView = new SimpleSliderView(mContext);
-            try {
-                Constructor constructor = sliderType.getConstructor(Context.class);
-                SimpleSliderView str2 = (SimpleSliderView) constructor.newInstance(mContext);
 
+            try {
+                Constructor constructor = sliderType.getClass().getConstructor(Context.class);
+                T slideView = (T) constructor.newInstance(mContext);
+
+                slideView.setOnImageLoadListener(this);
+
+                if (!TextUtils.isEmpty(pageView.url))
+                    slideView.image(pageView.url);
+                else if (pageView.drawableRes != 0)
+                    slideView.image(pageView.drawableRes);
+                else if (pageView.file != null)
+                    slideView.image(pageView.file);
+                else
+                    continue;
+
+                if (pageView.scaleType != null)
+                    slideView.setScaleType(pageView.scaleType);
+
+                if (pageView.onSliderClickListener != null)
+                    slideView.setOnSliderClickListener(pageView.onSliderClickListener);
+
+                if (pageView.data != null)
+                    slideView.getBundle()
+                            .putString("extra", pageView.data);
+
+                if (pageView.imageResForError != 0)
+                    slideView.showImageResForError(pageView.imageResForError);
+
+                if (pageView.imageResForEmpty != 0)
+                    slideView.showImageResForEmpty(pageView.imageResForEmpty);
+
+                slideView.pageView = pageView;
+                addSlider(slideView);
 
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
@@ -138,41 +134,18 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.B
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            //在调用方法的时候也需要传递同样类型的对象
-
-            slideView.setOnImageLoadListener(this);
-
-            if (!TextUtils.isEmpty(pageView.url))
-                slideView.image(pageView.url);
-            else if (pageView.drawableRes != 0)
-                slideView.image(pageView.drawableRes);
-            else if (pageView.file != null)
-                slideView.image(pageView.file);
-            else
-                continue;
-
-            if (pageView.scaleType != null)
-                slideView.setScaleType(pageView.scaleType);
-
-            if (pageView.onSliderClickListener != null)
-                slideView.setOnSliderClickListener(pageView.onSliderClickListener);
-
-            if (pageView.data != null)
-                slideView.getBundle()
-                        .putString("extra", pageView.data);
-
-            if (pageView.imageResForError != 0)
-                slideView.showImageResForError(pageView.imageResForError);
-
-            if (pageView.imageResForEmpty != 0)
-                slideView.showImageResForEmpty(pageView.imageResForEmpty);
-
-            addSlider(slideView);
         }
 
     }
 
 
+    /**
+     * refresh current sliders
+     * if new pageviews is less than before,remove unavailable sliders
+     * else if there is more refresh data,add new sliders
+     *
+     * @param newPageViews
+     */
     public void refreshSliders(List<PageView> newPageViews) {
         Log.i("Test", "before   mSliderViews   size = " + mSliderViews.size());
         Log.i("Test", "urls  size = " + newPageViews.size());
@@ -186,7 +159,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.B
 
         } else if (dirtySliderSize < newPageViews.size()) {
             ArrayList<PageView> newSliders = new ArrayList<>();
-
             for (int index = 0; index < newPageViews.size(); index++) {
                 if (index < dirtySliderSize) {
                     PageView oldPageView = mSliderViews.get(index).pageView;
@@ -196,12 +168,12 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.B
                 }
 
             }
-            addSliders(newSliders);
+            addSliders(newSliders,mType);
         }
 
         Log.i("Test", "after mSliderViews   size = " + mSliderViews.size());
 
-        for (int index = 0; index < newPageViews.size(); index++) {
+        for (int index = 0; index < newPageViews.size(); index++) {//refresh
             PageView pageView = newPageViews.get(index);
             Object data = null;
             if (pageView.url != null) {
@@ -216,8 +188,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements SliderView.B
             mSliderViews.get(index).refreshView(data);
         }
     }
-
-//    }
 
     @Override
     public void onLoadStart(SliderView target) {

@@ -7,18 +7,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name">
 
-        <!--<activity
-            android:name="cn.lightsky.infiniteindicator.AnimIndicatorActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
-
         <activity
-            android:name="test.UpdateSlidersActivity"
+            android:name="cn.lightsky.infiniteindicator.AnimIndicatorActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +17,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="test.UpdateSlidersActivity"
+            android:label="@string/app_name" >
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name="cn.lightsky.infiniteindicator.DefaultCircleIndicatorActivity"></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name="cn.lightsky.infiniteindicator.DefaultCircleIndicatorActivity"/>
+
+        <activity android:name="test.AddSlidersActivity"/>
     </application>
 
 </manifest>
