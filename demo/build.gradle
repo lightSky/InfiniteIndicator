@@ -25,5 +25,6 @@ android {
 }
 
 dependencies {
-    compile project(':library')
+//    compile project(':library')
+    compile 'cn.lightsky.infiniteindicator:library:1.0.5'
 }
