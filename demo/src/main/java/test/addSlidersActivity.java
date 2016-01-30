@@ -13,7 +13,7 @@ import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.slideview.PageView;
 import cn.lightsky.infiniteindicator.slideview.SliderView;
 
-public class addSlidersActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
+public class AddSlidersActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
     private ArrayList<PageView> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
     private List refreshPageViews = new ArrayList();
