@@ -3,6 +3,7 @@ package cn.lightsky.infiniteindicator.slideview;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import cn.lightsky.infiniteindicator.loader.ImageLoader;
@@ -62,7 +63,7 @@ public abstract class SliderView {
      * @param view               the whole view
      * @param targetView where to place image
      */
-    protected void bingView(final View view, ImageView targetView) {
+    public void bindView(final View view, ImageView targetView) {
         this.viewHolder = view;
         this.targetView = targetView;
 
@@ -97,7 +98,7 @@ public abstract class SliderView {
      *
      * @return
      */
-    public abstract View getView();
+    public abstract View getView(int position, View view, ViewGroup container);
 
     /**
      * set a listener to get a message , if load error.

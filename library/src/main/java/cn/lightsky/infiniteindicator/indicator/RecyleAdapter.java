@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.lightsky.infiniteindicator.R;
 import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.slideview.PageView;
@@ -55,7 +57,26 @@ public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter i
 
     @Override
     public View getView(final int position, View convertView, ViewGroup container) {
-        return (mSliderViews.get(getPosition(position))).getView();
+        ViewHolder holder;
+
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.simple_slider_view, null);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        }
+
+        mSliderViews.get(position).bindView(convertView, holder.target);
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        final ImageView target;
+
+        public ViewHolder(View view) {
+            target = (ImageView) view.findViewById(R.id.slider_image);
+        }
     }
 
     public  <T extends SliderView> void addSlider(T slider) {
