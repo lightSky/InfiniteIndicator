@@ -15,7 +15,7 @@ import cn.lightsky.infiniteindicator.slideview.PageView;
 
 
 public class AnimIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener{
-    private  ArrayList<PageView> pageViews;
+    private ArrayList<PageView> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
     private InfiniteIndicator mAnimLineIndicator;
 
@@ -31,10 +31,15 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
 
     private void initData() {
         pageViews = new ArrayList<>();
-        pageViews.add(new PageView("Page A", R.drawable.a,this));
-        pageViews.add(new PageView("Page B", R.drawable.b,this));
-        pageViews.add(new PageView("Page C", R.drawable.c,this));
-        pageViews.add(new PageView("Page D", R.drawable.d,this));
+        pageViews.add(new PageView("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
+        pageViews.add(new PageView("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
+        pageViews.add(new PageView("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
+        pageViews.add(new PageView("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
+        
+//        pageViews.add(new PageView("Page A", R.drawable.a,this));
+//        pageViews.add(new PageView("Page B", R.drawable.b,this));
+//        pageViews.add(new PageView("Page C", R.drawable.c,this));
+//        pageViews.add(new PageView("Page D", R.drawable.d,this));
     }
 
     //To avoid memory leak ,you should release the res
@@ -74,7 +79,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
 
     private void testAnimCircleIndicator() {
         mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
+        mAnimCircleIndicator.setImageLoader(new UILLoader());
         mAnimCircleIndicator.addSliders(pageViews);
         mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
     }

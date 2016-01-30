@@ -27,5 +27,6 @@ android {
 dependencies {
 //    compile 'cn.lightsky.infiniteindicator:library:1.0.5'
     compile project(':library')
+    compile files('libs/universal-image-loader-1.9.5.jar')
     compile 'com.squareup.picasso:picasso:2.4.0'
 }

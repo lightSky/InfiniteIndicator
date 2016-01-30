@@ -15,17 +15,17 @@ import cn.lightsky.infiniteindicator.loader.ImageLoader;
 
 public class PicassoLoader extends ImageLoader {
 
-    public PicassoLoader getImageLoader() {
+    public PicassoLoader getImageLoader(Context context) {
         return new PicassoLoader();
     }
 
-    public void load(Context context, ImageView targetView, Object res) {
-
+    @Override
+    public void load(ImageView targetView, Object res) {
         if (res == null) {
             return;
         }
 
-        Picasso picasso = Picasso.with(context);
+        Picasso picasso = Picasso.with(mContext);
         RequestCreator requestCreator = null;
 
         if (res instanceof String) {
@@ -38,8 +38,9 @@ public class PicassoLoader extends ImageLoader {
 
         requestCreator
                 .fit()
-                .tag(context)
+                .tag(mContext)
                 .into(targetView);
 
     }
+
 }

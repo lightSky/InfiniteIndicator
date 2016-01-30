@@ -26,7 +26,6 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_circle_indicator);
 
-
         mPageViews = new ArrayList<PageView>();
         mPageViews.add(new PageView("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
         mPageViews.add(new PageView("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
@@ -53,7 +52,7 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
 
     private void testCircleIndicator() {
         mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
-        mDefaultIndicator.setImageLoader(new PicassoLoader());
+        mDefaultIndicator.setImageLoader(new UILLoader());
         mDefaultIndicator.addSliders(mPageViews);
         mDefaultIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
         mDefaultIndicator.setOnPageChangeListener(this);

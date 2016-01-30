@@ -79,8 +79,7 @@ public abstract class SliderView {
             return;
 
         mBitmapLoadListener.onLoadStart(SliderView.this);
-
-        imageLoader.instance().load(mContext,this.targetView, res);
+        imageLoader.instance(mContext).load(this.targetView, res);
     }
 
     public void refreshView(Object res) {
@@ -89,7 +88,7 @@ public abstract class SliderView {
         if (this.viewHolder == null || this.targetView == null)
             return;
 
-        imageLoader.instance().load(mContext,this.targetView, this.res);
+        imageLoader.instance(mContext).load(this.targetView, this.res);
     }
 
     /**

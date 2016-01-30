@@ -10,11 +10,14 @@ public abstract class ImageLoader {
 
     private static ImageLoader singleton;
 
-    public ImageLoader instance() {
+    protected Context mContext;
+
+    public ImageLoader instance(Context context) {
         if (singleton == null) {
             synchronized (ImageLoader.class) {
                 if (singleton == null) {
-                    singleton = getImageLoader();
+                    this.mContext = context;
+                    singleton = getImageLoader(context);
                 }
             }
         }
@@ -24,10 +27,12 @@ public abstract class ImageLoader {
         return singleton;
     }
 
-    public ImageLoader getImageLoader(){
+    public ImageLoader getImageLoader(Context context){
         return null;
     };
 
-    public void load(Context context, ImageView targetView, Object mData){};
+    protected void initLoader(Context context){};
+
+    public abstract void load(ImageView targetView, Object res);
 
 }
