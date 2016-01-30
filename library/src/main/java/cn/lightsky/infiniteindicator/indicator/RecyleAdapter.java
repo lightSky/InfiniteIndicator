@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.slideview.PageView;
 import cn.lightsky.infiniteindicator.slideview.SliderView;
@@ -22,6 +23,7 @@ public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter i
     private LayoutInflater mInflater;
     private ArrayList<SliderView> mSliderViews;
     private DataChangeListener mDataChangeListener;
+    public ImageLoader imageLoader;
     private boolean isLoop = true;
     private List<PageView> mPageViews = new ArrayList<>();
     private T mType;
@@ -106,9 +108,6 @@ public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter i
                 else
                     continue;
 
-                if (pageView.scaleType != null)
-                    slideView.setScaleType(pageView.scaleType);
-
                 if (pageView.onSliderClickListener != null)
                     slideView.setOnSliderClickListener(pageView.onSliderClickListener);
 
@@ -116,12 +115,7 @@ public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter i
                     slideView.getBundle()
                             .putString("extra", pageView.data);
 
-                if (pageView.imageResForError != 0)
-                    slideView.showImageResForError(pageView.imageResForError);
-
-                if (pageView.imageResForEmpty != 0)
-                    slideView.showImageResForEmpty(pageView.imageResForEmpty);
-
+                slideView.imageLoader = imageLoader;
                 slideView.pageView = pageView;
                 addSlider(slideView);
 
@@ -199,11 +193,6 @@ public class RecyleAdapter<T extends SliderView> extends RecyclingPagerAdapter i
 
     @Override
     public void onLoadFail(SliderView target) {
-
-        if (target.isShowErrorView()) {
-            return;
-        }
-
         for (SliderView slider : mSliderViews) {
             if (slider.equals(target)) {
                 removeSlider(target);

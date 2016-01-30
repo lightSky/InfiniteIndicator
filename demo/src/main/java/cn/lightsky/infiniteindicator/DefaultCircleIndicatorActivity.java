@@ -16,16 +16,16 @@ import cn.lightsky.infiniteindicator.slideview.SliderView;
 import cn.lightsky.infiniteindicator.slideview.PageView;
 
 public class DefaultCircleIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
-    private InfiniteIndicatorLayout mCustoemIndicatorLayout;
+    private InfiniteIndicator mCustoemIndicatorLayout;
     private ArrayList<PageView> mPageViews;
-    private InfiniteIndicatorLayout mDefaultIndicator;
-    //    private HashMap<String,String> mUrlMaps;
+    private InfiniteIndicator mDefaultIndicator;
     private ArrayList rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_circle_indicator);
+
 
         mPageViews = new ArrayList<PageView>();
         mPageViews.add(new PageView("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
@@ -52,9 +52,10 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
     }
 
     private void testCircleIndicator() {
-        mDefaultIndicator = (InfiniteIndicatorLayout) findViewById(R.id.indicator_default_circle);
+        mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
+        mDefaultIndicator.setImageLoader(new PicassoLoader());
         mDefaultIndicator.addSliders(mPageViews);
-        mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mDefaultIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
         mDefaultIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -74,9 +75,11 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
     }
 
     private void testCustomeCircleIndicator() {
-        mCustoemIndicatorLayout = (InfiniteIndicatorLayout) findViewById(R.id.indicator_custome_circle);
+        mCustoemIndicatorLayout = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
+        mCustoemIndicatorLayout.setImageLoader(new PicassoLoader());
         mCustoemIndicatorLayout.addSliders(mPageViews);
-        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+
         CircleIndicator circleIndicator = ((CircleIndicator) mCustoemIndicatorLayout.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;
         circleIndicator.setBackgroundColor(0xFFCCCCCC);

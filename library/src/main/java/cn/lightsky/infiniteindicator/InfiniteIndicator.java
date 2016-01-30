@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
@@ -29,7 +30,7 @@ import cn.lightsky.infiniteindicator.slideview.SliderView;
  * Created by lightSky on 2014/12/22.
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
-public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+public class InfiniteIndicator<T extends SliderView> extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
     private final ScrollHandler handler;
     private PageIndicator mIndicator;
     private ViewPager mViewPager;
@@ -80,7 +81,7 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
     /**
      * Custome Scroller for
      */
-    private CustomDurationScroller scroller = null;
+    private DurationScroller scroller = null;
 
     /**
      * Indicator Style Type,default is Circle with no Anim
@@ -91,20 +92,20 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
         AnimLine;
     }
 
-    public InfiniteIndicatorLayout(Context context) {
+    public InfiniteIndicator(Context context) {
         this(context, null);
     }
 
-    public InfiniteIndicatorLayout(Context context, AttributeSet attrs) {
+    public InfiniteIndicator(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public InfiniteIndicatorLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public InfiniteIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
 
-        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicatorLayout, 0, 0);
-        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type, IndicatorType.Default.ordinal());
+        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicator, 0, 0);
+        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicator_indicator_type, IndicatorType.Default.ordinal());
 
         if (indicatorType == 0)
             LayoutInflater.from(context).inflate(R.layout.layout_default_indicator, this, true);
@@ -119,10 +120,16 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
         setViewPagerScroller();
+    }
 
+    public void setImageLoader(ImageLoader imageLoader){
+        mRecyleAdapter.imageLoader = imageLoader;
     }
 
     public void addSliders(List<PageView> pageViews) {
+        if (mRecyleAdapter.imageLoader == null)
+            throw new RuntimeException("You should set ImageLoader first");
+
         if (pageViews != null && !pageViews.isEmpty())
             mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
     }
@@ -224,7 +231,7 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
             Field interpolatorField = ViewPager.class.getDeclaredField("sInterpolator");
             interpolatorField.setAccessible(true);
 
-            scroller = new CustomDurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
+            scroller = new DurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
             scrollerField.set(mViewPager, scroller);
         } catch (Exception e) {
             e.printStackTrace();
@@ -305,17 +312,17 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
     }
 
     public static class ScrollHandler extends Handler {
-        public WeakReference<InfiniteIndicatorLayout> mLeakActivityRef;
+        public WeakReference<InfiniteIndicator> mLeakActivityRef;
 
-        public ScrollHandler(InfiniteIndicatorLayout infiniteIndicatorLayout) {
-            mLeakActivityRef = new WeakReference<InfiniteIndicatorLayout>(infiniteIndicatorLayout);
+        public ScrollHandler(InfiniteIndicator infiniteIndicatorLayout) {
+            mLeakActivityRef = new WeakReference<InfiniteIndicator>(infiniteIndicatorLayout);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            InfiniteIndicatorLayout infiniteIndicatorLayout = mLeakActivityRef.get();
+            InfiniteIndicator infiniteIndicatorLayout = mLeakActivityRef.get();
             if (infiniteIndicatorLayout != null) {
                 switch (msg.what) {
                     case MSG_WHAT:
@@ -466,7 +473,6 @@ public class InfiniteIndicatorLayout<T extends SliderView> extends RelativeLayou
         initFirstPage();
         mIndicator = indicator;
         mIndicator.setViewPager(mViewPager);
-//        startAutoScroll();
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {

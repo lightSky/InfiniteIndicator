@@ -16,8 +16,8 @@ import cn.lightsky.infiniteindicator.slideview.PageView;
 
 public class AnimIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener{
     private  ArrayList<PageView> pageViews;
-    private InfiniteIndicatorLayout mAnimCircleIndicator;
-    private InfiniteIndicatorLayout mAnimLineIndicator;
+    private InfiniteIndicator mAnimCircleIndicator;
+    private InfiniteIndicator mAnimLineIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +66,18 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
     }
 
     private void testAnimCircleIndicator() {
-        mAnimCircleIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
         mAnimCircleIndicator.addSliders(pageViews);
-        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
+        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
     }
 
     private void testAnimLineIndicator() {
-        mAnimLineIndicator = (InfiniteIndicatorLayout)findViewById(R.id.infinite_anim_line);
+        mAnimLineIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_line);
+        mAnimLineIndicator.setImageLoader(new PicassoLoader());
         mAnimLineIndicator.addSliders(pageViews);
         mAnimLineIndicator.removeAllSliders();
-        mAnimLineIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center);
+        mAnimLineIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
     }
 
     @Override

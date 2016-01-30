@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
-import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
-import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.InfiniteIndicator;
+import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.slideview.PageView;
+import cn.lightsky.infiniteindicator.slideview.SliderView;
 
 
 public class UpdateSlidersActivity extends FragmentActivity {
-    private InfiniteIndicatorLayout mAnimCircleIndicator;
+    private InfiniteIndicator mAnimCircleIndicator;
 
     private List refreshPageViews = new ArrayList();
     private ArrayList<PageView> pageViews = new ArrayList<>();
@@ -30,7 +31,7 @@ public class UpdateSlidersActivity extends FragmentActivity {
     private List<Integer> updateUrls = new ArrayList<>();
 
     private void updateTest() {
-        mAnimCircleIndicator = (InfiniteIndicatorLayout) findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
 
         final PageView a = new PageView("update same size list", R.drawable.a);
         final PageView b = new PageView("update smaller size list", R.drawable.b);
@@ -119,6 +120,7 @@ public class UpdateSlidersActivity extends FragmentActivity {
         pageViews.add(c);
         pageViews.add(d);
 
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
         mAnimCircleIndicator.addSliders(pageViews);
     }
 

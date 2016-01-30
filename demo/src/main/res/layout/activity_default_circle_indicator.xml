@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
+    <cn.lightsky.infiniteindicator.InfiniteIndicator
         android:id="@+id/indicator_default_circle"
         android:layout_width="match_parent"
         app:indicator_type="indicator_default"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
+    <cn.lightsky.infiniteindicator.InfiniteIndicator
         android:id="@+id/indicator_custome_circle"
         android:layout_width="match_parent"
         app:indicator_type="indicator_default"
