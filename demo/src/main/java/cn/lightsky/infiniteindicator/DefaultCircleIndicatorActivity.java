@@ -15,8 +15,8 @@ import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
 import cn.lightsky.infiniteindicator.slideview.SliderView;
 import cn.lightsky.infiniteindicator.slideview.PageView;
 
-public class DefaultCircleIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
-    private InfiniteIndicator mCustoemIndicatorLayout;
+public class DefaultCircleIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener ,ViewPager.OnPageChangeListener{
+    private InfiniteIndicator mCustoemCircleIndicator;
     private ArrayList<PageView> mPageViews;
     private InfiniteIndicator mDefaultIndicator;
     private ArrayList rules;
@@ -41,14 +41,14 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
     protected void onPause() {
         super.onPause();
         mDefaultIndicator.stop();
-        mCustoemIndicatorLayout.stop();
+        mCustoemCircleIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mDefaultIndicator.start();
-        mCustoemIndicatorLayout.start();
+        mCustoemCircleIndicator.start();
     }
 
     private void testCircleIndicator() {
@@ -56,31 +56,16 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
         mDefaultIndicator.setImageLoader(new PicassoLoader());
         mDefaultIndicator.addSliders(mPageViews);
         mDefaultIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
-        mDefaultIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.i("TAG", "onPage Scrolled .......");
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.i("TAG", "onPage onPageSelected .......");
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.i("TAG", "onPage onPageScrollStateChanged .......");
-            }
-        });
+        mDefaultIndicator.setOnPageChangeListener(this);
     }
 
     private void testCustomeCircleIndicator() {
-        mCustoemIndicatorLayout = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
-        mCustoemIndicatorLayout.setImageLoader(new PicassoLoader());
-        mCustoemIndicatorLayout.addSliders(mPageViews);
-        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+        mCustoemCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
+        mCustoemCircleIndicator.setImageLoader(new PicassoLoader());
+        mCustoemCircleIndicator.addSliders(mPageViews);
+        mCustoemCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
 
-        CircleIndicator circleIndicator = ((CircleIndicator) mCustoemIndicatorLayout.getPagerIndicator());
+        CircleIndicator circleIndicator = ((CircleIndicator) mCustoemCircleIndicator.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;
         circleIndicator.setBackgroundColor(0xFFCCCCCC);
         circleIndicator.setRadius(5 * density);
@@ -106,4 +91,14 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
     public void onSliderClick(SliderView slider) {
         Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
+
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {}
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }

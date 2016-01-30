@@ -29,13 +29,11 @@ indicator_type:the style enum of Indicator
 
 You can custome different anim or slideview for indicator.
 
-## Including In Your Project  
-Just add the following statement in your build.gradle  
+## Including In Your Project
 
 `compile 'cn.lightsky.infiniteindicator:library:1.0.5'`
 
 ## Usage
-- include this library, use
 
 ``` xml
    <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
@@ -47,48 +45,65 @@ Just add the following statement in your build.gradle
 ```
 
 ```java
-public class MainActivity extends Activity {
-    private InfiniteIndicatorLayout mDefaultIndicator;
+public class AnimIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener,ViewPager.OnPageChangeListener{
+    private  ArrayList<PageView> pageViews;
+    private InfiniteIndicator mAnimCircleIndicator;
+    private InfiniteIndicator mAnimLineIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.indicator_default_circle);
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps = new HashMap<String, String>();
-        url_maps.put("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
-        url_maps.put("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
-        url_maps.put("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
-        url_maps.put("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
+        setContentView(R.layout.activity_anim_indicator);
 
-        for(String name : url_maps.keySet()){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .showImageResForEmpty(R.drawable.img_default)
-                    .showImageResForError(R.drawable.img_error)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra",name);
-            mDefaultIndicator.addSlider(textSliderView);
-        }
-        mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-        mDefaultIndicator.startAutoScroll();
+        initData();
+        mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
+        mAnimCircleIndicator.addSliders(pageViews);
+        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
+        mDefaultIndicator.setOnPageChangeListener(this);
     }
 
-        @Override
-        protected void onPause() {
-            super.onPause();
-            mDefaultIndicator.stopAutoScroll();
-        }
+    private void initData() {
+        pageViews = new ArrayList<>();
+        pageViews.add(new PageView("Page A", R.drawable.a,this));
+        pageViews.add(new PageView("Page B", R.drawable.b,this));
+        pageViews.add(new PageView("Page C", R.drawable.c,this));
+        pageViews.add(new PageView("Page D", R.drawable.d,this));
+    }
 
-        @Override
-        protected void onResume() {
-            super.onResume();
-            mDefaultIndicator.startAutoScroll();
-        }
+    //In case memory leak ,you should release the res
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAnimCircleIndicator.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAnimCircleIndicator.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAnimCircleIndicator.release();
+        super.onDestroy();
+    }
+    @Override
+    public void onSliderClick(SliderView slider) {
+        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {}
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }
+
 
 ```
 

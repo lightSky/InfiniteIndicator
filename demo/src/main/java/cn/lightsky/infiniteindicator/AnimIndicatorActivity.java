@@ -31,10 +31,10 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
 
     private void initData() {
         pageViews = new ArrayList<>();
-        pageViews.add(new PageView("Page A", R.drawable.a));
-        pageViews.add(new PageView("Page B", R.drawable.b));
-        pageViews.add(new PageView("Page C", R.drawable.c));
-        pageViews.add(new PageView("Page D", R.drawable.d));
+        pageViews.add(new PageView("Page A", R.drawable.a,this));
+        pageViews.add(new PageView("Page B", R.drawable.b,this));
+        pageViews.add(new PageView("Page C", R.drawable.c,this));
+        pageViews.add(new PageView("Page D", R.drawable.d,this));
     }
 
     //To avoid memory leak ,you should release the res
@@ -50,6 +50,13 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
         super.onResume();
         mAnimCircleIndicator.start();
         mAnimLineIndicator.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAnimCircleIndicator.release();
+        mAnimLineIndicator.release();
+        super.onDestroy();
     }
 
     @Override
@@ -76,7 +83,6 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
         mAnimLineIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_line);
         mAnimLineIndicator.setImageLoader(new PicassoLoader());
         mAnimLineIndicator.addSliders(pageViews);
-        mAnimLineIndicator.removeAllSliders();
         mAnimLineIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
     }
 

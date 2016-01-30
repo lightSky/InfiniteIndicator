@@ -203,6 +203,11 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
         handler.removeMessages(MSG_WHAT);
     }
 
+    public void release() {
+        removeAllSliders();
+        handler.removeMessages(MSG_WHAT);
+    }
+
     /**
      * set the factor by which the duration of sliding animation will change
      */
