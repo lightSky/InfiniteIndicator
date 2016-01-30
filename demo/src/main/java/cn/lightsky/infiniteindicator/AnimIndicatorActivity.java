@@ -79,7 +79,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
 
     private void testAnimCircleIndicator() {
         mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
-        mAnimCircleIndicator.setImageLoader(new UILLoader());
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
         mAnimCircleIndicator.addSliders(pageViews);
         mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
     }

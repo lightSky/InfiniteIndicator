@@ -123,29 +123,26 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     }
 
     public void setImageLoader(ImageLoader imageLoader){
-        mRecyleAdapter.imageLoader = imageLoader;
+        mRecyleAdapter.mImageLoader = imageLoader;
     }
 
     public void addSliders(List<PageView> pageViews) {
-        if (mRecyleAdapter.imageLoader == null)
+        if (mRecyleAdapter.mImageLoader == null)
             throw new RuntimeException("You should set ImageLoader first");
 
-        if (pageViews != null && !pageViews.isEmpty())
-            mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
-    }
+        if (pageViews != null && !pageViews.isEmpty()){
+            mRecyleAdapter.mPageViews = pageViews;
+            mRecyleAdapter.notifyDataSetChanged();
+        }
 
-    public void addSliders(List<PageView> pageViews,T type) {
-        if (pageViews != null && !pageViews.isEmpty())
-            mRecyleAdapter.addSliders(pageViews,type);
+//            mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
     }
 
     public void refreshSliders(List<PageView> pageViews) {
         if (pageViews != null && !pageViews.isEmpty())
-            mRecyleAdapter.refreshSliders(pageViews);
-    }
+            addSliders(pageViews);
 
-    public void removeAllSliders() {
-        mRecyleAdapter.removeAllSliders();
+//            mRecyleAdapter.refreshSliders(pageViews);
     }
 
     @Override
@@ -204,7 +201,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     }
 
     public void release() {
-        removeAllSliders();
+//        removeAllSliders();
         handler.removeMessages(MSG_WHAT);
     }
 

@@ -80,16 +80,16 @@ public abstract class SliderView {
             return;
 
         mBitmapLoadListener.onLoadStart(SliderView.this);
-        imageLoader.instance(mContext).load(this.targetView, res);
+        imageLoader.instance(mContext).load(targetView, res);
     }
 
     public void refreshView(Object res) {
         this.res = res;
         //hasn't bindview just return,but refresh res
-        if (this.viewHolder == null || this.targetView == null)
+        if (viewHolder == null || targetView == null)
             return;
 
-        imageLoader.instance(mContext).load(this.targetView, this.res);
+        imageLoader.instance(mContext).load(targetView,res);
     }
 
     /**
