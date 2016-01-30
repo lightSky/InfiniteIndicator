@@ -41,15 +41,15 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
     @Override
     protected void onPause() {
         super.onPause();
-        mAnimCircleIndicator.stopAutoScroll();
-        mAnimLineIndicator.stopAutoScroll();
+        mAnimCircleIndicator.stop();
+        mAnimLineIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAnimCircleIndicator.startAutoScroll();
-        mAnimLineIndicator.startAutoScroll();
+        mAnimCircleIndicator.start();
+        mAnimLineIndicator.start();
     }
 
     @Override

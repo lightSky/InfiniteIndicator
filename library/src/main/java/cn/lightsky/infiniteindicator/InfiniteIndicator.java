@@ -151,12 +151,12 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        startAutoScroll();
+        start();
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        stopAutoScroll();
+        stop();
         super.onDetachedFromWindow();
 
     }
@@ -176,7 +176,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     /**
      * start auto scroll, first scroll delay time is {@link #getInterval()}
      */
-    public void startAutoScroll() {
+    public void start() {
         if (mRecyleAdapter.getRealCount() > 1) {
             isAutoScroll = true;
             sendScrollMessage(interval);
@@ -188,7 +188,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
      *
      * @param delayTimeInMills first scroll delay time
      */
-    public void startAutoScroll(int delayTimeInMills) {
+    public void start(int delayTimeInMills) {
         if (mRecyleAdapter.getRealCount() > 1) {
             isAutoScroll = true;
             sendScrollMessage(delayTimeInMills);
@@ -198,7 +198,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     /**
      * stop auto scroll
      */
-    public void stopAutoScroll() {
+    public void stop() {
         isAutoScroll = false;
         handler.removeMessages(MSG_WHAT);
     }
@@ -270,9 +270,9 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
         if (isStopScrollWhenTouch) {
             if ((action == MotionEvent.ACTION_DOWN) && isAutoScroll) {
                 isStopByTouch = true;
-                stopAutoScroll();
+                stop();
             } else if (ev.getAction() == MotionEvent.ACTION_UP && isStopByTouch) {
-                startAutoScroll();
+                start();
             }
         }
 

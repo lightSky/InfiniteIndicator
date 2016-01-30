@@ -40,15 +40,15 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
     @Override
     protected void onPause() {
         super.onPause();
-        mDefaultIndicator.stopAutoScroll();
-        mCustoemIndicatorLayout.stopAutoScroll();
+        mDefaultIndicator.stop();
+        mCustoemIndicatorLayout.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mDefaultIndicator.startAutoScroll();
-        mCustoemIndicatorLayout.startAutoScroll();
+        mDefaultIndicator.start();
+        mCustoemIndicatorLayout.start();
     }
 
     private void testCircleIndicator() {

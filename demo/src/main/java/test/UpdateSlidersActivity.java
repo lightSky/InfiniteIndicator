@@ -129,12 +129,12 @@ public class UpdateSlidersActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mAnimCircleIndicator.stopAutoScroll();
+        mAnimCircleIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAnimCircleIndicator.startAutoScroll();
+        mAnimCircleIndicator.start();
     }
 }

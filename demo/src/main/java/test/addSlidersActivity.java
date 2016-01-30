@@ -39,17 +39,17 @@ public class AddSlidersActivity extends FragmentActivity implements SliderView.O
     }
 
 
-    //To avoid memory leak ,you should release the res
+    //In case memory leak ,you should release the res
     @Override
     protected void onPause() {
         super.onPause();
-        mAnimCircleIndicator.stopAutoScroll();
+        mAnimCircleIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAnimCircleIndicator.startAutoScroll();
+        mAnimCircleIndicator.start();
     }
 
 

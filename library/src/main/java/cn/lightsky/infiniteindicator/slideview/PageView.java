@@ -10,7 +10,6 @@ public class PageView {
     public String url;
     public Integer drawableRes;
     public File file;
-
     public SliderView.OnSliderClickListener onSliderClickListener;
 
     public PageView(String data, Integer drawableRes) {

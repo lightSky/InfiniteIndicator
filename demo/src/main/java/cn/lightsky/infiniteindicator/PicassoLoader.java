@@ -29,7 +29,6 @@ public class PicassoLoader extends ImageLoader {
 
         Picasso picasso = Picasso.with(context);
         RequestCreator requestCreator = null;
-        requestCreator.centerCrop();
 
         if (res instanceof String) {
             requestCreator = picasso.load((String) res);
@@ -39,8 +38,7 @@ public class PicassoLoader extends ImageLoader {
             requestCreator = picasso.load((Integer) res);
         }
 
-        requestCreator.placeholder(context.getResources().getDrawable(R.drawable.placeholder))
-                .error(context.getResources().getDrawable(R.drawable.error))
+        requestCreator
                 .fit()
                 .tag(context)
                 .into(targetView);
