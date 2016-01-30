@@ -15,18 +15,22 @@ import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.List;
 
+import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.PageView;
+import cn.lightsky.infiniteindicator.slideview.SimpleSliderView;
+import cn.lightsky.infiniteindicator.slideview.SliderView;
 
 
 /**
  * Created by lightSky on 2014/12/22.
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
-public class InfiniteIndicatorLayout extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+public class InfiniteIndicator<T extends SliderView> extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
     private final ScrollHandler handler;
     private PageIndicator mIndicator;
     private ViewPager mViewPager;
@@ -69,11 +73,6 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
      * how to process when sliding at the last or first item, default is {@link #SLIDE_BORDER_MODE_NONE} *
      */
     private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
-    /**
-     * whether animating when auto scroll at the last or first item *
-     */
-//    private boolean isBorderAnimation = true;
-
     public static final int MSG_WHAT = 0;
     private boolean isAutoScroll = false;
     private boolean isStopByTouch = false;
@@ -82,35 +81,35 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * Custome Scroller for
      */
-    private CustomDurationScroller scroller = null;
+    private DurationScroller scroller = null;
 
     /**
      * Indicator Style Type,default is Circle with no Anim
      */
-    public enum IndicatorType{
+    public enum IndicatorType {
         Default,
         AnimCircle,
         AnimLine;
-    };
+    }
 
-    public InfiniteIndicatorLayout(Context context) {
+    public InfiniteIndicator(Context context) {
         this(context, null);
     }
 
-    public InfiniteIndicatorLayout(Context context, AttributeSet attrs) {
+    public InfiniteIndicator(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public InfiniteIndicatorLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public InfiniteIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
 
-        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicatorLayout,0,0);
-        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicatorLayout_indicator_type,IndicatorType.Default.ordinal());
+        final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicator, 0, 0);
+        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicator_indicator_type, IndicatorType.Default.ordinal());
 
-        if(indicatorType == 0)
+        if (indicatorType == 0)
             LayoutInflater.from(context).inflate(R.layout.layout_default_indicator, this, true);
-        else if(indicatorType == 1)
+        else if (indicatorType == 1)
             LayoutInflater.from(context).inflate(R.layout.layout_anim_circle_indicator, this, true);
         else
             LayoutInflater.from(context).inflate(R.layout.layout_anim_line_indicator, this, true);
@@ -121,11 +120,45 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
         setViewPagerScroller();
-
     }
 
-    public <T extends BaseSliderView> void addSlider(T imageContent) {
-        mRecyleAdapter.addSlider(imageContent);
+    public void setImageLoader(ImageLoader imageLoader){
+        mRecyleAdapter.imageLoader = imageLoader;
+    }
+
+    public void addSliders(List<PageView> pageViews) {
+        if (mRecyleAdapter.imageLoader == null)
+            throw new RuntimeException("You should set ImageLoader first");
+
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
+    }
+
+    public void addSliders(List<PageView> pageViews,T type) {
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.addSliders(pageViews,type);
+    }
+
+    public void refreshSliders(List<PageView> pageViews) {
+        if (pageViews != null && !pageViews.isEmpty())
+            mRecyleAdapter.refreshSliders(pageViews);
+    }
+
+    public void removeAllSliders() {
+        mRecyleAdapter.removeAllSliders();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        stop();
+        super.onDetachedFromWindow();
+
     }
 
     /**
@@ -143,7 +176,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * start auto scroll, first scroll delay time is {@link #getInterval()}
      */
-    public void startAutoScroll() {
+    public void start() {
         if (mRecyleAdapter.getRealCount() > 1) {
             isAutoScroll = true;
             sendScrollMessage(interval);
@@ -155,7 +188,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
      *
      * @param delayTimeInMills first scroll delay time
      */
-    public void startAutoScroll(int delayTimeInMills) {
+    public void start(int delayTimeInMills) {
         if (mRecyleAdapter.getRealCount() > 1) {
             isAutoScroll = true;
             sendScrollMessage(delayTimeInMills);
@@ -165,7 +198,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * stop auto scroll
      */
-    public void stopAutoScroll() {
+    public void stop() {
         isAutoScroll = false;
         handler.removeMessages(MSG_WHAT);
     }
@@ -198,7 +231,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             Field interpolatorField = ViewPager.class.getDeclaredField("sInterpolator");
             interpolatorField.setAccessible(true);
 
-            scroller = new CustomDurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
+            scroller = new DurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
             scrollerField.set(mViewPager, scroller);
         } catch (Exception e) {
             e.printStackTrace();
@@ -237,9 +270,9 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         if (isStopScrollWhenTouch) {
             if ((action == MotionEvent.ACTION_DOWN) && isAutoScroll) {
                 isStopByTouch = true;
-                stopAutoScroll();
+                stop();
             } else if (ev.getAction() == MotionEvent.ACTION_UP && isStopByTouch) {
-                startAutoScroll();
+                start();
             }
         }
 
@@ -278,19 +311,19 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
             mIndicator.notifyDataSetChanged();
     }
 
-    public static class ScrollHandler extends Handler{
-        public WeakReference<InfiniteIndicatorLayout> mLeakActivityRef;
+    public static class ScrollHandler extends Handler {
+        public WeakReference<InfiniteIndicator> mLeakActivityRef;
 
-        public ScrollHandler(InfiniteIndicatorLayout infiniteIndicatorLayout) {
-            mLeakActivityRef = new WeakReference<InfiniteIndicatorLayout>(infiniteIndicatorLayout);
+        public ScrollHandler(InfiniteIndicator infiniteIndicatorLayout) {
+            mLeakActivityRef = new WeakReference<InfiniteIndicator>(infiniteIndicatorLayout);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            InfiniteIndicatorLayout infiniteIndicatorLayout = mLeakActivityRef.get();
-            if(infiniteIndicatorLayout != null){
+            InfiniteIndicator infiniteIndicatorLayout = mLeakActivityRef.get();
+            if (infiniteIndicatorLayout != null) {
                 switch (msg.what) {
                     case MSG_WHAT:
                         infiniteIndicatorLayout.scrollOnce();
@@ -389,6 +422,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
     /**
      * set how to process when sliding at the last or first item
      * will be explore in future version
+     *
      * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
      *                        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
      */
@@ -426,7 +460,7 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         }
     }
 
-    public void setIndicatorPosition(){
+    public void setIndicatorPosition() {
         setIndicatorPosition(IndicatorPosition.Center_Bottom);
     }
 
@@ -439,17 +473,10 @@ public class InfiniteIndicatorLayout extends RelativeLayout implements Recycling
         initFirstPage();
         mIndicator = indicator;
         mIndicator.setViewPager(mViewPager);
-//        startAutoScroll();
     }
 
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener){
-        if(onPageChangeListener!=null)
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        if (onPageChangeListener != null)
             mIndicator.setOnPageChangeListener(onPageChangeListener);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        handler.removeCallbacksAndMessages(null);
     }
 }

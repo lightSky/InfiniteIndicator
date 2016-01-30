@@ -53,7 +53,7 @@
         <attr name="ci_drawable" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="InfiniteIndicatorLayout">
+    <declare-styleable name="InfiniteIndicator">
      <attr name="indicator_type" format="enum">
          <enum name="indicator_default" value="0"/>
          <enum name="indicator_anim_circle" value="1"/>

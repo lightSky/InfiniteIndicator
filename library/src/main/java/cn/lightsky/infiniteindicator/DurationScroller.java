@@ -9,15 +9,15 @@ import android.widget.Scroller;
  * 
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2014-3-2
  */
-public class CustomDurationScroller extends Scroller {
+public class DurationScroller extends Scroller {
 
     private double scrollFactor = 1;
 
-    public CustomDurationScroller(Context context) {
+    public DurationScroller(Context context) {
         super(context);
     }
 
-    public CustomDurationScroller(Context context, Interpolator interpolator) {
+    public DurationScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 

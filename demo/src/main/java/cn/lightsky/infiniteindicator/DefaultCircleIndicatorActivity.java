@@ -9,99 +9,78 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
-import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
+import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.slideview.PageView;
 
-public class DefaultCircleIndicatorActivity extends FragmentActivity  implements BaseSliderView.OnSliderClickListener{
-    private InfiniteIndicatorLayout mCustoemIndicatorLayout;
-    private  ArrayList<PageInfo> viewInfos;
-    private InfiniteIndicatorLayout mDefaultIndicator;
-    private HashMap<String,String> url_maps;
+public class DefaultCircleIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
+    private InfiniteIndicator mCustoemIndicatorLayout;
+    private ArrayList<PageView> mPageViews;
+    private InfiniteIndicator mDefaultIndicator;
+    private ArrayList rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_circle_indicator);
 
-        viewInfos = new ArrayList<PageInfo>();
-        viewInfos.add(new PageInfo("Page A", R.drawable.a));
-        viewInfos.add(new PageInfo("Page B", R.drawable.b));
-        viewInfos.add(new PageInfo("Page C", R.drawable.c));
-        viewInfos.add(new PageInfo("Page D", R.drawable.d));
 
-        url_maps = new HashMap<String, String>();
-        url_maps.put("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
-        url_maps.put("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
-        url_maps.put("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
-        url_maps.put("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
+        mPageViews = new ArrayList<PageView>();
+        mPageViews.add(new PageView("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
+        mPageViews.add(new PageView("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
+        mPageViews.add(new PageView("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
+        mPageViews.add(new PageView("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
 
         testCircleIndicator();
         testCustomeCircleIndicator();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        mDefaultIndicator.stopAutoScroll();
-        mCustoemIndicatorLayout.stopAutoScroll();
+        mDefaultIndicator.stop();
+        mCustoemIndicatorLayout.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mDefaultIndicator.startAutoScroll();
-        mCustoemIndicatorLayout.startAutoScroll();
+        mDefaultIndicator.start();
+        mCustoemIndicatorLayout.start();
     }
+
     private void testCircleIndicator() {
-        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.indicator_default_circle);
-        for(String name : url_maps.keySet()){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .showImageResForEmpty(R.drawable.ic_launcher)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra", name);
-            mDefaultIndicator.addSlider(textSliderView);
-        }
-        mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+        mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
+        mDefaultIndicator.setImageLoader(new PicassoLoader());
+        mDefaultIndicator.addSliders(mPageViews);
+        mDefaultIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
         mDefaultIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.i("TAG","onPage Scrolled .......");
+                Log.i("TAG", "onPage Scrolled .......");
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("TAG","onPage onPageSelected .......");
+                Log.i("TAG", "onPage onPageSelected .......");
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.i("TAG","onPage onPageScrollStateChanged .......");
+                Log.i("TAG", "onPage onPageScrollStateChanged .......");
             }
         });
     }
 
     private void testCustomeCircleIndicator() {
-        mCustoemIndicatorLayout = (InfiniteIndicatorLayout)findViewById(R.id.indicator_custome_circle);
-        for(String name : url_maps.keySet()){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .showImageResForError(R.drawable.ic_launcher)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra",name);
-            mCustoemIndicatorLayout.addSlider(textSliderView);
-        }
-        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-        CircleIndicator circleIndicator = ((CircleIndicator)mCustoemIndicatorLayout.getPagerIndicator());
+        mCustoemIndicatorLayout = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
+        mCustoemIndicatorLayout.setImageLoader(new PicassoLoader());
+        mCustoemIndicatorLayout.addSliders(mPageViews);
+        mCustoemIndicatorLayout.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+
+        CircleIndicator circleIndicator = ((CircleIndicator) mCustoemIndicatorLayout.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;
         circleIndicator.setBackgroundColor(0xFFCCCCCC);
         circleIndicator.setRadius(5 * density);
@@ -124,7 +103,7 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity  implements
     }
 
     @Override
-    public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+    public void onSliderClick(SliderView slider) {
+        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
 }
