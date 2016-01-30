@@ -1,6 +1,7 @@
 package cn.lightsky.infiniteindicator.ImageLoader;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -37,68 +38,20 @@ public class PiacassoLoader {
         }
 
         rq.into(targetView, new Callback() {
+            public static final String TAG = "Test";
+
             @Override
             public void onSuccess() {
+
+                Log.i(TAG, "onSuccess: ");
 
             }
 
             @Override
             public void onError() {
-
+                Log.i(TAG, "onSuccess: ");
             }
         });
 
     }
-
-//    protected void loadByPicasso(final View view, ImageView targetImageView,PageView pageview) {
-//        final BaseSliderView me = this;
-//        Picasso p = Picasso.with(mContext);
-//        RequestCreator rq = null;
-//
-//        if (mUrl != null) {
-//            rq = p.load(mUrl);
-//        } else if (mFile != null) {
-//            rq = p.load(mFile);
-//        } else if (mRes != 0) {
-//            rq = p.load(mRes);
-//        } else {
-//            return;
-//        }
-//
-//        if (rq == null) {
-//            return;
-//        }
-//
-//        switch (mScaleType) {
-//            case Fit:
-//                rq.fit();
-//                break;
-//            case CenterCrop:
-//                rq.fit().centerCrop();
-//                break;
-//            case CenterInside:
-//                rq.fit().centerInside();
-//                break;
-//        }
-//
-//        rq.into(targetImageView, new Callback() {
-//            @Override
-//            public void onSuccess() {
-//                if (view.findViewById(R.id.loading_bar) != null) {
-//                    view.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
-//                }
-//                if (mBitmapLoadListener != null) {
-//                    mBitmapLoadListener.onLoadComplete(me);
-//                }
-//            }
-//
-//            @Override
-//            public void onError() {
-//                if (mBitmapLoadListener != null) {
-//                    mBitmapLoadListener.onLoadFail(me);
-//                }
-//            }
-//        });
-
-//}
 }

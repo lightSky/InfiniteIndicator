@@ -203,15 +203,7 @@ public abstract class SliderView {
         if (view == null || targetImageView == null)
             throw new IllegalArgumentException("view or imageview is null");
 
-//         if (mData instanceof String) {
-//             PiacassoLoader.load(mContext,targetImageView,(String) mData);
-//        } else if (mData instanceof File){
-//             PiacassoLoader.load(mContext,targetImageView,(File) mData);
-//        } else if (mData instanceof Integer){
-//             PiacassoLoader.load(mContext,targetImageView,(Integer) mData);
-//        }else {
-//            return;
-//        }
+//        PiacassoLoader.load(mContext,targetImageView,mData);
 
         final SliderView me = this;
         Picasso p = Picasso.with(mContext);
