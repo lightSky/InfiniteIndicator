@@ -11,6 +11,8 @@ import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 
+import cn.lightsky.infiniteindicator.ImageLoader.ImageLoader;
+import cn.lightsky.infiniteindicator.ImageLoader.PiacassoLoader;
 import cn.lightsky.infiniteindicator.R;
 
 /**
@@ -185,7 +187,6 @@ public abstract class SliderView {
 
         mBitmapLoadListener.onLoadStart(SliderView.this);
 
-//     loadByImageLoader(v,targetImageView);
         loadByPicasso(v, targetImageView);
     }
 
@@ -202,30 +203,32 @@ public abstract class SliderView {
         if (view == null || targetImageView == null)
             throw new IllegalArgumentException("view or imageview is null");
 
+//         if (mData instanceof String) {
+//             PiacassoLoader.load(mContext,targetImageView,(String) mData);
+//        } else if (mData instanceof File){
+//             PiacassoLoader.load(mContext,targetImageView,(File) mData);
+//        } else if (mData instanceof Integer){
+//             PiacassoLoader.load(mContext,targetImageView,(Integer) mData);
+//        }else {
+//            return;
+//        }
+
         final SliderView me = this;
         Picasso p = Picasso.with(mContext);
         RequestCreator rq = null;
 
-        if (mData instanceof String) {
-            rq = p.load((String) mData);
-        } else if (mData instanceof File){
-            rq = p.load((File) mData);
-        } else if (mData instanceof Integer){
-            rq = p.load((Integer) mData);
-        }else {
+        if (mUrl != null) {
+            rq = p.load(mUrl);
+        } else if (mFile != null) {
+            rq = p.load(mFile);
+        } else if (mRes != 0) {
+            rq = p.load(mRes);
+        } else {
             return;
         }
 
         if (rq == null) {
             return;
-        }
-
-        if (getImageResForEmpty() != 0) {
-            rq.placeholder(getImageResForEmpty());
-        }
-
-        if (getImageResForError() != 0) {
-            rq.error(getImageResForError());
         }
 
         switch (mScaleType) {
@@ -243,22 +246,12 @@ public abstract class SliderView {
         rq.into(targetImageView, new Callback() {
             @Override
             public void onSuccess() {
-                if (view.findViewById(R.id.loading_bar) != null) {
-                    view.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
-                }
-                if (mBitmapLoadListener != null) {
-                    mBitmapLoadListener.onLoadComplete(me);
-                }
             }
 
             @Override
             public void onError() {
-                if (mBitmapLoadListener != null) {
-                    mBitmapLoadListener.onLoadFail(me);
-                }
             }
         });
-
     }
 
     public SliderView setScaleType(ScaleType type) {
