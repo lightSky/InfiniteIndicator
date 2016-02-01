@@ -13,19 +13,24 @@ import cn.lightsky.infiniteindicator.loader.ImageLoader;
  * Created by lightsky on 16/1/28.
  */
 
-public class PicassoLoader extends ImageLoader {
+public class PicassoLoader implements ImageLoader {
 
     public PicassoLoader getImageLoader(Context context) {
         return new PicassoLoader();
     }
 
     @Override
-    public void load(ImageView targetView, Object res) {
+    public void initLoader(Context context) {
+
+    }
+
+    @Override
+    public void load(Context context,ImageView targetView, Object res) {
         if (res == null) {
             return;
         }
 
-        Picasso picasso = Picasso.with(mContext);
+        Picasso picasso = Picasso.with(context);
         RequestCreator requestCreator = null;
 
         if (res instanceof String) {
@@ -38,7 +43,7 @@ public class PicassoLoader extends ImageLoader {
 
         requestCreator
                 .fit()
-                .tag(mContext)
+                .tag(context)
                 .into(targetView);
 
     }

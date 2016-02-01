@@ -9,16 +9,16 @@ import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
-import cn.lightsky.infiniteindicator.PicassoLoader;
-import cn.lightsky.infiniteindicator.slideview.PageView;
-import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.UILoader;
+import cn.lightsky.infiniteindicator.page.OnPageClickListener;
+import cn.lightsky.infiniteindicator.page.Page;
 
 
-public class UpdateSlidersActivity extends FragmentActivity {
+public class UpdateSlidersActivity extends FragmentActivity{
     private InfiniteIndicator mAnimCircleIndicator;
 
     private List refreshPageViews = new ArrayList();
-    private ArrayList<PageView> pageViews = new ArrayList<>();
+    private ArrayList<Page> pageViews = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +33,29 @@ public class UpdateSlidersActivity extends FragmentActivity {
     private void updateTest() {
         mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
 
-        final PageView a = new PageView("update same size list", R.drawable.a);
-        final PageView b = new PageView("update smaller size list", R.drawable.b);
-        final PageView c = new PageView("update larger size list", R.drawable.c);
-        final PageView d = new PageView("Leave a launcher", R.drawable.d);
+        final Page a = new Page("update same size list", R.drawable.a);
+        final Page b = new Page("update smaller size list", R.drawable.b);
+        final Page c = new Page("update larger size list", R.drawable.c);
+        final Page d = new Page("Leave a launcher", R.drawable.d);
 
-        final PageView e = new PageView("", R.drawable.c_yypd);
-        final PageView f = new PageView("", R.drawable.b_yypd);
-        final PageView g = new PageView("", R.drawable.c_yypd);
+        final Page e = new Page("", R.drawable.c_yypd);
+        final Page f = new Page("", R.drawable.b_yypd);
+        final Page g = new Page("", R.drawable.c_yypd);
+        final Page h = new Page("", R.drawable.ic_launcher);
 
-        a.onSliderClickListener = new SliderView.OnSliderClickListener() {
+        a.onPageClickListener = new OnPageClickListener() {
+
             @Override
-            public void onSliderClick(SliderView slider) {
+            public void onPageClick(int position, Page page) {
+//                a.res = R.drawable.a_yypd;
+//                b.res = R.drawable.b_yypd;
+//                c.res = R.drawable.c_yypd;
+//                d.res = R.drawable.d_yypd;
 
-                a.drawableRes = R.drawable.a_yypd;
-                b.drawableRes = R.drawable.b_yypd;
-                c.drawableRes = R.drawable.c_yypd;
-                d.drawableRes = R.drawable.d_yypd;
+                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
+                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
+                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
+                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
 
                 pageViews.clear();
                 pageViews.add(a);
@@ -57,34 +63,42 @@ public class UpdateSlidersActivity extends FragmentActivity {
                 pageViews.add(c);
                 pageViews.add(d);
 
-                mAnimCircleIndicator.refreshSliders(pageViews);
+                mAnimCircleIndicator.addPages(pageViews);
 
-                Toast.makeText(UpdateSlidersActivity.this, slider.getBundle().get("extra") + "",
+                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
         };
 
-        b.onSliderClickListener = new SliderView.OnSliderClickListener() {
+        b.onPageClickListener = new OnPageClickListener() {
+
             @Override
-            public void onSliderClick(SliderView slider) {
-                a.drawableRes = R.drawable.a_yypd;
-                b.drawableRes = R.drawable.b_yypd;
+            public void onPageClick(int position, Page page) {
+                a.res = R.drawable.a_yypd;
+                b.res = R.drawable.b_yypd;
 
                 pageViews.clear();
                 pageViews.add(a);
                 pageViews.add(b);
 
-                mAnimCircleIndicator.refreshSliders(pageViews);
+                mAnimCircleIndicator.addPages(pageViews);
 
-                Toast.makeText(UpdateSlidersActivity.this, slider.getBundle().get("extra") + "",
+                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
         };
 
-        c.onSliderClickListener = new SliderView.OnSliderClickListener() {
+        c.onPageClickListener = new OnPageClickListener(){
+
             @Override
-            public void onSliderClick(SliderView slider) {
+            public void onPageClick(int position, Page page) {
                 pageViews.clear();
+
+                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
+                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
+                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
+                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
+
                 pageViews.add(a);
                 pageViews.add(e);
                 pageViews.add(b);
@@ -92,26 +106,26 @@ public class UpdateSlidersActivity extends FragmentActivity {
                 pageViews.add(c);
                 pageViews.add(g);
                 pageViews.add(d);
+                pageViews.add(h);
 
-                mAnimCircleIndicator.refreshSliders(pageViews);
-                Toast.makeText(UpdateSlidersActivity.this, slider.getBundle().get("extra") + "",
+                mAnimCircleIndicator.addPages(pageViews);
+                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
         };
 
-        d.onSliderClickListener = new SliderView.OnSliderClickListener() {
-            @Override
-            public void onSliderClick(SliderView slider) {
+        d.onPageClickListener = new OnPageClickListener() {
 
-                a.drawableRes = R.drawable.ic_launcher;
+            @Override
+            public void onPageClick(int position, Page page) {
+                a.res = R.drawable.ic_launcher;
 
                 pageViews.clear();
                 pageViews.add(a);
 
-                mAnimCircleIndicator.refreshSliders(pageViews);
-                Toast.makeText(UpdateSlidersActivity.this, slider.getBundle().get("extra") + "",
+                mAnimCircleIndicator.addPages(pageViews);
+                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
-
             }
         };
 
@@ -120,8 +134,8 @@ public class UpdateSlidersActivity extends FragmentActivity {
         pageViews.add(c);
         pageViews.add(d);
 
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addSliders(pageViews);
+        mAnimCircleIndicator.setImageLoader(new UILoader());
+        mAnimCircleIndicator.addPages(pageViews);
     }
 
 
@@ -136,5 +150,11 @@ public class UpdateSlidersActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         mAnimCircleIndicator.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAnimCircleIndicator.release();
+        super.onDestroy();
     }
 }

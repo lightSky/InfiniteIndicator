@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
+import cn.lightsky.infiniteindicator.GlideLoader;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
-import cn.lightsky.infiniteindicator.PicassoLoader;
-import cn.lightsky.infiniteindicator.slideview.PageView;
-import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.page.OnPageClickListener;
+import cn.lightsky.infiniteindicator.page.Page;
 
-public class AddSlidersActivity extends FragmentActivity implements SliderView.OnSliderClickListener {
-    private ArrayList<PageView> pageViews;
+public class AddSlidersActivity extends FragmentActivity implements OnPageClickListener {
+    private ArrayList<Page> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
     private List refreshPageViews = new ArrayList();
 
@@ -28,14 +28,14 @@ public class AddSlidersActivity extends FragmentActivity implements SliderView.O
 
     private void addSlidersTest() {
         mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
-        pageViews = new ArrayList<PageView>();
-        pageViews.add(new PageView("Page A", R.drawable.a));
-        pageViews.add(new PageView("Page B", R.drawable.b));
-        pageViews.add(new PageView("Page C", R.drawable.c));
-        pageViews.add(new PageView("Page D", R.drawable.d));
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addSliders(pageViews);
-        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
+        pageViews = new ArrayList<Page>();
+        pageViews.add(new Page("Page A", R.drawable.a));
+        pageViews.add(new Page("Page B", R.drawable.b));
+        pageViews.add(new Page("Page C", R.drawable.c));
+        pageViews.add(new Page("Page D", R.drawable.d));
+        mAnimCircleIndicator.setImageLoader(new GlideLoader());
+        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
     }
 
 
@@ -52,11 +52,14 @@ public class AddSlidersActivity extends FragmentActivity implements SliderView.O
         mAnimCircleIndicator.start();
     }
 
-
-    List<Integer> updateUrls = new ArrayList<>();
+    @Override
+    protected void onDestroy() {
+        mAnimCircleIndicator.release();
+        super.onDestroy();
+    }
 
     @Override
-    public void onSliderClick(SliderView slider) {
-        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
+    public void onPageClick(int position, Page page) {
+        Toast.makeText(this, "position = "+position, Toast.LENGTH_SHORT).show();
     }
 }

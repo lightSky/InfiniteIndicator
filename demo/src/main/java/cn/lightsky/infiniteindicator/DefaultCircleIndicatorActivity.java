@@ -2,22 +2,18 @@ package cn.lightsky.infiniteindicator;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
-import cn.lightsky.infiniteindicator.slideview.SliderView;
-import cn.lightsky.infiniteindicator.slideview.PageView;
+import cn.lightsky.infiniteindicator.page.Page;
 
-public class DefaultCircleIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener ,ViewPager.OnPageChangeListener{
+public class DefaultCircleIndicatorActivity extends FragmentActivity {
     private InfiniteIndicator mCustoemCircleIndicator;
-    private ArrayList<PageView> mPageViews;
+    private ArrayList<Page> mPageViews;
     private InfiniteIndicator mDefaultIndicator;
     private ArrayList rules;
 
@@ -26,11 +22,11 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_circle_indicator);
 
-        mPageViews = new ArrayList<PageView>();
-        mPageViews.add(new PageView("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
-        mPageViews.add(new PageView("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
-        mPageViews.add(new PageView("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
-        mPageViews.add(new PageView("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
+        mPageViews = new ArrayList<Page>();
+        mPageViews.add(new Page("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
+        mPageViews.add(new Page("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
+        mPageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
+        mPageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
 
         testCircleIndicator();
         testCustomeCircleIndicator();
@@ -50,19 +46,25 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
         mCustoemCircleIndicator.start();
     }
 
+    @Override
+    protected void onDestroy() {
+        mDefaultIndicator.release();
+        mCustoemCircleIndicator.release();
+        super.onDestroy();
+    }
+
     private void testCircleIndicator() {
         mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
-        mDefaultIndicator.setImageLoader(new UILLoader());
-        mDefaultIndicator.addSliders(mPageViews);
-        mDefaultIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
-        mDefaultIndicator.setOnPageChangeListener(this);
+        mDefaultIndicator.setImageLoader(new UILoader());
+        mDefaultIndicator.addPages(mPageViews);
+        mDefaultIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
     }
 
     private void testCustomeCircleIndicator() {
         mCustoemCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
         mCustoemCircleIndicator.setImageLoader(new PicassoLoader());
-        mCustoemCircleIndicator.addSliders(mPageViews);
-        mCustoemCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+        mCustoemCircleIndicator.addPages(mPageViews);
+        mCustoemCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
 
         CircleIndicator circleIndicator = ((CircleIndicator) mCustoemCircleIndicator.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;
@@ -85,19 +87,4 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity implements 
         this.finish();
         return true;
     }
-
-    @Override
-    public void onSliderClick(SliderView slider) {
-        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-    @Override
-    public void onPageSelected(int position) {}
-
-    @Override
-    public void onPageScrollStateChanged(int state) {}
 }

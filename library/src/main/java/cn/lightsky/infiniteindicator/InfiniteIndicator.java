@@ -17,20 +17,18 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
+import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.slideview.PageView;
-import cn.lightsky.infiniteindicator.slideview.SimpleSliderView;
-import cn.lightsky.infiniteindicator.slideview.SliderView;
+import cn.lightsky.infiniteindicator.page.Page;
 
 
 /**
  * Created by lightSky on 2014/12/22.
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
-public class InfiniteIndicator<T extends SliderView> extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
     private final ScrollHandler handler;
     private PageIndicator mIndicator;
     private ViewPager mViewPager;
@@ -123,27 +121,19 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     }
 
     public void setImageLoader(ImageLoader imageLoader){
-        mRecyleAdapter.mImageLoader = imageLoader;
+        mRecyleAdapter.setImageLoader(imageLoader);
     }
 
-    public void addSliders(List<PageView> pageViews) {
-        if (mRecyleAdapter.mImageLoader == null)
+    public void addPages(List<Page> pageViews) {
+        if (mRecyleAdapter.getImageLoader() == null)
             throw new RuntimeException("You should set ImageLoader first");
 
         if (pageViews != null && !pageViews.isEmpty()){
-            mRecyleAdapter.mPageViews = pageViews;
+            mRecyleAdapter.setPages(pageViews);
             mRecyleAdapter.notifyDataSetChanged();
         }
-
-//            mRecyleAdapter.addSliders(pageViews,new SimpleSliderView(getContext()));
     }
 
-    public void refreshSliders(List<PageView> pageViews) {
-        if (pageViews != null && !pageViews.isEmpty())
-            addSliders(pageViews);
-
-//            mRecyleAdapter.refreshSliders(pageViews);
-    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -155,7 +145,6 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     protected void onDetachedFromWindow() {
         stop();
         super.onDetachedFromWindow();
-
     }
 
     /**
@@ -163,7 +152,8 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
      */
     public void initFirstPage() {
         if (isInfinite && mRecyleAdapter.getRealCount() > 1) {
-            mViewPager.setCurrentItem(mRecyleAdapter.getRealCount() * 50);
+            mViewPager.setCurrentItem(mRecyleAdapter.getRealCount() * 50 -
+                    (mRecyleAdapter.getRealCount() * 50 % mRecyleAdapter.getRealCount()));
         } else {
             setInfinite(false);
             mViewPager.setCurrentItem(0);
@@ -174,7 +164,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
      * start auto scroll, first scroll delay time is {@link #getInterval()}
      */
     public void start() {
-        if (mRecyleAdapter.getRealCount() > 1) {
+        if (mRecyleAdapter.getRealCount() > 1 && isAutoScroll == false) {
             isAutoScroll = true;
             sendScrollMessage(interval);
         }
@@ -186,7 +176,7 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
      * @param delayTimeInMills first scroll delay time
      */
     public void start(int delayTimeInMills) {
-        if (mRecyleAdapter.getRealCount() > 1) {
+        if (mRecyleAdapter.getRealCount() > 1 && isAutoScroll == false) {
             isAutoScroll = true;
             sendScrollMessage(delayTimeInMills);
         }
@@ -201,7 +191,6 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
     }
 
     public void release() {
-//        removeAllSliders();
         handler.removeMessages(MSG_WHAT);
     }
 
@@ -462,11 +451,11 @@ public class InfiniteIndicator<T extends SliderView> extends RelativeLayout impl
         }
     }
 
-    public void setIndicatorPosition() {
-        setIndicatorPosition(IndicatorPosition.Center_Bottom);
+    public void setPosition() {
+        setPosition(IndicatorPosition.Center_Bottom);
     }
 
-    public void setIndicatorPosition(IndicatorPosition presentIndicator) {
+    public void setPosition(IndicatorPosition presentIndicator) {
         PageIndicator pagerIndicator = (PageIndicator) findViewById(presentIndicator.getResourceId());
         setCustomIndicator(pagerIndicator);
     }

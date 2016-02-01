@@ -6,33 +6,33 @@ import android.widget.ImageView;
 /**
  * Created by lightsky on 16/1/28.
  */
-public abstract class ImageLoader {
+public interface ImageLoader {
 
-    private static ImageLoader singleton;
+//    private static ImageLoader singleton;
 
-    protected Context mContext;
+//    protected Context mContext;
 
-    public ImageLoader instance(Context context) {
-        if (singleton == null) {
-            synchronized (ImageLoader.class) {
-                if (singleton == null) {
-                    this.mContext = context;
-                    singleton = getImageLoader(context);
-                }
-            }
-        }
-        if (singleton == null)
-            throw new IllegalArgumentException("You should extends ImageLoader and return a instance by getImageLoader");
+//    public ImageLoader instance(Context context) {
+//        if (singleton == null) {
+//            synchronized (ImageLoader.class) {
+//                if (singleton == null) {
+//                    this.mContext = context;
+//                    singleton = getImageLoader(context);
+//                }
+//            }
+//        }
+//        if (singleton == null)
+//            throw new IllegalArgumentException("You should extends ImageLoader and return a instance by getImageLoader");
+//
+//        return singleton;
+//    }
+//
+//    public ImageLoader getImageLoader(Context context){
+//        return null;
+//    };
 
-        return singleton;
-    }
+    void initLoader(Context context);
 
-    public ImageLoader getImageLoader(Context context){
-        return null;
-    };
-
-    protected void initLoader(Context context){};
-
-    public abstract void load(ImageView targetView, Object res);
+    void load(Context context,ImageView targetView, Object res);
 
 }
