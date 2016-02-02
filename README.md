@@ -22,12 +22,13 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 - `start(int)` start auto scroll delayed.
 - `stop()` stop auto scroll.
 
-indicator_type:the style enum of Indicator
+`indicator_type`    
+the style enum of Indicator  
 - `indicator_default` CirCleIndicator
 - `indicator_anim_circle`  AnimCircleIndicator
 - `indicator_anim_line` is AnimLineIndicator
 
-`ImageLoader`
+`ImageLoader`  
 You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
 
 
