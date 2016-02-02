@@ -18,24 +18,24 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 - `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
 - `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
 - `setIndicatorPosition` set present position of indicator.
-- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
-- `startAutoScroll(int)` start auto scroll delayed.
-- `stopAutoScroll()` stop auto scroll.
+- `start()` start auto scroll, delay time is `getInterval()`.
+- `start(int)` start auto scroll delayed.
+- `stop()` stop auto scroll.
 
 indicator_type:the style enum of Indicator
 - `indicator_default` CirCleIndicator
 - `indicator_anim_circle`  AnimCircleIndicator
 - `indicator_anim_line` is AnimLineIndicator
 
-You can custome different anim or slideview for indicator.
+`ImageLoader`
+You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
 
-## Including In Your Project  
-Just add the following statement in your build.gradle  
 
-`compile 'cn.lightsky.infiniteindicator:library:1.0.5'`
+## Including In Your Project
+
+`compile 'cn.lightsky.infiniteindicator:library:1.1.0'`
 
 ## Usage
-- include this library, use
 
 ``` xml
    <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
@@ -47,48 +47,72 @@ Just add the following statement in your build.gradle
 ```
 
 ```java
-public class MainActivity extends Activity {
-    private InfiniteIndicatorLayout mDefaultIndicator;
+public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener{
+    private ArrayList<Page> pageViews;
+    private InfiniteIndicator mAnimCircleIndicator;
+    private InfiniteIndicator mAnimLineIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDefaultIndicator = (InfiniteIndicatorLayout)findViewById(R.id.indicator_default_circle);
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps = new HashMap<String, String>();
-        url_maps.put("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg");
-        url_maps.put("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg");
-        url_maps.put("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg");
-        url_maps.put("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg");
+        setContentView(R.layout.activity_anim_indicator);
 
-        for(String name : url_maps.keySet()){
-            DefaultSliderView textSliderView = new DefaultSliderView(this);
-            textSliderView
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .showImageResForEmpty(R.drawable.img_default)
-                    .showImageResForError(R.drawable.img_error)
-                    .setOnSliderClickListener(this);
-            textSliderView.getBundle()
-                    .putString("extra",name);
-            mDefaultIndicator.addSlider(textSliderView);
-        }
-        mDefaultIndicator.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-        mDefaultIndicator.startAutoScroll();
+        initData();
+        mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator.setImageLoader(new UILoader());
+        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
+        mAnimCircleIndicator.setOnPageChangeListener(this);
+
     }
 
-        @Override
-        protected void onPause() {
-            super.onPause();
-            mDefaultIndicator.stopAutoScroll();
-        }
+    private void initData() {
+        pageViews = new ArrayList<>();
+        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
+        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
+        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
+        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
 
-        @Override
-        protected void onResume() {
-            super.onResume();
-            mDefaultIndicator.startAutoScroll();
-        }
+    }
+
+    //To avoid memory leak ,you should release the res
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAnimCircleIndicator.stop();
+        mAnimLineIndicator.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAnimCircleIndicator.start();
+        mAnimLineIndicator.start();
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        //do something
+    }
+
+    @Override
+    public void onPageClick(int position, Page page) {
+        //do something
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 }
+
+
 
 ```
 

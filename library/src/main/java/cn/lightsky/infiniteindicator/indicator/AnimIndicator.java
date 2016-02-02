@@ -163,7 +163,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
         }
 
         int count = ((RecyleAdapter) viewPager.getAdapter()).getRealCount();
-        if (count <= 1) {
+        if (count < 2) {
             return;
         }
 

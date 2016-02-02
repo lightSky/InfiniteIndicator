@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "cn.lightsky.customeviewdemo"
         minSdkVersion 8
-        targetSdkVersion 20
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -25,6 +25,9 @@ android {
 }
 
 dependencies {
+    compile 'cn.lightsky.infiniteindicator:library:1.1.0'
 //    compile project(':library')
-    compile 'cn.lightsky.infiniteindicator:library:1.0.5'
+    compile files('libs/universal-image-loader-1.9.5.jar')
+    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }

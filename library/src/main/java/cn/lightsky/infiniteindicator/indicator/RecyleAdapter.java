@@ -4,34 +4,35 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import cn.lightsky.infiniteindicator.R;
+import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.page.OnPageClickListener;
+import cn.lightsky.infiniteindicator.page.Page;
 
-public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderView.BitmapLoadCallBack {
+public class RecyleAdapter extends RecyclingPagerAdapter {
 
     private Context mContext;
-    private LayoutInflater inflater;
-    private ArrayList<BaseSliderView> mSlederViews;
+    private LayoutInflater mInflater;
+    private ImageLoader mImageLoader;
+    private OnPageClickListener mOnPageClickListener;
+    private List<Page> pages = new ArrayList<>();
     private boolean isLoop = true;
-    DataChangeListener mDataChangeListener;
 
     public RecyleAdapter(Context context) {
         mContext = context;
-        inflater = LayoutInflater.from(context);
-        mSlederViews = new ArrayList<BaseSliderView>();
+        mInflater = LayoutInflater.from(context);
     }
 
-    public int getRealCount() {
-        return mSlederViews.size();
-    }
-
-    public <T extends BaseSliderView> void addSlider(T slider) {
-        slider.setOnImageLoadListener(this);
-        mSlederViews.add(slider);
-        notifyDataSetChanged();
+    public RecyleAdapter(Context context,OnPageClickListener onPageClickListener) {
+        mContext = context;
+        mOnPageClickListener = onPageClickListener;
+        mInflater = LayoutInflater.from(context);
     }
 
     /**
@@ -41,7 +42,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderVi
      * @return
      */
     public int getPosition(int position) {
-        return isLoop ? position % getRealCount() : position;
+        return isLoop ? position % getRealCount()  : position;
     }
 
     @Override
@@ -49,50 +50,66 @@ public class RecyleAdapter extends RecyclingPagerAdapter implements BaseSliderVi
         return isLoop ? getRealCount() * 100 : getRealCount();
     }
 
+    public int getRealCount() {
+        return pages.size();
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup container) {
-        return ((BaseSliderView) mSlederViews.get(getPosition(position))).getView();
+
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.simple_slider_view, null);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        }
+
+        final Page page = pages.get(getPosition(position));
+
+        if(page.onPageClickListener != null){
+            holder.target.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    page.onPageClickListener.onPageClick(getPosition(position), page);
+                }
+            });
+        }
+
+        mImageLoader.load(mContext,holder.target,page.res);
+        return convertView;
     }
 
-    public <T extends BaseSliderView> void removeSlider(T slider) {
-        if (mSlederViews.contains(slider)) {
-            mSlederViews.remove(slider);
-            notifyDataSetChanged();
+    private static class ViewHolder {
+        final ImageView target;
+
+        public ViewHolder(View view) {
+            target = (ImageView) view.findViewById(R.id.slider_image);
         }
     }
 
-    public void removeSliderAt(int position) {
-        if (mSlederViews.size() < position) {
-            mSlederViews.remove(position);
-            notifyDataSetChanged();
-        }
+    public void setImageLoader(ImageLoader imageLoader) {
+        mImageLoader = imageLoader;
     }
 
-    public void removeAllSliders() {
-        mSlederViews.clear();
+    public ImageLoader getImageLoader() {
+        return mImageLoader;
+    }
+
+    public void setPages(List<Page> pages) {
+        this.pages = pages;
+    }
+
+    public void addPage(Page page) {
+        pages.add(page);
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onLoadStart(BaseSliderView target) {
-    }
-
-    @Override
-    public void onLoadComplete(BaseSliderView target) {
-    }
-
-    @Override
-    public void onLoadFail(BaseSliderView target) {
-
-        if (target.isShowErrorView() == true) {
-            return;
-        }
-
-        for (BaseSliderView slider : mSlederViews) {
-            if (slider.equals(target)) {
-                removeSlider(target);
-                break;
-            }
+    public void removePage(Page page) {
+        if (pages.contains(page)) {
+            pages.remove(page);
+            notifyDataSetChanged();
         }
     }
 
