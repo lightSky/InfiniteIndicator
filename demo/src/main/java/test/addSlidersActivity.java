@@ -53,12 +53,6 @@ public class AddSlidersActivity extends FragmentActivity implements OnPageClickL
     }
 
     @Override
-    protected void onDestroy() {
-        mAnimCircleIndicator.release();
-        super.onDestroy();
-    }
-
-    @Override
     public void onPageClick(int position, Page page) {
         Toast.makeText(this, "position = "+position, Toast.LENGTH_SHORT).show();
     }

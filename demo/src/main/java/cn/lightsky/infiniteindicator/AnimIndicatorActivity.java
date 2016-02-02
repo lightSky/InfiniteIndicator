@@ -59,13 +59,6 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
     }
 
     @Override
-    protected void onDestroy() {
-        mAnimCircleIndicator.release();
-        mAnimLineIndicator.release();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);

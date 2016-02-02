@@ -190,7 +190,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         handler.removeMessages(MSG_WHAT);
     }
 
-    public void release() {
+    private void release() {
         handler.removeMessages(MSG_WHAT);
     }
 

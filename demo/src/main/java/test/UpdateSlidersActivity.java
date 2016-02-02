@@ -9,6 +9,7 @@ import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
+import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.UILoader;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
@@ -134,7 +135,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
         pageViews.add(c);
         pageViews.add(d);
 
-        mAnimCircleIndicator.setImageLoader(new UILoader());
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
         mAnimCircleIndicator.addPages(pageViews);
     }
 
@@ -152,9 +153,4 @@ public class UpdateSlidersActivity extends FragmentActivity{
         mAnimCircleIndicator.start();
     }
 
-    @Override
-    protected void onDestroy() {
-        mAnimCircleIndicator.release();
-        super.onDestroy();
-    }
 }

@@ -46,13 +46,6 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
         mCustoemCircleIndicator.start();
     }
 
-    @Override
-    protected void onDestroy() {
-        mDefaultIndicator.release();
-        mCustoemCircleIndicator.release();
-        super.onDestroy();
-    }
-
     private void testCircleIndicator() {
         mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
         mDefaultIndicator.setImageLoader(new UILoader());
