@@ -37,10 +37,6 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
         pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
         
-//        pageViews.add(new Page("Page A", R.drawable.a,this));
-//        pageViews.add(new Page("Page B", R.drawable.b,this));
-//        pageViews.add(new Page("Page C", R.drawable.c,this));
-//        pageViews.add(new Page("Page D", R.drawable.d,this));
     }
 
     //To avoid memory leak ,you should release the res

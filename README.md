@@ -18,9 +18,9 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 - `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
 - `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
 - `setIndicatorPosition` set present position of indicator.
-- `startAutoScroll()` start auto scroll, delay time is `getInterval()`.
-- `startAutoScroll(int)` start auto scroll delayed.
-- `stopAutoScroll()` stop auto scroll.
+- `start()` start auto scroll, delay time is `getInterval()`.
+- `start(int)` start auto scroll delayed.
+- `stop()` stop auto scroll.
 
 indicator_type:the style enum of Indicator
 - `indicator_default` CirCleIndicator
@@ -31,7 +31,7 @@ You can custome different anim or slideview for indicator.
 
 ## Including In Your Project
 
-`compile 'cn.lightsky.infiniteindicator:library:1.0.5'`
+`compile 'cn.lightsky.infiniteindicator:library:1.1.0'`
 
 ## Usage
 
@@ -45,8 +45,8 @@ You can custome different anim or slideview for indicator.
 ```
 
 ```java
-public class AnimIndicatorActivity extends FragmentActivity implements SliderView.OnSliderClickListener,ViewPager.OnPageChangeListener{
-    private  ArrayList<PageView> pageViews;
+public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener{
+    private ArrayList<Page> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
     private InfiniteIndicator mAnimLineIndicator;
 
@@ -57,52 +57,59 @@ public class AnimIndicatorActivity extends FragmentActivity implements SliderVie
 
         initData();
         mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addSliders(pageViews);
-        mAnimCircleIndicator.setIndicatorPosition(InfiniteIndicator.IndicatorPosition.Center);
-        mDefaultIndicator.setOnPageChangeListener(this);
+        mAnimCircleIndicator.setImageLoader(new UILoader());
+        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
+        mAnimCircleIndicator.setOnPageChangeListener(this);
+
     }
 
     private void initData() {
         pageViews = new ArrayList<>();
-        pageViews.add(new PageView("Page A", R.drawable.a,this));
-        pageViews.add(new PageView("Page B", R.drawable.b,this));
-        pageViews.add(new PageView("Page C", R.drawable.c,this));
-        pageViews.add(new PageView("Page D", R.drawable.d,this));
+        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
+        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
+        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
+        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
+
     }
 
-    //In case memory leak ,you should release the res
+    //To avoid memory leak ,you should release the res
     @Override
     protected void onPause() {
         super.onPause();
         mAnimCircleIndicator.stop();
+        mAnimLineIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mAnimCircleIndicator.start();
+        mAnimLineIndicator.start();
     }
 
     @Override
-    protected void onDestroy() {
-        mAnimCircleIndicator.release();
-        super.onDestroy();
-    }
-    @Override
-    public void onSliderClick(SliderView slider) {
-        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+    public void onPageSelected(int position) {
+        //do something
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+    public void onPageClick(int position, Page page) {
+        //do something
+    }
 
     @Override
-    public void onPageSelected(int position) {}
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
 
     @Override
-    public void onPageScrollStateChanged(int state) {}
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 }
+
 
 
 ```
