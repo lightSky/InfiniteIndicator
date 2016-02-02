@@ -81,14 +81,12 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
     protected void onPause() {
         super.onPause();
         mAnimCircleIndicator.stop();
-        mAnimLineIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mAnimCircleIndicator.start();
-        mAnimLineIndicator.start();
     }
 
     @Override
