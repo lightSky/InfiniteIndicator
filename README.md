@@ -27,7 +27,10 @@ indicator_type:the style enum of Indicator
 - `indicator_anim_circle`  AnimCircleIndicator
 - `indicator_anim_line` is AnimLineIndicator
 
-You can custome different anim or slideview for indicator.
+`ImageLoader`
+You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
+
+
 
 ## Including In Your Project
 
