@@ -25,7 +25,6 @@ public class UILoader implements ImageLoader {
         return uilLoader;
     }
 
-    @Override
     public void initLoader(Context context) {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 

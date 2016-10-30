@@ -48,16 +48,20 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
 
     private void testCircleIndicator() {
         mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
-        mDefaultIndicator.setImageLoader(new UILoader());
-        mDefaultIndicator.addPages(mPageViews);
-        mDefaultIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new UILoader())
+                .pages(mPageViews)
+                .setPosition(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .build();
     }
 
     private void testCustomeCircleIndicator() {
         mCustoemCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
-        mCustoemCircleIndicator.setImageLoader(new PicassoLoader());
-        mCustoemCircleIndicator.addPages(mPageViews);
-        mCustoemCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new PicassoLoader())
+                .pages(mPageViews)
+                .setPosition(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .build();
 
         CircleIndicator circleIndicator = ((CircleIndicator) mCustoemCircleIndicator.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;

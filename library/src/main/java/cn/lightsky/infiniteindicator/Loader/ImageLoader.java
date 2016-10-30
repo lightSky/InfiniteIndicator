@@ -31,8 +31,6 @@ public interface ImageLoader {
 //        return null;
 //    };
 
-    void initLoader(Context context);
-
     void load(Context context,ImageView targetView, Object res);
 
 }

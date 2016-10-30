@@ -20,11 +20,6 @@ public class PicassoLoader implements ImageLoader {
     }
 
     @Override
-    public void initLoader(Context context) {
-
-    }
-
-    @Override
     public void load(Context context,ImageView targetView, Object res) {
         if (res == null) {
             return;

@@ -18,7 +18,6 @@ import cn.lightsky.infiniteindicator.loader.ImageLoader;
  */
 public class GlideLoader implements ImageLoader {
 
-    @Override
     public void initLoader(Context context) {
 
     }

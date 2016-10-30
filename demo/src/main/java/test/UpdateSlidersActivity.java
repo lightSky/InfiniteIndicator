@@ -64,7 +64,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(c);
                 pageViews.add(d);
 
-                mAnimCircleIndicator.addPages(pageViews);
+//                mAnimCircleIndicator.addPages(pageViews);
 
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
@@ -82,7 +82,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(a);
                 pageViews.add(b);
 
-                mAnimCircleIndicator.addPages(pageViews);
+//                mAnimCircleIndicator.addPages(pageViews);
 
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
@@ -109,7 +109,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(d);
                 pageViews.add(h);
 
-                mAnimCircleIndicator.addPages(pageViews);
+//                mAnimCircleIndicator.addPages(pageViews);
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
@@ -124,7 +124,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.clear();
                 pageViews.add(a);
 
-                mAnimCircleIndicator.addPages(pageViews);
+//                mAnimCircleIndicator.addPages(pageViews);
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
@@ -135,8 +135,8 @@ public class UpdateSlidersActivity extends FragmentActivity{
         pageViews.add(c);
         pageViews.add(d);
 
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addPages(pageViews);
+//        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
+//        mAnimCircleIndicator.addPages(pageViews);
     }
 
 

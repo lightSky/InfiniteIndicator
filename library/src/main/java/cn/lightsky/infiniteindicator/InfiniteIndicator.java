@@ -15,13 +15,14 @@ import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.page.Page;
+
+import static android.R.attr.direction;
+import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_CYCLE;
+import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_TO_PARENT;
 
 
 /**
@@ -34,61 +35,12 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
     private ViewPager mViewPager;
     private Context mContext;
     private RecyleAdapter mRecyleAdapter;
-
-    public static final int DEFAULT_INTERVAL = 2500;
-    public static final int LEFT = 0;
-    public static final int RIGHT = 1;
-    /**
-     * do nothing when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_NONE = 0;
-    /**
-     * cycle when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_CYCLE = 1;
-    /**
-     * deliver event to parent when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_TO_PARENT = 2;
-
-    /**
-     * auto scroll time in milliseconds, default is {@link #DEFAULT_INTERVAL} *
-     */
-    private long interval = DEFAULT_INTERVAL;
-    /**
-     * auto scroll direction, default is {@link #RIGHT} *
-     */
-    private int direction = RIGHT;
-    /**
-     * whether automatic cycle when auto scroll reaching the last or first item, default is true *
-     */
-    private boolean isInfinite = true;
-    /**
-     * whether stop auto scroll when touching, default is true *
-     */
-    private boolean isStopScrollWhenTouch = true;
-    /**
-     * how to process when sliding at the last or first item, default is {@link #SLIDE_BORDER_MODE_NONE} *
-     */
-    private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
-    public static final int MSG_WHAT = 0;
-    private boolean isAutoScroll = false;
     private boolean isStopByTouch = false;
     private float touchX = 0f, downX = 0f;
-
-    /**
-     * Custome Scroller for
-     */
-    private DurationScroller scroller = null;
-
-    /**
-     * Indicator Style Type,default is Circle with no Anim
-     */
-    public enum IndicatorType {
-        Default,
-        AnimCircle,
-        AnimLine;
-    }
+    private DurationScroller scroller;
+    private IndicatorConfiguration configuration;
+    private boolean isScrolling;
+    public static final int MSG_SCROLL = 1000;
 
     public InfiniteIndicator(Context context) {
         this(context, null);
@@ -103,7 +55,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         mContext = context;
 
         final TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.InfiniteIndicator, 0, 0);
-        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicator_indicator_type, IndicatorType.Default.ordinal());
+        int indicatorType = attributes.getInt(R.styleable.InfiniteIndicator_indicator_type, 0);
 
         if (indicatorType == 0)
             LayoutInflater.from(context).inflate(R.layout.layout_default_indicator, this, true);
@@ -120,21 +72,54 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         setViewPagerScroller();
     }
 
-    public void setImageLoader(ImageLoader imageLoader){
-        mRecyleAdapter.setImageLoader(imageLoader);
-    }
 
-    public void addPages(List<Page> pageViews) {
+    public void init(IndicatorConfiguration configuration){
+        this.configuration = configuration;
+        scroller.setScrollDurationFactor(configuration.getScrollFactor());
+        mRecyleAdapter.setIsLoop(configuration.isInfinite());
+        mRecyleAdapter.setImageLoader(configuration.getImageLoader());
+
         if (mRecyleAdapter.getImageLoader() == null)
             throw new RuntimeException("You should set ImageLoader first");
 
-        if (pageViews != null && !pageViews.isEmpty()){
-            mRecyleAdapter.setPages(pageViews);
+        initIndicator();
+        notifyData(configuration);
+        initFirstPage();
+        if (configuration.isAutoScroll()) {
+            start();
+        }
+    }
+
+    private void notifyData(IndicatorConfiguration configuration) {
+        if (configuration.getPageViews() != null && !configuration.getPageViews().isEmpty()){
+            mRecyleAdapter.setPages(configuration.getPageViews());
             mRecyleAdapter.notifyDataSetChanged();
         }
     }
 
+    public PageIndicator getPagerIndicator() {
+        return mIndicator;
+    }
 
+    public void initIndicator() {
+        mIndicator = (PageIndicator) findViewById(configuration.getPresentIndicator().getResourceId());
+        mIndicator.setViewPager(mViewPager);
+        if (configuration.getOnPageChangeListener() != null && mIndicator != null){
+            mIndicator.setOnPageChangeListener(configuration.getOnPageChangeListener());
+        }
+    }
+
+    /**
+     * according page count and is loop decide the first page to display
+     */
+    private void initFirstPage() {
+        if (configuration.isInfinite() && mRecyleAdapter.getRealCount() > 1) {
+            mViewPager.setCurrentItem(mRecyleAdapter.getRealCount() * 50 -
+                    (mRecyleAdapter.getRealCount() * 50 % mRecyleAdapter.getRealCount()));
+        } else {
+            mViewPager.setCurrentItem(0);
+        }
+    }
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -148,36 +133,19 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
     }
 
     /**
-     * according page count and is loop decide the first page to display
-     */
-    public void initFirstPage() {
-        if (isInfinite && mRecyleAdapter.getRealCount() > 1) {
-            mViewPager.setCurrentItem(mRecyleAdapter.getRealCount() * 50 -
-                    (mRecyleAdapter.getRealCount() * 50 % mRecyleAdapter.getRealCount()));
-        } else {
-            setInfinite(false);
-            mViewPager.setCurrentItem(0);
-        }
-    }
-
-    /**
-     * start auto scroll, first scroll delay time is {@link #getInterval()}
-     */
-    public void start() {
-        if (mRecyleAdapter.getRealCount() > 1 && isAutoScroll == false) {
-            isAutoScroll = true;
-            sendScrollMessage(interval);
-        }
-    }
-
-    /**
      * start auto scroll
      *
-     * @param delayTimeInMills first scroll delay time
+     * @param delayTimeInMills first scroll delay time,default is 2500ms
      */
-    public void start(int delayTimeInMills) {
-        if (mRecyleAdapter.getRealCount() > 1 && isAutoScroll == false) {
-            isAutoScroll = true;
+    public void start() {
+        start(configuration.getInterval());
+    }
+
+    public void start(long delayTimeInMills) {
+        if (mRecyleAdapter.getRealCount() > 1
+                && isScrolling == false
+                && configuration.isInfinite()) {
+            isScrolling = true;
             sendScrollMessage(delayTimeInMills);
         }
     }
@@ -186,30 +154,20 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
      * stop auto scroll
      */
     public void stop() {
-        isAutoScroll = false;
-        handler.removeMessages(MSG_WHAT);
-    }
-
-    private void release() {
-        handler.removeMessages(MSG_WHAT);
-    }
-
-    /**
-     * set the factor by which the duration of sliding animation will change
-     */
-    public void setScrollDurationFactor(double scrollFactor) {
-        scroller.setScrollDurationFactor(scrollFactor);
-    }
-
-    private void sendScrollMessage(long delayTimeInMills) {
-        /** remove messages before, keeps one message is running at most **/
-        handler.removeMessages(MSG_WHAT);
-        handler.sendEmptyMessageDelayed(MSG_WHAT, delayTimeInMills);
+        isScrolling = false;
+        handler.removeMessages(MSG_SCROLL);
     }
 
     private void sendScrollMessage() {
-        /** remove messages before, keeps one message is running at most **/
-        sendScrollMessage(interval);
+        sendScrollMessage(configuration.getInterval());
+    }
+
+    /**
+     * remove messages before, keeps one message is running at most
+     **/
+    private void sendScrollMessage(long delayTimeInMills) {
+        handler.removeMessages(MSG_SCROLL);
+        handler.sendEmptyMessageDelayed(MSG_SCROLL, delayTimeInMills);
     }
 
     /**
@@ -240,14 +198,15 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             return;
         }
 
-        int nextItem = (direction == LEFT) ? --currentItem : ++currentItem;
+        int nextItem = (direction == IndicatorConfiguration.LEFT) ? --currentItem :
+        ++currentItem;
 
         if (nextItem < 0) {
-            if (isInfinite) {
+            if (configuration.isInfinite()) {
                 mViewPager.setCurrentItem(totalCount - 1);
             }
         } else if (nextItem == totalCount) {
-            if (isInfinite) {
+            if (configuration.isInfinite()) {
                 mViewPager.setCurrentItem(0);
             }
         } else {
@@ -258,8 +217,8 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = MotionEventCompat.getActionMasked(ev);
-        if (isStopScrollWhenTouch) {
-            if ((action == MotionEvent.ACTION_DOWN) && isAutoScroll) {
+        if (configuration.isStopScrollWhenTouch()) {
+            if ((action == MotionEvent.ACTION_DOWN) && isScrolling) {
                 isStopByTouch = true;
                 stop();
             } else if (ev.getAction() == MotionEvent.ACTION_UP && isStopByTouch) {
@@ -267,7 +226,9 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             }
         }
 
-        if (slideBorderMode == SLIDE_BORDER_MODE_TO_PARENT || slideBorderMode == SLIDE_BORDER_MODE_CYCLE) {
+        if (configuration.getSlideBorderMode() == SLIDE_BORDER_MODE_TO_PARENT ||
+                configuration.getSlideBorderMode() ==
+                SLIDE_BORDER_MODE_CYCLE) {
             touchX = ev.getX();
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 downX = touchX;
@@ -282,7 +243,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
              * one.
              */
             if ((currentItem == 0 && downX <= touchX) || (currentItem == pageCount - 1 && downX >= touchX)) {
-                if (slideBorderMode == SLIDE_BORDER_MODE_TO_PARENT) {
+                if (configuration.getSlideBorderMode() == SLIDE_BORDER_MODE_TO_PARENT) {
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {
                     if (pageCount > 1) {
@@ -316,7 +277,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             InfiniteIndicator infiniteIndicatorLayout = mLeakActivityRef.get();
             if (infiniteIndicatorLayout != null) {
                 switch (msg.what) {
-                    case MSG_WHAT:
+                    case MSG_SCROLL:
                         infiniteIndicatorLayout.scrollOnce();
                         infiniteIndicatorLayout.sendScrollMessage();
                     default:
@@ -326,148 +287,4 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         }
     }
 
-
-    /**
-     * get auto scroll interval time in milliseconds, default is {@link #DEFAULT_INTERVAL}
-     *
-     * @return the interval
-     */
-    public long getInterval() {
-        return interval;
-    }
-
-    /**
-     * set auto scroll interval time in milliseconds, default is {@link #DEFAULT_INTERVAL}
-     *
-     * @param interval the interval to set
-     */
-    public void setInterval(long interval) {
-        this.interval = interval;
-    }
-
-    /**
-     * get auto scroll direction
-     *
-     * @return {@link #LEFT} or {@link #RIGHT}, default is {@link #RIGHT}
-     */
-    public int getDirection() {
-        return (direction == LEFT) ? LEFT : RIGHT;
-    }
-
-    /**
-     * set auto scroll direction
-     *
-     * @param direction {@link #LEFT} or {@link #RIGHT}, default is {@link #RIGHT}
-     */
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    /**
-     * whether is infinite loop of viewPager , default is true
-     *
-     * @return the isInfinite
-     */
-    public boolean isInfinite() {
-        return isInfinite;
-    }
-
-    /**
-     * set whether is loop when reaching the last or first item, default is true
-     *
-     * @param isInfinite the isInfinite
-     */
-    public void setInfinite(boolean isInfinite) {
-        this.isInfinite = isInfinite;
-        mRecyleAdapter.setLoop(isInfinite);
-    }
-
-    /**
-     * whether stop auto scroll when touching, default is true
-     *
-     * @return the stopScroll When Touch
-     */
-    public boolean isStopScrollWhenTouch() {
-        return isStopScrollWhenTouch;
-    }
-
-    /**
-     * set whether stop auto scroll when touching, default is true
-     *
-     * @param stopScrollWhenTouch
-     */
-    public void setStopScrollWhenTouch(boolean stopScrollWhenTouch) {
-        this.isStopScrollWhenTouch = stopScrollWhenTouch;
-    }
-
-    /**
-     * get how to process when sliding at the last or first item
-     *
-     * @return the slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
-     * {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
-     */
-    public int getSlideBorderMode() {
-        return slideBorderMode;
-    }
-
-    /**
-     * set how to process when sliding at the last or first item
-     * will be explore in future version
-     *
-     * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
-     *                        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
-     */
-    private void setSlideBorderMode(int slideBorderMode) {
-        this.slideBorderMode = slideBorderMode;
-    }
-
-    public PageIndicator getPagerIndicator() {
-        return mIndicator;
-    }
-
-    public enum IndicatorPosition {
-        Center("Center_Bottom", R.id.default_center_indicator),
-        Center_Bottom("Center_Bottom", R.id.default_center_bottom_indicator),
-        Right_Bottom("Right_Bottom", R.id.default_bottom_right_indicator),
-        Left_Bottom("Left_Bottom", R.id.default_bottom_left_indicator),
-        Center_Top("Center_Top", R.id.default_center_top_indicator),
-        Right_Top("Right_Top", R.id.default_center_top_right_indicator),
-        Left_Top("Left_Top", R.id.default_center_top_left_indicator);
-
-        private final String name;
-        private final int id;
-
-        private IndicatorPosition(String name, int id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        public String toString() {
-            return name;
-        }
-
-        public int getResourceId() {
-            return id;
-        }
-    }
-
-    public void setPosition() {
-        setPosition(IndicatorPosition.Center_Bottom);
-    }
-
-    public void setPosition(IndicatorPosition presentIndicator) {
-        PageIndicator pagerIndicator = (PageIndicator) findViewById(presentIndicator.getResourceId());
-        setCustomIndicator(pagerIndicator);
-    }
-
-    public void setCustomIndicator(PageIndicator indicator) {
-        initFirstPage();
-        mIndicator = indicator;
-        mIndicator.setViewPager(mViewPager);
-    }
-
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
-        if (onPageChangeListener != null)
-            mIndicator.setOnPageChangeListener(onPageChangeListener);
-    }
 }

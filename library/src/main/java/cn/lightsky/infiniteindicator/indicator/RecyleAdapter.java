@@ -123,7 +123,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
     /**
      * @param isLoop the is InfiniteLoop to set
      */
-    public void setLoop(boolean isLoop) {
+    public void setIsLoop(boolean isLoop) {
         this.isLoop = isLoop;
         notifyDataSetChanged();
     }

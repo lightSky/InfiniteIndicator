@@ -69,17 +69,27 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
 
     private void testAnimCircleIndicator() {
         mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
-        mAnimCircleIndicator.setImageLoader(new UILoader());
-        mAnimCircleIndicator.addPages(pageViews);
-        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
-        mAnimCircleIndicator.setOnPageChangeListener(this);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new UILoader())
+                .pages(pageViews)
+                .isStopWhenTouch(true)
+                .setOnPageChangeListener(this)
+                .setPosition(IndicatorConfiguration.IndicatorPosition.Center)
+                .build();
+        mAnimCircleIndicator.init(configuration);
     }
 
     private void testAnimLineIndicator() {
         mAnimLineIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_line);
-        mAnimLineIndicator.setImageLoader(new PicassoLoader());
-        mAnimLineIndicator.addPages(pageViews);
-        mAnimLineIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new PicassoLoader())
+                .pages(pageViews)
+                .isAutoScroll(false)
+                .setOnPageChangeListener(this)
+                .isStopWhenTouch(true)
+                .setPosition(IndicatorConfiguration.IndicatorPosition.Center)
+                .build();
+        mAnimLineIndicator.init(configuration);
     }
 
     @Override
