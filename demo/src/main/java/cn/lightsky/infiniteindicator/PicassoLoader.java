@@ -7,7 +7,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 
 /**
  * Created by lightsky on 16/1/28.

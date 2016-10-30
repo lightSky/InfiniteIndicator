@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-<!--        <activity
+       <!-- <activity
             android:name="test.UpdateSlidersActivity"
             android:label="@string/app_name" >
             <intent-filter>

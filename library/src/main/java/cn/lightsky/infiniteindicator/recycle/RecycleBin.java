@@ -1,4 +1,4 @@
-package cn.lightsky.infiniteindicator.jakewharton.salvage;
+package cn.lightsky.infiniteindicator.recycle;
 
 import android.os.Build;
 import android.util.SparseArray;

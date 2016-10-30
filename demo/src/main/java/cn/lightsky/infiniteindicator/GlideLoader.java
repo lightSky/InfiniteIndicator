@@ -2,16 +2,9 @@ package cn.lightsky.infiniteindicator;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 
 /**
  * Created by lightsky on 16/1/31.

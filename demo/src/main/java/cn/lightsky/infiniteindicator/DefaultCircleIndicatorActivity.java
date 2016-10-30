@@ -9,11 +9,10 @@ import java.util.ArrayList;
 
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.indicator.CircleIndicator;
-import cn.lightsky.infiniteindicator.page.Page;
 
 public class DefaultCircleIndicatorActivity extends FragmentActivity {
     private InfiniteIndicator mCustoemCircleIndicator;
-    private ArrayList<Page> mPageViews;
+    private ArrayList<Page> pageViews;
     private InfiniteIndicator mDefaultIndicator;
     private ArrayList rules;
 
@@ -22,11 +21,11 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_circle_indicator);
 
-        mPageViews = new ArrayList<Page>();
-        mPageViews.add(new Page("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
-        mPageViews.add(new Page("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
-        mPageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
-        mPageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
+        pageViews = new ArrayList<Page>();
+        pageViews.add(new Page("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
+        pageViews.add(new Page("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
+        pageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
+        pageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
 
         testCircleIndicator();
         testCustomeCircleIndicator();
@@ -50,18 +49,20 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
         mDefaultIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new UILoader())
-                .pages(mPageViews)
-                .setPosition(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
                 .build();
+        mDefaultIndicator.init(configuration);
+        mDefaultIndicator.notifyDataChange(pageViews);
     }
 
     private void testCustomeCircleIndicator() {
         mCustoemCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_custome_circle);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new PicassoLoader())
-                .pages(mPageViews)
-                .setPosition(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
                 .build();
+        mCustoemCircleIndicator.init(configuration);
+        mCustoemCircleIndicator.notifyDataChange(pageViews);
 
         CircleIndicator circleIndicator = ((CircleIndicator) mCustoemCircleIndicator.getPagerIndicator());
         final float density = getResources().getDisplayMetrics().density;

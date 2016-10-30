@@ -1,4 +1,4 @@
-package cn.lightsky.infiniteindicator.indicator;
+package cn.lightsky.infiniteindicator.recycle;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.lightsky.infiniteindicator.R;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
-import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
+import cn.lightsky.infiniteindicator.ImageLoader;
+import cn.lightsky.infiniteindicator.OnPageClickListener;
+import cn.lightsky.infiniteindicator.Page;
 
 public class RecyleAdapter extends RecyclingPagerAdapter {
 
@@ -99,18 +98,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
 
     public void setPages(List<Page> pages) {
         this.pages = pages;
-    }
-
-    public void addPage(Page page) {
-        pages.add(page);
         notifyDataSetChanged();
-    }
-
-    public void removePage(Page page) {
-        if (pages.contains(page)) {
-            pages.remove(page);
-            notifyDataSetChanged();
-        }
     }
 
     /**
@@ -125,7 +113,6 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
      */
     public void setIsLoop(boolean isLoop) {
         this.isLoop = isLoop;
-        notifyDataSetChanged();
     }
 
 }

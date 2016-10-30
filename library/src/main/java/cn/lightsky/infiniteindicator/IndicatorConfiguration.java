@@ -1,13 +1,6 @@
 package cn.lightsky.infiniteindicator;
 
-import android.content.Context;
 import android.support.v4.view.ViewPager;
-
-import java.util.List;
-
-import cn.lightsky.infiniteindicator.indicator.PageIndicator;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
-import cn.lightsky.infiniteindicator.page.Page;
 
 
 /**
@@ -60,25 +53,25 @@ public class IndicatorConfiguration {
     }
 
 
-    private final double scrollFactor;
+    private double scrollFactor;
     private boolean isAutoScroll;
-    private final ImageLoader imageLoader;
-    private final List<Page> pageViews;
+    private boolean isInfinite;
+    private boolean isDrawIndicator;
+    private boolean isStopScrollWhenTouch;
     private int direction;
     private int slideBorderMode;
-    private boolean isInfinite;
     private long interval;
-    private boolean isStopScrollWhenTouch;
+    private final ImageLoader imageLoader;
     private final ViewPager.OnPageChangeListener onPageChangeListener;
     private final IndicatorPosition presentIndicator;
 
     private IndicatorConfiguration(Builder builder) {
         imageLoader = builder.imageLoader;
-        pageViews = builder.pageViews;
         isInfinite = builder.isInfinite;
         slideBorderMode = builder.slideBorderMode;
         interval = builder.interval;
         direction = builder.direction;
+        isDrawIndicator = builder.isDrawIndicator;
         isAutoScroll = builder.isAutoScroll;
         scrollFactor = builder.scrollFactor;
         presentIndicator = builder.presentIndicator;
@@ -90,10 +83,6 @@ public class IndicatorConfiguration {
         return imageLoader;
     }
 
-    public List<Page> getPageViews() {
-        return pageViews;
-    }
-
     public int getDirection() {
         return direction;
     }
@@ -102,11 +91,15 @@ public class IndicatorConfiguration {
         return isInfinite;
     }
 
+    public boolean isDrawIndicator() {
+        return isDrawIndicator;
+    }
+
     public long getInterval() {
         return interval;
     }
 
-    public boolean isStopScrollWhenTouch() {
+    public boolean isStopWhenTouch() {
         return isStopScrollWhenTouch;
     }
 
@@ -132,24 +125,19 @@ public class IndicatorConfiguration {
 
     public static class Builder{
         private ImageLoader imageLoader;
-        private List<Page> pageViews;
+        private double scrollFactor;
         private boolean isInfinite = true;
-        private boolean isAutoScroll = false;
+        private boolean isAutoScroll = true;
+        private boolean isStopScrollWhenTouch = true;
+        private boolean isDrawIndicator = true;
+        private int direction = RIGHT;
         private long interval = DEFAULT_INTERVAL;
         private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
-        private int direction = RIGHT;
-        private boolean isStopScrollWhenTouch = true;
-        private double scrollFactor;
         private ViewPager.OnPageChangeListener onPageChangeListener;
         private IndicatorPosition presentIndicator = IndicatorPosition.Center_Bottom;
 
         public Builder imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
-            return this;
-        }
-
-        public Builder pages(List<Page> pageViews) {
-            this.pageViews = pageViews;
             return this;
         }
 
@@ -160,6 +148,11 @@ public class IndicatorConfiguration {
          */
         public Builder isInfinite(boolean isInfinite) {
             this.isInfinite = isInfinite;
+            return this;
+        }
+
+        public Builder isDrawIndicator(boolean isDrawIndicator) {
+            this.isDrawIndicator = isDrawIndicator;
             return this;
         }
 
@@ -215,12 +208,12 @@ public class IndicatorConfiguration {
             return this;
         }
 
-        public Builder setPosition(IndicatorPosition presentIndicator) {
+        public Builder position(IndicatorPosition presentIndicator) {
             this.presentIndicator = presentIndicator;
             return this;
         }
 
-        public Builder setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        public Builder onPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
             this.onPageChangeListener = onPageChangeListener;
             return this;
         }

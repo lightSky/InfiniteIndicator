@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
+import cn.lightsky.infiniteindicator.IndicatorConfiguration;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
-import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.UILoader;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
+import cn.lightsky.infiniteindicator.OnPageClickListener;
+import cn.lightsky.infiniteindicator.Page;
 
 
 public class UpdateSlidersActivity extends FragmentActivity{
@@ -33,6 +33,11 @@ public class UpdateSlidersActivity extends FragmentActivity{
 
     private void updateTest() {
         mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new UILoader())
+                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .build();
+        mAnimCircleIndicator.init(configuration);
 
         final Page a = new Page("update same size list", R.drawable.a);
         final Page b = new Page("update smaller size list", R.drawable.b);
@@ -64,7 +69,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(c);
                 pageViews.add(d);
 
-//                mAnimCircleIndicator.addPages(pageViews);
+                mAnimCircleIndicator.notifyDataChange(pageViews);
 
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
@@ -82,7 +87,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(a);
                 pageViews.add(b);
 
-//                mAnimCircleIndicator.addPages(pageViews);
+                mAnimCircleIndicator.notifyDataChange(pageViews);
 
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
@@ -109,7 +114,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.add(d);
                 pageViews.add(h);
 
-//                mAnimCircleIndicator.addPages(pageViews);
+                mAnimCircleIndicator.notifyDataChange(pageViews);
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
@@ -124,7 +129,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                 pageViews.clear();
                 pageViews.add(a);
 
-//                mAnimCircleIndicator.addPages(pageViews);
+                mAnimCircleIndicator.notifyDataChange(pageViews);
                 Toast.makeText(UpdateSlidersActivity.this, page.data + "",
                         Toast.LENGTH_LONG).show();
             }
@@ -135,12 +140,11 @@ public class UpdateSlidersActivity extends FragmentActivity{
         pageViews.add(c);
         pageViews.add(d);
 
-//        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-//        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.notifyDataChange(pageViews);
     }
 
 
-    //To avoid memory leak ,you should release the res
+    //To save resource ,you should release the res
     @Override
     protected void onPause() {
         super.onPause();

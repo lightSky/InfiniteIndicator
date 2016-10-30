@@ -11,8 +11,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cn.light.sky.infiniteindicatordemo.R;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
 
 
 public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener{
@@ -71,25 +69,26 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new UILoader())
-                .pages(pageViews)
                 .isStopWhenTouch(true)
-                .setOnPageChangeListener(this)
-                .setPosition(IndicatorConfiguration.IndicatorPosition.Center)
+                .onPageChangeListener(this)
+                .position(IndicatorConfiguration.IndicatorPosition.Center)
                 .build();
         mAnimCircleIndicator.init(configuration);
+        mAnimCircleIndicator.notifyDataChange(pageViews);
+        mAnimCircleIndicator.setCurrentItem(5);
     }
 
     private void testAnimLineIndicator() {
         mAnimLineIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_line);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new PicassoLoader())
-                .pages(pageViews)
                 .isAutoScroll(false)
-                .setOnPageChangeListener(this)
                 .isStopWhenTouch(true)
-                .setPosition(IndicatorConfiguration.IndicatorPosition.Center)
+                .onPageChangeListener(this)
+                .position(IndicatorConfiguration.IndicatorPosition.Center)
                 .build();
         mAnimLineIndicator.init(configuration);
+        mAnimLineIndicator.notifyDataChange(pageViews);
     }
 
     @Override

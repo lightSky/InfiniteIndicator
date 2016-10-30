@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import cn.lightsky.infiniteindicator.R;
+import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.widget.LinearLayout.HORIZONTAL;
@@ -207,7 +208,6 @@ public class CircleIndicator extends View implements PageIndicator {
             return;
         }
         final int count = ((RecyleAdapter)mViewPager.getAdapter()).getRealCount();
-//        final int count = (PageAdapter)mViewPager.getAdapter().getCount();
         if (count <= 1) {
             return;
         }
@@ -233,7 +233,6 @@ public class CircleIndicator extends View implements PageIndicator {
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
-//            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((mRealCount * threeRadius) / 2.0f);
         }
 
         float dX;
@@ -267,10 +266,6 @@ public class CircleIndicator extends View implements PageIndicator {
 
         //Draw the filled circle according to the current scroll
         float cx = mSnapPage % count * threeRadius;
-//        float cx = (mSnap ? mSnapPage : mCurrentPage) * threeRadius;
-//        if (!mSnap) {
-//            cx += mPageOffset * threeRadius;
-//        }
         if (mOrientation == HORIZONTAL) {
             dX = longOffset + cx;
             dY = shortOffset;
@@ -381,17 +376,10 @@ public class CircleIndicator extends View implements PageIndicator {
     }
 
     @Override
-    public void setViewPager(ViewPager view, int initialPosition) {
-        setViewPager(view);
-        setCurrentItem(initialPosition);
-    }
-
-    @Override
     public void setCurrentItem(int item) {
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
         }
-        mViewPager.setCurrentItem(item);
         mCurrentPage = item;
         invalidate();
     }
@@ -404,7 +392,6 @@ public class CircleIndicator extends View implements PageIndicator {
     @Override
     public void onPageScrollStateChanged(int state) {
         mScrollState = state;
-
         if (mListener != null) {
             mListener.onPageScrollStateChanged(state);
         }
@@ -469,7 +456,6 @@ public class CircleIndicator extends View implements PageIndicator {
             result = specSize;
         } else {
             //Calculate the width according the views count
-//            final int count = mRealCount;
             final int count = ((RecyleAdapter)mViewPager.getAdapter()).getRealCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
                     + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
@@ -506,53 +492,4 @@ public class CircleIndicator extends View implements PageIndicator {
         }
         return result;
     }
-
-//    @Override
-//    public void onRestoreInstanceState(Parcelable state) {
-//        SavedState savedState = (SavedState)state;
-//        super.onRestoreInstanceState(savedState.getSuperState());
-//        mCurrentPage = savedState.currentPage;
-//        mSnapPage = savedState.currentPage;
-//        requestLayout();
-//    }
-//
-//    @Override
-//    public Parcelable onSaveInstanceState() {
-//        Parcelable superState = super.onSaveInstanceState();
-//        SavedState savedState = new SavedState(superState);
-//        savedState.currentPage = mCurrentPage;
-//        return savedState;
-//    }
-//
-//    static class SavedState extends BaseSavedState {
-//        int currentPage;
-//
-//        public SavedState(Parcelable superState) {
-//            super(superState);
-//        }
-//
-//        private SavedState(Parcel in) {
-//            super(in);
-//            currentPage = in.readInt();
-//        }
-//
-//        @Override
-//        public void writeToParcel(Parcel dest, int flags) {
-//            super.writeToParcel(dest, flags);
-//            dest.writeInt(currentPage);
-//        }
-//
-//        @SuppressWarnings("UnusedDeclaration")
-//        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-//            @Override
-//            public SavedState createFromParcel(Parcel in) {
-//                return new SavedState(in);
-//            }
-//
-//            @Override
-//            public SavedState[] newArray(int size) {
-//                return new SavedState[size];
-//            }
-//        };
-//    }
 }

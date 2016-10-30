@@ -11,9 +11,8 @@ import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.GlideLoader;
 import cn.lightsky.infiniteindicator.IndicatorConfiguration;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
-import cn.lightsky.infiniteindicator.PicassoLoader;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
+import cn.lightsky.infiniteindicator.OnPageClickListener;
+import cn.lightsky.infiniteindicator.Page;
 
 public class AddSlidersActivity extends FragmentActivity implements OnPageClickListener {
     private ArrayList<Page> pageViews;
@@ -38,11 +37,10 @@ public class AddSlidersActivity extends FragmentActivity implements OnPageClickL
 
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new GlideLoader())
-                .pages(pageViews)
-                .setPosition(IndicatorConfiguration.IndicatorPosition.Center)
+                .position(IndicatorConfiguration.IndicatorPosition.Center)
                 .build();
         mAnimCircleIndicator.init(configuration);
-
+        mAnimCircleIndicator.notifyDataChange(pageViews);
     }
 
 

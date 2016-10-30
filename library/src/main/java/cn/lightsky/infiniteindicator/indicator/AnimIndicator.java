@@ -14,6 +14,7 @@ import com.nineoldandroids.animation.AnimatorInflater;
 import com.nineoldandroids.animation.AnimatorSet;
 
 import cn.lightsky.infiniteindicator.R;
+import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
@@ -21,21 +22,21 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private final static int DEFAULT_INDICATOR_WIDTH = 5;
 
-    private ViewPager mViewPager;
-
-    private OnPageChangeListener mViewPagerOnPageChangeListener;
-
     private int mIndicatorMargin;
 
     private int mIndicatorWidth;
 
     private int mIndicatorHeight;
 
+    private int mCurrentPage = 0;
+
+    private ViewPager mViewPager;
+
     private int mAnimatorResId = R.animator.scale_with_alpha;
 
     private int mIndicatorBackground = R.drawable.white_radius;
 
-    private int mCurrentPage = 0;
+    private OnPageChangeListener mViewPagerOnPageChangeListener;
 
     private AnimatorSet mAnimationOut;
     private AnimatorSet mAnimationIn;
@@ -64,23 +65,31 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
         if (attrs != null) {
             TypedArray typedArray =
                     context.obtainStyledAttributes(attrs, R.styleable.AnimIndicator);
+
             mIndicatorWidth =
                     typedArray.getDimensionPixelSize(R.styleable.AnimIndicator_ci_width, -1);
+
             mIndicatorHeight =
                     typedArray.getDimensionPixelSize(R.styleable.AnimIndicator_ci_height, -1);
+
             mIndicatorMargin =
                     typedArray.getDimensionPixelSize(R.styleable.AnimIndicator_ci_margin, -1);
+
             mAnimatorResId = typedArray.getResourceId(R.styleable.AnimIndicator_ci_animator,
                     R.animator.scale_with_alpha);
+
             mIndicatorBackground = typedArray.getResourceId(R.styleable.AnimIndicator_ci_drawable,
                     R.drawable.white_radius);
+
             typedArray.recycle();
         }
 
         mIndicatorWidth =
                 (mIndicatorWidth == -1) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorWidth;
+
         mIndicatorHeight =
                 (mIndicatorHeight == -1) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorHeight;
+
         mIndicatorMargin =
                 (mIndicatorMargin == -1) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorMargin;
     }
@@ -92,27 +101,15 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
     }
 
     @Override
-    public void setViewPager(ViewPager view, int initialPosition) {
-        setViewPager(view);
-        setCurrentItem(initialPosition);
-    }
-
-    @Override
     public void setCurrentItem(int item) {
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
         }
-        mViewPager.setCurrentItem(item);
         mCurrentPage = item;
         invalidate();
     }
 
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-
-        if (mViewPager == null) {
-            throw new NullPointerException("can not find Viewpager , setViewPager first");
-        }
-
         mViewPagerOnPageChangeListener = onPageChangeListener;
         mViewPager.setOnPageChangeListener(this);
     }

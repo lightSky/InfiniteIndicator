@@ -39,14 +39,6 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
     void setViewPager(ViewPager view);
 
     /**
-     * Bind the indicator to a ViewPager.
-     *
-     * @param view
-     * @param initialPosition
-     */
-    void setViewPager(ViewPager view, int initialPosition);
-
-    /**
      * <p>Set the current page of both the ViewPager and indicator.</p>
      *
      * <p>This <strong>must</strong> be used if you need to set the page before
