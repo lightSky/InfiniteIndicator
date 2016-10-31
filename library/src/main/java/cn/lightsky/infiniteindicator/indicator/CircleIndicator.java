@@ -52,7 +52,6 @@ public class CircleIndicator extends View implements PageIndicator {
     private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
     private ViewPager mViewPager;
-    private ViewPager.OnPageChangeListener mListener;
     private int mCurrentPage;
     private int mSnapPage;
     private float mPageOffset;
@@ -392,9 +391,6 @@ public class CircleIndicator extends View implements PageIndicator {
     @Override
     public void onPageScrollStateChanged(int state) {
         mScrollState = state;
-        if (mListener != null) {
-            mListener.onPageScrollStateChanged(state);
-        }
     }
 
     @Override
@@ -402,9 +398,6 @@ public class CircleIndicator extends View implements PageIndicator {
         mCurrentPage = position;
         mPageOffset = positionOffset;
         invalidate();
-        if (mListener != null) {
-            mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
     }
 
     @Override
@@ -414,15 +407,6 @@ public class CircleIndicator extends View implements PageIndicator {
             mSnapPage = position;
             invalidate();
         }
-
-        if (mListener != null) {
-            mListener.onPageSelected(position);
-        }
-    }
-
-    @Override
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mListener = listener;
     }
 
     /*

@@ -21,7 +21,6 @@ import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 import cn.lightsky.infiniteindicator.recycle.RecyclingPagerAdapter;
 
-import static android.R.attr.direction;
 import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_CYCLE;
 import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_TO_PARENT;
 
@@ -30,7 +29,8 @@ import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_
  * Created by lightSky on 2014/12/22.
  * Thanks to: https://github.com/Trinea/android-auto-scroll-view-pager
  */
-public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerAdapter.DataChangeListener {
+public class InfiniteIndicator extends RelativeLayout implements
+        RecyclingPagerAdapter.DataChangeListener, ViewPager.OnPageChangeListener {
     private Context mContext;
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
@@ -73,9 +73,9 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         mRecyleAdapter = new RecyleAdapter(mContext);
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
+        mViewPager.addOnPageChangeListener(this);
         setViewPagerScroller();
     }
-
 
     public void init(IndicatorConfiguration configuration){
         this.configuration = configuration;
@@ -102,16 +102,13 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         }
     }
 
-    public PageIndicator getPagerIndicator() {
-        return mIndicator;
+    public void initIndicator() {
+        mIndicator = (PageIndicator) findViewById(configuration.getPageIndicator().getResourceId());
+        mIndicator.setViewPager(mViewPager);
     }
 
-    public void initIndicator() {
-        mIndicator = (PageIndicator) findViewById(configuration.getPresentIndicator().getResourceId());
-        mIndicator.setViewPager(mViewPager);
-        if (configuration.getOnPageChangeListener() != null && mIndicator != null){
-            mIndicator.setOnPageChangeListener(configuration.getOnPageChangeListener());
-        }
+    public PageIndicator getPagerIndicator() {
+        return mIndicator;
     }
 
     /**
@@ -132,13 +129,14 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
      * @param delayTimeInMills first scroll delay time,default is 2500ms
      */
     public void start() {
-        if (configuration == null) {
-            throw new RuntimeException("You should init a configuration first");
-        }
         start(configuration.getInterval());
     }
 
     public void start(long delayTimeInMills) {
+        if (configuration == null) {
+            throw new RuntimeException("You should init a configuration first");
+        }
+
         if (mRecyleAdapter.getRealCount() > 1
                 && isScrolling == false
                 && configuration.isInfinite()) {
@@ -147,9 +145,6 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         }
     }
 
-    /**
-     * stop auto scroll
-     */
     public void stop() {
         isScrolling = false;
         handler.removeMessages(MSG_SCROLL);
@@ -176,7 +171,6 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             scrollerField.setAccessible(true);
             Field interpolatorField = ViewPager.class.getDeclaredField("sInterpolator");
             interpolatorField.setAccessible(true);
-
             scroller = new DurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
             scrollerField.set(mViewPager, scroller);
         } catch (Exception e) {
@@ -195,7 +189,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             return;
         }
 
-        int nextItem = (direction == IndicatorConfiguration.LEFT)
+        int nextItem = (configuration.getDirection() == IndicatorConfiguration.LEFT)
                 ? --currentItem
                 : ++currentItem;
 
@@ -266,8 +260,8 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
     }
 
     public static class ScrollHandler extends Handler {
-        public WeakReference<InfiniteIndicator> mWeakReference;
 
+        public WeakReference<InfiniteIndicator> mWeakReference;
         public ScrollHandler(InfiniteIndicator infiniteIndicatorLayout) {
             mWeakReference = new WeakReference<InfiniteIndicator>(infiniteIndicatorLayout);
         }
@@ -287,10 +281,36 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
                 }
             }
         }
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
+        if (configuration.getOnPageChangeListener() != null) {
+            configuration.getOnPageChangeListener().onPageScrolled(position,
+                    positionOffset, positionOffsetPixels);
+        }
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mIndicator.onPageSelected(position);
+        if (configuration.getOnPageChangeListener() != null) {
+            configuration.getOnPageChangeListener().onPageSelected(position);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        mIndicator.onPageScrollStateChanged(state);
+        if (configuration.getOnPageChangeListener() != null) {
+            configuration.getOnPageChangeListener().onPageScrollStateChanged(state);
+        }
     }
 
     public void setCurrentItem(int index){
         mViewPager.setCurrentItem(index);
-        getPagerIndicator().setCurrentItem(index);
+        mIndicator.setCurrentItem(index);
     }
 }

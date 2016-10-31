@@ -36,8 +36,6 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private int mIndicatorBackground = R.drawable.white_radius;
 
-    private OnPageChangeListener mViewPagerOnPageChangeListener;
-
     private AnimatorSet mAnimationOut;
     private AnimatorSet mAnimationIn;
 
@@ -97,7 +95,6 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
     public void setViewPager(ViewPager viewPager) {
         mViewPager = viewPager;
         createIndicators(viewPager);
-        mViewPager.setOnPageChangeListener(this);
     }
 
     @Override
@@ -109,31 +106,17 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
         invalidate();
     }
 
-    public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        mViewPagerOnPageChangeListener = onPageChangeListener;
-        mViewPager.setOnPageChangeListener(this);
-    }
-
     @Override
     public void notifyDataSetChanged() {
         createIndicators(mViewPager);
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset,
-                               int positionOffsetPixels) {
-        if (mViewPagerOnPageChangeListener != null) {
-            mViewPagerOnPageChangeListener.onPageScrolled(position, positionOffset,
-                    positionOffsetPixels);
-        }
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
     public void onPageSelected(int position) {
-        if (mViewPagerOnPageChangeListener != null) {
-            mViewPagerOnPageChangeListener.onPageSelected(position);
-        }
-
         if (getRealChildAt(mCurrentPage) == null)
             return;
 
@@ -147,9 +130,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (mViewPagerOnPageChangeListener != null) {
-            mViewPagerOnPageChangeListener.onPageScrollStateChanged(state);
-        }
+
     }
 
     private void createIndicators(ViewPager viewPager) {

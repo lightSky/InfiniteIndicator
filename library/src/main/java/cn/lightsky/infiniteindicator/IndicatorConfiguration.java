@@ -111,7 +111,7 @@ public class IndicatorConfiguration {
         return scrollFactor;
     }
 
-    public IndicatorPosition getPresentIndicator() {
+    public IndicatorPosition getPageIndicator() {
         return presentIndicator;
     }
 
