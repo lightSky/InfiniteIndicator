@@ -16,8 +16,6 @@ import com.nineoldandroids.animation.AnimatorSet;
 import cn.lightsky.infiniteindicator.R;
 import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 
-import static android.support.v4.view.ViewPager.OnPageChangeListener;
-
 public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private final static int DEFAULT_INDICATOR_WIDTH = 5;
@@ -30,7 +28,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private int mCurrentPage = 0;
 
-    private ViewPager mViewPager;
+    private RecyleAdapter mRecyleAdapter;
 
     private int mAnimatorResId = R.animator.scale_with_alpha;
 
@@ -38,6 +36,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private AnimatorSet mAnimationOut;
     private AnimatorSet mAnimationIn;
+    private ViewPager mViewPager;
 
     public AnimIndicator(Context context) {
         super(context);
@@ -94,21 +93,18 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     public void setViewPager(ViewPager viewPager) {
         mViewPager = viewPager;
-        createIndicators(viewPager);
+        createIndicators();
     }
 
     @Override
     public void setCurrentItem(int item) {
-        if (mViewPager == null) {
-            throw new IllegalStateException("ViewPager has not been bound.");
-        }
         mCurrentPage = item;
         invalidate();
     }
 
     @Override
     public void notifyDataSetChanged() {
-        createIndicators(mViewPager);
+        createIndicators();
     }
 
     @Override
@@ -117,12 +113,12 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     @Override
     public void onPageSelected(int position) {
-        if (getRealChildAt(mCurrentPage) == null)
+        if (getChildAt(mCurrentPage) == null)
             return;
 
-        mAnimationIn.setTarget(getRealChildAt(mCurrentPage));
+        mAnimationIn.setTarget(getChildAt(mCurrentPage));
         mAnimationIn.start();
-        mAnimationOut.setTarget(getRealChildAt(position));
+        mAnimationOut.setTarget(getChildAt(position));
         mAnimationOut.start();
 
         mCurrentPage = position;
@@ -133,14 +129,14 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     }
 
-    private void createIndicators(ViewPager viewPager) {
+    private void createIndicators() {
         removeAllViews();
 
-        if (((RecyleAdapter) viewPager.getAdapter()) == null) {
+        if (mRecyleAdapter == null) {
             return;
         }
 
-        int count = ((RecyleAdapter) viewPager.getAdapter()).getRealCount();
+        int count = ((RecyleAdapter) mViewPager.getAdapter()).getRealCount();
         if (count < 2) {
             return;
         }
@@ -158,12 +154,8 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
             mAnimationOut.start();
         }
 
-        mAnimationOut.setTarget(getRealChildAt(mCurrentPage));
+        mAnimationOut.setTarget(getChildAt(mCurrentPage));
         mAnimationOut.start();
-    }
-
-    private View getRealChildAt(int position) {
-        return getChildAt(((RecyleAdapter) mViewPager.getAdapter()).getPosition(position));
     }
 
     private class ReverseInterpolator implements Interpolator {

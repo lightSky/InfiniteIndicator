@@ -6,12 +6,10 @@ import android.widget.Scroller;
 
 /**
  * CustomDurationScroller
- * 
- * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2014-3-2
  */
 public class DurationScroller extends Scroller {
 
-    private double scrollFactor = 1;
+    private double scrollFactor = 1.2;
 
     public DurationScroller(Context context) {
         super(context);

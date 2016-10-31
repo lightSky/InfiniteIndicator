@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 public class IndicatorConfiguration {
 
     public static final int DEFAULT_INTERVAL = 2500;
+    public static final double DEFAULT_SCROLL_FACTOR = 1.2;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
 
@@ -25,6 +26,8 @@ public class IndicatorConfiguration {
      * deliver event to parent when sliding at the last or first item *
      */
     public static final int SLIDE_BORDER_MODE_TO_PARENT = 2;
+
+    private int resId;
 
     public enum IndicatorPosition {
         Center("Center_Bottom", R.id.default_center_indicator),
@@ -55,7 +58,7 @@ public class IndicatorConfiguration {
 
     private double scrollFactor;
     private boolean isAutoScroll;
-    private boolean isInfinite;
+    private boolean isLoop;
     private boolean isDrawIndicator;
     private boolean isStopScrollWhenTouch;
     private int direction;
@@ -67,19 +70,23 @@ public class IndicatorConfiguration {
 
     private IndicatorConfiguration(Builder builder) {
         imageLoader = builder.imageLoader;
-        isInfinite = builder.isInfinite;
+        isLoop = builder.isLoop;
+        resId = builder.resId;
         slideBorderMode = builder.slideBorderMode;
         interval = builder.interval;
         direction = builder.direction;
         isDrawIndicator = builder.isDrawIndicator;
         isAutoScroll = builder.isAutoScroll;
         scrollFactor = builder.scrollFactor;
-        presentIndicator = builder.presentIndicator;
+        presentIndicator = builder.indicatorPosition;
         isStopScrollWhenTouch = builder.isStopScrollWhenTouch;
         onPageChangeListener = builder.onPageChangeListener;
     }
 
     public ImageLoader getImageLoader() {
+        if (imageLoader == null) {
+            throw new RuntimeException("You should set ImageLoader first");
+        }
         return imageLoader;
     }
 
@@ -87,8 +94,8 @@ public class IndicatorConfiguration {
         return direction;
     }
 
-    public boolean isInfinite() {
-        return isInfinite;
+    public boolean isLoop() {
+        return isLoop;
     }
 
     public boolean isDrawIndicator() {
@@ -123,10 +130,14 @@ public class IndicatorConfiguration {
         return onPageChangeListener;
     }
 
+    public int getResId() {
+        return resId;
+    }
+
     public static class Builder{
         private ImageLoader imageLoader;
-        private double scrollFactor;
-        private boolean isInfinite = true;
+        private double scrollFactor = DEFAULT_SCROLL_FACTOR;
+        private boolean isLoop = true;
         private boolean isAutoScroll = true;
         private boolean isStopScrollWhenTouch = true;
         private boolean isDrawIndicator = true;
@@ -134,7 +145,8 @@ public class IndicatorConfiguration {
         private long interval = DEFAULT_INTERVAL;
         private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
         private ViewPager.OnPageChangeListener onPageChangeListener;
-        private IndicatorPosition presentIndicator = IndicatorPosition.Center_Bottom;
+        private IndicatorPosition indicatorPosition = IndicatorPosition.Center_Bottom;
+        private int resId;
 
         public Builder imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
@@ -144,10 +156,10 @@ public class IndicatorConfiguration {
         /**
          * set whether is loop when reaching the last or first item, default is true
          *
-         * @param isInfinite the isInfinite
+         * @param isLoop
          */
-        public Builder isInfinite(boolean isInfinite) {
-            this.isInfinite = isInfinite;
+        public Builder isLoop(boolean isLoop) {
+            this.isLoop = isLoop;
             return this;
         }
 
@@ -208,8 +220,13 @@ public class IndicatorConfiguration {
             return this;
         }
 
-        public Builder position(IndicatorPosition presentIndicator) {
-            this.presentIndicator = presentIndicator;
+        public Builder position(IndicatorPosition indicatorPosition) {
+            this.indicatorPosition = indicatorPosition;
+            return this;
+        }
+
+        public Builder layoutResId(int resId) {
+            this.resId = resId;
             return this;
         }
 

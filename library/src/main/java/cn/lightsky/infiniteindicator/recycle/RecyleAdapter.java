@@ -1,6 +1,7 @@
 package cn.lightsky.infiniteindicator.recycle;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,14 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.lightsky.infiniteindicator.R;
 import cn.lightsky.infiniteindicator.ImageLoader;
 import cn.lightsky.infiniteindicator.OnPageClickListener;
 import cn.lightsky.infiniteindicator.Page;
+import cn.lightsky.infiniteindicator.R;
 
 public class RecyleAdapter extends RecyclingPagerAdapter {
 
+    private int resId;
     private Context mContext;
     private LayoutInflater mInflater;
     private ImageLoader mImageLoader;
@@ -23,9 +25,10 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
     private List<Page> pages = new ArrayList<>();
     private boolean isLoop = true;
 
-    public RecyleAdapter(Context context) {
+    public RecyleAdapter(Context context ,@IdRes int resId) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
+        this.resId = resId;
     }
 
     public RecyleAdapter(Context context,OnPageClickListener onPageClickListener) {
@@ -40,7 +43,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
      * @param position
      * @return
      */
-    public int getPosition(int position) {
+    public int getRealPosition(int position) {
         return isLoop ? position % getRealCount()  : position;
     }
 
@@ -60,18 +63,20 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.simple_slider_view, null);
+            convertView = LayoutInflater.from(mContext)
+                    .inflate(resId != 0 ? resId : R.layout.simple_slider_view , null);
+
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
 
-        final Page page = pages.get(getPosition(position));
+        final Page page = pages.get(getRealPosition(position));
 
         if(page.onPageClickListener != null){
             holder.target.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    page.onPageClickListener.onPageClick(getPosition(position), page);
+                    page.onPageClickListener.onPageClick(getRealPosition(position), page);
                 }
             });
         }
