@@ -36,8 +36,7 @@
         android:id="@+id/default_center_top_indicator"
         style="@style/AnimLineIndicator"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-       />
+        android:layout_centerHorizontal="true"/>
 
     <cn.lightsky.infiniteindicator.indicator.AnimIndicator
         android:id="@+id/default_center_top_right_indicator"

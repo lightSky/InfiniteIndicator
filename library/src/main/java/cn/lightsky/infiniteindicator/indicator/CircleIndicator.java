@@ -277,10 +277,7 @@ public class CircleIndicator extends View implements PageIndicator {
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
-        if (super.onTouchEvent(ev)) {
-            return true;
-        }
-        if (mRecyleAdapter.getCount() == 0) {
+        if (mViewPager == null || mRecyleAdapter.getCount() == 0) {
             return false;
         }
 
@@ -366,7 +363,6 @@ public class CircleIndicator extends View implements PageIndicator {
         }
         mViewPager = view;
         mRecyleAdapter = (RecyleAdapter) mViewPager.getAdapter();
-        invalidate();
     }
 
     @Override
@@ -377,6 +373,7 @@ public class CircleIndicator extends View implements PageIndicator {
 
     @Override
     public void notifyDataSetChanged() {
+        mCurrentPage = 0;
         invalidate();
     }
 

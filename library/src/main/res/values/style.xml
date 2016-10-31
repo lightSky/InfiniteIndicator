@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Position Style-->paddingBottom
+    <!--Position Style-->
 
     <style name="Center">
         <item name="android:gravity">center</item>
@@ -18,7 +18,7 @@
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 
-    <style name="BottomRight">paddingRight paddingRight
+    <style name="BottomRight">
         <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_alignParentBottom">true</item>
@@ -36,7 +36,7 @@
         <item name="android:layout_alignParentLeft">true</item>
     </style>
 
-    <style name="CenterTop">paddingTop
+    <style name="CenterTop">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
@@ -44,7 +44,7 @@
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 
-    <style name="CenterTopRight">paddingTop paddingRight
+    <style name="CenterTopRight">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
@@ -52,7 +52,7 @@
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
-    <style name="CenterTopLeft">paddingLeft paddingTop
+    <style name="CenterTopLeft">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>

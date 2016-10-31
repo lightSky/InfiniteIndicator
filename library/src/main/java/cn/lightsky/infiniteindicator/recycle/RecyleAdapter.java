@@ -15,6 +15,8 @@ import cn.lightsky.infiniteindicator.OnPageClickListener;
 import cn.lightsky.infiniteindicator.Page;
 import cn.lightsky.infiniteindicator.R;
 
+import static cn.lightsky.infiniteindicator.InfiniteIndicator.PAGE_COUNT_FACTOR;
+
 public class RecyleAdapter extends RecyclingPagerAdapter {
 
     private int resId;
@@ -25,13 +27,13 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
     private List<Page> pages = new ArrayList<>();
     private boolean isLoop = true;
 
-    public RecyleAdapter(Context context ,@IdRes int resId) {
+    public RecyleAdapter(Context context, @IdRes int resId) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         this.resId = resId;
     }
 
-    public RecyleAdapter(Context context,OnPageClickListener onPageClickListener) {
+    public RecyleAdapter(Context context, OnPageClickListener onPageClickListener) {
         mContext = context;
         mOnPageClickListener = onPageClickListener;
         mInflater = LayoutInflater.from(context);
@@ -44,12 +46,12 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
      * @return
      */
     public int getRealPosition(int position) {
-        return isLoop ? position % getRealCount()  : position;
+        return isLoop ? position % getRealCount() : position;
     }
 
     @Override
     public int getCount() {
-        return isLoop ? getRealCount() * 100 : getRealCount();
+        return isLoop ? getRealCount() * PAGE_COUNT_FACTOR : getRealCount();
     }
 
     public int getRealCount() {
@@ -64,7 +66,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
             holder = (ViewHolder) convertView.getTag();
         } else {
             convertView = LayoutInflater.from(mContext)
-                    .inflate(resId != 0 ? resId : R.layout.simple_slider_view , null);
+                    .inflate(resId != 0 ? resId : R.layout.simple_slider_view, null);
 
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
@@ -72,16 +74,19 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
 
         final Page page = pages.get(getRealPosition(position));
 
-        if(page.onPageClickListener != null){
-            holder.target.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    page.onPageClickListener.onPageClick(getRealPosition(position), page);
-                }
-            });
+        if (holder.target != null) {
+            if (page.onPageClickListener != null) {
+                holder.target.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        page.onPageClickListener.onPageClick(getRealPosition(position), page);
+                    }
+                });
+            }
+
+            mImageLoader.load(mContext, holder.target, page.res);
         }
 
-        mImageLoader.load(mContext,holder.target,page.res);
         return convertView;
     }
 

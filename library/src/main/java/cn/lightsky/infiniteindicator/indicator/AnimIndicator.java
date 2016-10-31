@@ -2,6 +2,7 @@ package cn.lightsky.infiniteindicator.indicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -84,22 +85,24 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     public void setViewPager(ViewPager viewPager) {
         mRecyleAdapter = (RecyleAdapter) viewPager.getAdapter();
-        createIndicators();
+        invalidIndicators();
     }
 
     @Override
     public void setCurrentItem(int item) {
         mCurrentPage = item;
-        invalidate();
+        invalidIndicators();
     }
 
     @Override
     public void notifyDataSetChanged() {
-        createIndicators();
+        mCurrentPage = 0;
+        invalidIndicators();
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
 
     @Override
@@ -120,7 +123,9 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     }
 
-    private void createIndicators() {
+    private void invalidIndicators() {
+        System.out.println("invalidIndicators------------");
+
         removeAllViews();
 
         if (mRecyleAdapter == null) {

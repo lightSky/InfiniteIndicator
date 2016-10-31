@@ -21,9 +21,6 @@ import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 import cn.lightsky.infiniteindicator.recycle.RecyclingPagerAdapter;
 
-import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_CYCLE;
-import static cn.lightsky.infiniteindicator.IndicatorConfiguration.SLIDE_BORDER_MODE_TO_PARENT;
-
 
 /**
  * Created by lightSky on 2014/12/22.
@@ -42,6 +39,7 @@ public class InfiniteIndicator extends RelativeLayout implements
     private float downX = 0f;
     private float touchX = 0f;
     public static final int MSG_SCROLL = 1000;
+    public static final int PAGE_COUNT_FACTOR = 100;
     private IndicatorConfiguration configuration;
 
     public InfiniteIndicator(Context context) {
@@ -72,9 +70,9 @@ public class InfiniteIndicator extends RelativeLayout implements
         handler = new ScrollHandler(this);
     }
 
-    public void init(IndicatorConfiguration configuration){
+    public void init(IndicatorConfiguration configuration) {
         this.configuration = configuration;
-        mRecyleAdapter = new RecyleAdapter(mContext, configuration.getResId());
+        mRecyleAdapter = new RecyleAdapter(mContext, configuration.getPageResId());
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
         mViewPager.addOnPageChangeListener(this);
@@ -85,17 +83,15 @@ public class InfiniteIndicator extends RelativeLayout implements
     }
 
     public void notifyDataChange(List<Page> pages) {
-        if (pages != null && !pages.isEmpty()){
+        if (pages != null && !pages.isEmpty()) {
             mRecyleAdapter.setPages(pages);
-            notifyDataChange();
         }
 
-        if (!isScrolling) {
-            initIndicatorIndex();
-            if (configuration.isAutoScroll()) {
-                start();
-            }
+        scrollToIndex(0);
+        if (configuration.isAutoScroll()) {
+            start();
         }
+
     }
 
     public void initIndicator() {
@@ -105,21 +101,40 @@ public class InfiniteIndicator extends RelativeLayout implements
         }
     }
 
+    /**
+     * return PageIndicator for develop to custome indicator
+     *
+     * @return
+     */
     public PageIndicator getPagerIndicator() {
         return mIndicator;
     }
 
     /**
-     * according page count and is loop decide the first page to display
+     * scroll to given index page by loop and offset
+     * page to display
      */
-    private void initIndicatorIndex() {
+    private void scrollToIndex(int offset) {
         if (configuration.isLoop() && getRealCount() > 1) {
-            mViewPager.setCurrentItem(
-                    getRealCount() * 50
-                            - (getRealCount() * 50 % getRealCount()));
+            mViewPager.setCurrentItem(getIndex(offset));
         } else {
             mViewPager.setCurrentItem(0);
         }
+        if (mIndicator != null) {
+            mIndicator.setCurrentItem(offset);
+        }
+    }
+
+    /**
+     * get the item index of viewpager by given offset
+     *
+     * @param offset the real index of pages
+     * @return
+     */
+    private int getIndex(int offset) {
+        return getRealCount() * PAGE_COUNT_FACTOR / 2 -
+                (getRealCount() * PAGE_COUNT_FACTOR / 2 % getRealCount
+                        ()) + offset;
     }
 
     /**
@@ -144,19 +159,11 @@ public class InfiniteIndicator extends RelativeLayout implements
         }
     }
 
-    private int getRealCount() {
-        return mRecyleAdapter.getRealCount();
-    }
-
-
-    private int getRealPosition(int position) {
-        return mRecyleAdapter.getRealPosition(position);
-    }
-
     public void stop() {
         isScrolling = false;
         handler.removeMessages(MSG_SCROLL);
     }
+
 
     private void sendScrollMessage() {
         sendScrollMessage(configuration.getInterval());
@@ -187,12 +194,21 @@ public class InfiniteIndicator extends RelativeLayout implements
         }
     }
 
+    private int getRealCount() {
+        return mRecyleAdapter.getRealCount();
+    }
+
+    private int getRealPosition(int position) {
+        return mRecyleAdapter.getRealPosition(position);
+    }
+
     /**
      * scroll only once
      */
     public void scrollOnce() {
         PagerAdapter adapter = mViewPager.getAdapter();
         int currentItem = mViewPager.getCurrentItem();
+
         int totalCount;
         if (adapter == null || (totalCount = adapter.getCount()) <= 1) {
             return;
@@ -231,34 +247,6 @@ public class InfiniteIndicator extends RelativeLayout implements
             }
         }
 
-        if (configuration.getSlideBorderMode() == SLIDE_BORDER_MODE_TO_PARENT ||
-                configuration.getSlideBorderMode() ==
-                SLIDE_BORDER_MODE_CYCLE) {
-            touchX = ev.getX();
-            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                downX = touchX;
-            }
-            int currentItem = mViewPager.getCurrentItem();
-            PagerAdapter adapter = mViewPager.getAdapter();
-            int pageCount = adapter == null ? 0 : adapter.getCount();
-            /**
-             * current index is first one and slide to right or current index is last one and slide to left.<br/>
-             * if slide border mode is to parent, then requestDisallowInterceptTouchEvent false.<br/>
-             * else scroll to last one when current item is first one, scroll to first one when current item is last
-             * one.
-             */
-            if ((currentItem == 0 && downX <= touchX) || (currentItem == pageCount - 1 && downX >= touchX)) {
-                if (configuration.getSlideBorderMode() == SLIDE_BORDER_MODE_TO_PARENT) {
-                    getParent().requestDisallowInterceptTouchEvent(false);
-                } else {
-                    if (pageCount > 1) {
-                        mViewPager.setCurrentItem(pageCount - currentItem - 1);
-                    }
-                    getParent().requestDisallowInterceptTouchEvent(true);
-                }
-                return super.dispatchTouchEvent(ev);
-            }
-        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -272,6 +260,7 @@ public class InfiniteIndicator extends RelativeLayout implements
     public static class ScrollHandler extends Handler {
 
         public WeakReference<InfiniteIndicator> mWeakReference;
+
         public ScrollHandler(InfiniteIndicator infiniteIndicatorLayout) {
             mWeakReference = new WeakReference<InfiniteIndicator>(infiniteIndicatorLayout);
         }
@@ -291,7 +280,6 @@ public class InfiniteIndicator extends RelativeLayout implements
                 }
             }
         }
-
     }
 
     @Override
@@ -326,10 +314,11 @@ public class InfiniteIndicator extends RelativeLayout implements
         }
     }
 
-    public void setCurrentItem(int index){
-        mViewPager.setCurrentItem(index);
-        if (mIndicator != null) {
-            mIndicator.setCurrentItem(index);
+    public void setCurrentItem(int index) {
+        if (index > getRealCount() - 1) {
+            throw new IndexOutOfBoundsException("index is " + index + "current " +
+                    "list size is " + getRealCount());
         }
+        scrollToIndex(index);
     }
 }

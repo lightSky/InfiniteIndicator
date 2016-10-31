@@ -1,5 +1,6 @@
 package cn.lightsky.infiniteindicator;
 
+import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
 
 
@@ -13,21 +14,7 @@ public class IndicatorConfiguration {
     public static final double DEFAULT_SCROLL_FACTOR = 1.2;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
-
-    /**
-     * do nothing when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_NONE = 0;
-    /**
-     * cycle when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_CYCLE = 1;
-    /**
-     * deliver event to parent when sliding at the last or first item *
-     */
-    public static final int SLIDE_BORDER_MODE_TO_PARENT = 2;
-
-    private int resId;
+    private int pageResId;
 
     public enum IndicatorPosition {
         Center("Center_Bottom", R.id.default_center_indicator),
@@ -71,8 +58,7 @@ public class IndicatorConfiguration {
     private IndicatorConfiguration(Builder builder) {
         imageLoader = builder.imageLoader;
         isLoop = builder.isLoop;
-        resId = builder.resId;
-        slideBorderMode = builder.slideBorderMode;
+        pageResId = builder.pageResId;
         interval = builder.interval;
         direction = builder.direction;
         isDrawIndicator = builder.isDrawIndicator;
@@ -130,8 +116,8 @@ public class IndicatorConfiguration {
         return onPageChangeListener;
     }
 
-    public int getResId() {
-        return resId;
+    public int getPageResId() {
+        return pageResId;
     }
 
     public static class Builder{
@@ -143,10 +129,9 @@ public class IndicatorConfiguration {
         private boolean isDrawIndicator = true;
         private int direction = RIGHT;
         private long interval = DEFAULT_INTERVAL;
-        private int slideBorderMode = SLIDE_BORDER_MODE_NONE;
         private ViewPager.OnPageChangeListener onPageChangeListener;
         private IndicatorPosition indicatorPosition = IndicatorPosition.Center_Bottom;
-        private int resId;
+        private int pageResId;
 
         public Builder imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
@@ -201,18 +186,6 @@ public class IndicatorConfiguration {
         }
 
         /**
-         * set how to process when sliding at the last or first item
-         * will be explore in future versio default is{@link #SLIDE_BORDER_MODE_NONE} *
-         *
-         * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
-         *                        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
-         */
-        private Builder setSlideBorderMode(int slideBorderMode) {
-            this.slideBorderMode = slideBorderMode;
-            return this;
-        }
-
-        /**
          * set the factor by which the duration of sliding animation will change
          */
         public Builder setScrollDurationFactor(double scrollFactor) {
@@ -225,8 +198,15 @@ public class IndicatorConfiguration {
             return this;
         }
 
-        public Builder layoutResId(int resId) {
-            this.resId = resId;
+        /**
+         * provide custome page layout , but you should provide a imageview and
+         * it's id must is slider_image , otherwise the imageview will be empty
+         *
+         * @param resId the layout id of your custome page
+         * @return
+         */
+        public Builder pageResId(int resId) {
+            this.pageResId = resId;
             return this;
         }
 

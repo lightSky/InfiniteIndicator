@@ -10,6 +10,7 @@ import java.util.List;
 import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.IndicatorConfiguration;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
+import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.UILoader;
 import cn.lightsky.infiniteindicator.OnPageClickListener;
 import cn.lightsky.infiniteindicator.Page;
@@ -20,6 +21,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
 
     private List refreshPageViews = new ArrayList();
     private ArrayList<Page> pageViews = new ArrayList<>();
+    private List<Integer> updateUrls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +31,10 @@ public class UpdateSlidersActivity extends FragmentActivity{
         updateTest();
     }
 
-    private List<Integer> updateUrls = new ArrayList<>();
-
     private void updateTest() {
         mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
-                .imageLoader(new UILoader())
+                .imageLoader(new PicassoLoader())
                 .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
                 .build();
         mAnimCircleIndicator.init(configuration);
@@ -58,10 +58,10 @@ public class UpdateSlidersActivity extends FragmentActivity{
 //                c.res = R.drawable.c_yypd;
 //                d.res = R.drawable.d_yypd;
 
-                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
-                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
-                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
-                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
+                a.res = R.drawable.a;
+                b.res = R.drawable.b;
+                c.res = R.drawable.c;
+                d.res = R.drawable.d;
 
                 pageViews.clear();
                 pageViews.add(a);
@@ -100,10 +100,10 @@ public class UpdateSlidersActivity extends FragmentActivity{
             public void onPageClick(int position, Page page) {
                 pageViews.clear();
 
-                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
-                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
-                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
-                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
+                a.res = R.drawable.a;
+                b.res = R.drawable.b;
+                c.res = R.drawable.c;
+                d.res = R.drawable.d;
 
                 pageViews.add(a);
                 pageViews.add(e);

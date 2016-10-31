@@ -22,11 +22,15 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
         setContentView(R.layout.activity_default_circle_indicator);
 
         pageViews = new ArrayList<Page>();
-        pageViews.add(new Page("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
-        pageViews.add(new Page("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
-        pageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
-        pageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
+//        pageViews.add(new Page("Page A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg"));
+//        pageViews.add(new Page("Page B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg"));
+//        pageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
+//        pageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
 
+        pageViews.add(new Page("A ", "drawable://" + R.drawable.a));
+        pageViews.add(new Page("B ", "drawable://" + R.drawable.b));
+        pageViews.add(new Page("C ", "drawable://" + R.drawable.c));
+        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
         testCircleIndicator();
         testCustomeCircleIndicator();
     }
@@ -53,6 +57,7 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
                 .build();
         mDefaultIndicator.init(configuration);
         mDefaultIndicator.notifyDataChange(pageViews);
+        mDefaultIndicator.setCurrentItem(2);
     }
 
     private void testCustomeCircleIndicator() {
