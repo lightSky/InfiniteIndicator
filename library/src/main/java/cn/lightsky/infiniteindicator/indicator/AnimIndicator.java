@@ -19,24 +19,15 @@ import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 public class AnimIndicator extends LinearLayout implements PageIndicator {
 
     private final static int DEFAULT_INDICATOR_WIDTH = 5;
-
     private int mIndicatorMargin;
-
     private int mIndicatorWidth;
-
     private int mIndicatorHeight;
-
     private int mCurrentPage = 0;
-
     private RecyleAdapter mRecyleAdapter;
-
     private int mAnimatorResId = R.animator.scale_with_alpha;
-
     private int mIndicatorBackground = R.drawable.white_radius;
-
     private AnimatorSet mAnimationOut;
     private AnimatorSet mAnimationIn;
-    private ViewPager mViewPager;
 
     public AnimIndicator(Context context) {
         super(context);
@@ -92,7 +83,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
     }
 
     public void setViewPager(ViewPager viewPager) {
-        mViewPager = viewPager;
+        mRecyleAdapter = (RecyleAdapter) viewPager.getAdapter();
         createIndicators();
     }
 
@@ -136,7 +127,7 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
             return;
         }
 
-        int count = ((RecyleAdapter) mViewPager.getAdapter()).getRealCount();
+        int count = mRecyleAdapter.getRealCount();
         if (count < 2) {
             return;
         }
