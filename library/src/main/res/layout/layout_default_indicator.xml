@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <cn.lightsky.infiniteindicator.indicator.CircleIndicator
+    <!--<cn.lightsky.infiniteindicator.indicator.CircleIndicator
         android:id="@+id/default_center_indicator"
         style="@style/Center"
         android:layout_height="wrap_content"/>
@@ -41,5 +41,5 @@
     <cn.lightsky.infiniteindicator.indicator.CircleIndicator
         android:id="@+id/default_center_top_left_indicator"
         style="@style/CenterTopLeft"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"/>-->
 </RelativeLayout>

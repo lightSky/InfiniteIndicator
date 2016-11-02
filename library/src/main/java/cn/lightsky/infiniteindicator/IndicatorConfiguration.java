@@ -1,7 +1,7 @@
 package cn.lightsky.infiniteindicator;
 
-import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 
 /**
@@ -14,7 +14,6 @@ public class IndicatorConfiguration {
     public static final double DEFAULT_SCROLL_FACTOR = 1.2;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
-    private int pageResId;
 
     public enum IndicatorPosition {
         Center("Center_Bottom", R.id.default_center_indicator),
@@ -42,7 +41,8 @@ public class IndicatorConfiguration {
         }
     }
 
-
+    private int pageResId;
+    private View indicator;
     private double scrollFactor;
     private boolean isAutoScroll;
     private boolean isLoop;
@@ -65,6 +65,7 @@ public class IndicatorConfiguration {
         isAutoScroll = builder.isAutoScroll;
         scrollFactor = builder.scrollFactor;
         presentIndicator = builder.indicatorPosition;
+        indicator = builder.indicator;
         isStopScrollWhenTouch = builder.isStopScrollWhenTouch;
         onPageChangeListener = builder.onPageChangeListener;
     }
@@ -127,6 +128,7 @@ public class IndicatorConfiguration {
         private boolean isAutoScroll = true;
         private boolean isStopScrollWhenTouch = true;
         private boolean isDrawIndicator = true;
+        private View indicator;
         private int direction = RIGHT;
         private long interval = DEFAULT_INTERVAL;
         private ViewPager.OnPageChangeListener onPageChangeListener;
@@ -207,6 +209,17 @@ public class IndicatorConfiguration {
          */
         public Builder pageResId(int resId) {
             this.pageResId = resId;
+            return this;
+        }
+
+        /**
+         * set the indicator for your page,default will not draw,or you can use
+         * default indicator ,and you should set isDrawIndicator true
+         * @param indicator
+         * @return
+         */
+        public Builder indicator(View indicator) {
+            this.indicator = indicator;
             return this;
         }
 

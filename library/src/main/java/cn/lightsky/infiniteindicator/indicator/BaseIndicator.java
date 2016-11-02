@@ -12,7 +12,7 @@ import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
  * Created by lightsky on 2016/10/31.
  */
 
-public class BaseIndicator extends LinearLayout {
+public class BaseIndicator extends LinearLayout implements PageIndicator{
 
     protected int realCount;
     private ViewPager mViewPager;
@@ -36,5 +36,39 @@ public class BaseIndicator extends LinearLayout {
 
     private View getRealChildAt(int position) {
         return getChildAt(getRealPosition(position));
+    }
+
+    public void onPageSelected(){
+
+    }
+
+    @Override
+    public void setViewPager(ViewPager view) {
+
+    }
+
+    @Override
+    public void setCurrentItem(int item) {
+
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
