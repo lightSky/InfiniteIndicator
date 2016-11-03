@@ -72,7 +72,9 @@ public class InfiniteIndicator extends RelativeLayout implements
 
     public void init(IndicatorConfiguration configuration) {
         this.configuration = configuration;
-        mRecyleAdapter = new RecyleAdapter(mContext, configuration.getPageResId());
+        mRecyleAdapter = new RecyleAdapter(mContext
+                ,configuration.getPageResId()
+                ,configuration.getOnPageClickListener());
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
         mViewPager.addOnPageChangeListener(this);

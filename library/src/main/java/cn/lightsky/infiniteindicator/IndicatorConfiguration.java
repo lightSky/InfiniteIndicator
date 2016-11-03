@@ -49,10 +49,10 @@ public class IndicatorConfiguration {
     private boolean isDrawIndicator;
     private boolean isStopScrollWhenTouch;
     private int direction;
-    private int slideBorderMode;
     private long interval;
     private final ImageLoader imageLoader;
     private final ViewPager.OnPageChangeListener onPageChangeListener;
+    private final OnPageClickListener mOnPageClickListener;
     private final IndicatorPosition presentIndicator;
 
     private IndicatorConfiguration(Builder builder) {
@@ -66,6 +66,7 @@ public class IndicatorConfiguration {
         scrollFactor = builder.scrollFactor;
         presentIndicator = builder.indicatorPosition;
         indicator = builder.indicator;
+        mOnPageClickListener = builder.onPageClickListener;
         isStopScrollWhenTouch = builder.isStopScrollWhenTouch;
         onPageChangeListener = builder.onPageChangeListener;
     }
@@ -109,12 +110,12 @@ public class IndicatorConfiguration {
         return presentIndicator;
     }
 
-    public int getSlideBorderMode() {
-        return slideBorderMode;
-    }
-
     public ViewPager.OnPageChangeListener getOnPageChangeListener() {
         return onPageChangeListener;
+    }
+
+    public OnPageClickListener getOnPageClickListener() {
+        return mOnPageClickListener;
     }
 
     public int getPageResId() {
@@ -129,6 +130,7 @@ public class IndicatorConfiguration {
         private boolean isStopScrollWhenTouch = true;
         private boolean isDrawIndicator = true;
         private View indicator;
+        private OnPageClickListener onPageClickListener;
         private int direction = RIGHT;
         private long interval = DEFAULT_INTERVAL;
         private ViewPager.OnPageChangeListener onPageChangeListener;
@@ -197,6 +199,11 @@ public class IndicatorConfiguration {
 
         public Builder position(IndicatorPosition indicatorPosition) {
             this.indicatorPosition = indicatorPosition;
+            return this;
+        }
+
+        public Builder onPageClickListener(OnPageClickListener onPageClickListener) {
+            this.onPageClickListener = onPageClickListener;
             return this;
         }
 

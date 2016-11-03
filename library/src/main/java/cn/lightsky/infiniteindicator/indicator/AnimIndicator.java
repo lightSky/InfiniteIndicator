@@ -124,8 +124,6 @@ public class AnimIndicator extends LinearLayout implements PageIndicator {
     }
 
     private void invalidIndicators() {
-        System.out.println("invalidIndicators------------");
-
         removeAllViews();
 
         if (mRecyleAdapter == null) {

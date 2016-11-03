@@ -28,14 +28,17 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
     private boolean isLoop = true;
 
     public RecyleAdapter(Context context, @IdRes int resId) {
-        mContext = context;
-        mInflater = LayoutInflater.from(context);
-        this.resId = resId;
+        this(context, resId, null);
     }
 
     public RecyleAdapter(Context context, OnPageClickListener onPageClickListener) {
-        mContext = context;
-        mOnPageClickListener = onPageClickListener;
+        this(context, 0, onPageClickListener);
+    }
+
+    public RecyleAdapter(Context context, @IdRes int resId, OnPageClickListener onPageClickListener) {
+        this.mContext = context;
+        this.mOnPageClickListener = onPageClickListener;
+        this.resId = resId;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -75,11 +78,11 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
         final Page page = pages.get(getRealPosition(position));
 
         if (holder.target != null) {
-            if (page.onPageClickListener != null) {
+            if (mOnPageClickListener != null) {
                 holder.target.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        page.onPageClickListener.onPageClick(getRealPosition(position), page);
+                        mOnPageClickListener.onPageClick(getRealPosition(position), page);
                     }
                 });
             }
