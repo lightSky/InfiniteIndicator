@@ -6,7 +6,6 @@ package cn.lightsky.infiniteindicator;
 public class Page {
     public String data = "";
     public Object res;
-    public OnPageClickListener onPageClickListener;
 
     public Page(Object res) {
         this.res = res;
@@ -17,14 +16,8 @@ public class Page {
         this.res = res;
     }
 
-    public Page(String data, Object url, OnPageClickListener listener) {
+    public Page(String data, Object res, OnPageClickListener listener) {
         this.data = data;
-        this.res = url;
-        this.onPageClickListener = listener;
-    }
-
-    public Page(Object url, OnPageClickListener listener) {
-        this.res = url;
-        this.onPageClickListener = listener;
+        this.res = res;
     }
 }

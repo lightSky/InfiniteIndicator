@@ -31,6 +31,10 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
         pageViews.add(new Page("B ", "drawable://" + R.drawable.b));
         pageViews.add(new Page("C ", "drawable://" + R.drawable.c));
         pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
+        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
+        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
+        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
+        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
         testCircleIndicator();
         testCustomeCircleIndicator();
     }

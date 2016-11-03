@@ -7,12 +7,15 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import java.util.ArrayList;
+
 import cn.light.sky.infiniteindicatordemo.R;
+
 import static cn.lightsky.infiniteindicator.IndicatorConfiguration.LEFT;
 
 
-public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener{
+public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, OnPageClickListener {
     private ArrayList<Page> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
     private InfiniteIndicator mAnimLineIndicator;
@@ -24,15 +27,15 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
 
         initData();
         testAnimCircleIndicator();
-//        testAnimLineIndicator();
+        testAnimLineIndicator();
     }
 
     private void initData() {
         pageViews = new ArrayList<>();
-//        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
-//        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
-//        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
-//        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
+        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg", this));
+        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg", this));
+        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg", this));
+        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg", this));
 
         /**
          * drawabel:// is Universal-Image-Loader 's local drawable data format
@@ -42,7 +45,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         pageViews.add(new Page("B ", "drawable://" + R.drawable.b, this));
         pageViews.add(new Page("C ", "drawable://" + R.drawable.c, this));
         pageViews.add(new Page("D ", "drawable://" + R.drawable.d, this));
-        
+
     }
 
     //To avoid memory leak ,you should release the res
@@ -50,14 +53,14 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
     protected void onPause() {
         super.onPause();
         mAnimCircleIndicator.stop();
-//        mAnimLineIndicator.stop();
+        mAnimLineIndicator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mAnimCircleIndicator.start();
-//        mAnimLineIndicator.start();
+        mAnimLineIndicator.start();
     }
 
     @Override
@@ -68,17 +71,18 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this,DefaultCircleIndicatorActivity.class);
+        Intent intent = new Intent(this, DefaultCircleIndicatorActivity.class);
         startActivity(intent);
         return true;
     }
 
     private void testAnimCircleIndicator() {
-        mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
+        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new UILoader())
                 .isStopWhenTouch(true)
                 .onPageChangeListener(this)
+                .onPageClickListener(this)
                 .direction(LEFT)
                 .position(IndicatorConfiguration.IndicatorPosition.Center)
                 .build();
@@ -88,7 +92,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
     }
 
     private void testAnimLineIndicator() {
-        mAnimLineIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_line);
+        mAnimLineIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_line);
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new PicassoLoader())
                 .isAutoScroll(false)
@@ -117,7 +121,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
 
     @Override
     public void onPageClick(int position, Page page) {
-        Toast.makeText(this," click page --- "+position,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, " click page --- " + position, Toast.LENGTH_SHORT).show();
     }
 
 }
