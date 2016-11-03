@@ -12,24 +12,28 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 
 
 ## Setting
-- `setInterval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
-- `setDirection(int)` set auto scroll direction, default is `RIGHT`.
-- `setInfinite(boolean)` set whether infinite scroll when auto scroll reaching the last or first item, default is true.
-- `setScrollDurationFactor(double)` set the factor by which the duration of sliding animation will change.
-- `setStopScrollWhenTouch(boolean)` set whether stop auto scroll when touching, default is true.
-- `setIndicatorPosition` set present position of indicator.
-- `start()` start auto scroll, delay time is `getInterval()`.
-- `start(int)` start auto scroll delayed.
-- `stop()` stop auto scroll.
+You can config all feature in the `IndicatorConfiguration` class.It's build design pattern.
+
+
+- `interval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
+- `direction(int)` set auto scroll direction, default is `RIGHT`.
+- `isLoop(boolean)` set whether still scroll when scroll to the end page.
+- `isDrawIndicator(boolean)`  whether draw indicator,default is true.
+- `isAutoScroll(boolean)`  whether start scroll while notiyDataChange.
+- `scrollDurationFactor(double)` set the factor of scroll duration 
+- `isStopWhenTouch(boolean)` whether stop scroll while touching, default is true.
+- `position` set the position of indicator.You can reference `IndicatorConfiguration.IndicatorPosition` enum
+- `imageLoader(ImageLoader)` set the loader engine to load image while page sliding.You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
+- `pageResId` set custome page layout,if your page has imageview and you want change it by res,you the id of imageview must is `slider_image` 
+- `onPageChangeListener` set click listener to page
+
 
 `indicator_type`    
-the style enum of Indicator  
+the style enum of Indicator,you can set the `indicator_type` in the xml layout to 
+change the indicator style.  
 - `indicator_default` CirCleIndicator
 - `indicator_anim_circle`  AnimCircleIndicator
 - `indicator_anim_line` is AnimLineIndicator
-
-`ImageLoader`  
-You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
 
 
 ## Including In Your Project

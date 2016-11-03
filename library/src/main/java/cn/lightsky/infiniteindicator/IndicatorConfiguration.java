@@ -192,7 +192,7 @@ public class IndicatorConfiguration {
         /**
          * set the factor by which the duration of sliding animation will change
          */
-        public Builder setScrollDurationFactor(double scrollFactor) {
+        public Builder scrollDurationFactor(double scrollFactor) {
             this.scrollFactor = scrollFactor;
             return this;
         }
@@ -225,7 +225,7 @@ public class IndicatorConfiguration {
          * @param indicator
          * @return
          */
-        public Builder indicator(View indicator) {
+        private Builder indicator(View indicator) {
             this.indicator = indicator;
             return this;
         }
