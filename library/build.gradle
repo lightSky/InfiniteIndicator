@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.1.0"
+
+version = "1.2.0-SNAPSHOT"
 
 android {
     compileSdkVersion 23
@@ -12,8 +13,8 @@ android {
         resourcePrefix "lightsky"
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 110
-        versionName "1.1.0"
+        versionCode 120
+        versionName "1.2.0"
     }
     buildTypes {
         release {

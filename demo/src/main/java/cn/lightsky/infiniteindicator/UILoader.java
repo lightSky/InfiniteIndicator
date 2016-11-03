@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
-
 /**
  * Created by lightsky on 16/1/28.
  */
@@ -25,7 +23,6 @@ public class UILoader implements ImageLoader {
         return uilLoader;
     }
 
-    @Override
     public void initLoader(Context context) {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 

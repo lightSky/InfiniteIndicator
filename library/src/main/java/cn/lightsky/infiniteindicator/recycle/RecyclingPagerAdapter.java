@@ -1,4 +1,4 @@
-package cn.lightsky.infiniteindicator.jakewharton.salvage;
+package cn.lightsky.infiniteindicator.recycle;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -39,8 +39,9 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
     @Override
     public void notifyDataSetChanged() {
         recycleBin.scrapActiveViews();
-        if(mDataChangeListener!=null)
+        if (mDataChangeListener != null) {
             mDataChangeListener.notifyDataChange();
+        }
         super.notifyDataSetChanged();
     }
 
@@ -120,7 +121,7 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
      *                    Heterogeneous lists can specify their number of view types, so that this View is
      *                    always of the right type (see {@link #getViewTypeCount()} and
      *                    {@link #getItemViewType(int)}).
-     * @param container      The parent that this view will eventually be attached to
+     * @param container   The parent that this view will eventually be attached to
      * @return A View corresponding to the data at the specified position.
      */
     public abstract View getView(int position, View convertView, ViewGroup container);

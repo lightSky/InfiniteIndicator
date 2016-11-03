@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import cn.lightsky.infiniteindicator.R;
+import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.widget.LinearLayout.HORIZONTAL;
@@ -51,7 +52,6 @@ public class CircleIndicator extends View implements PageIndicator {
     private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
     private ViewPager mViewPager;
-    private ViewPager.OnPageChangeListener mListener;
     private int mCurrentPage;
     private int mSnapPage;
     private float mPageOffset;
@@ -65,6 +65,7 @@ public class CircleIndicator extends View implements PageIndicator {
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
     private int mRealCount;
+    private RecyleAdapter mRecyleAdapter;
 
 
     public CircleIndicator(Context context) {
@@ -203,11 +204,10 @@ public class CircleIndicator extends View implements PageIndicator {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mViewPager == null) {
+        if (mRecyleAdapter == null)
             return;
-        }
-        final int count = ((RecyleAdapter)mViewPager.getAdapter()).getRealCount();
-//        final int count = (PageAdapter)mViewPager.getAdapter().getCount();
+
+        final int count = mRecyleAdapter.getRealCount();
         if (count <= 1) {
             return;
         }
@@ -232,8 +232,8 @@ public class CircleIndicator extends View implements PageIndicator {
         final float shortOffset = shortPaddingBefore + mRadius;
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
-            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
-//            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((mRealCount * threeRadius) / 2.0f);
+            longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f)
+                    - ((count * threeRadius) / 2.0f);
         }
 
         float dX;
@@ -267,10 +267,6 @@ public class CircleIndicator extends View implements PageIndicator {
 
         //Draw the filled circle according to the current scroll
         float cx = mSnapPage % count * threeRadius;
-//        float cx = (mSnap ? mSnapPage : mCurrentPage) * threeRadius;
-//        if (!mSnap) {
-//            cx += mPageOffset * threeRadius;
-//        }
         if (mOrientation == HORIZONTAL) {
             dX = longOffset + cx;
             dY = shortOffset;
@@ -282,10 +278,7 @@ public class CircleIndicator extends View implements PageIndicator {
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
-        if (super.onTouchEvent(ev)) {
-            return true;
-        }
-        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
+        if (mViewPager == null || mRecyleAdapter.getCount() == 0) {
             return false;
         }
 
@@ -369,45 +362,25 @@ public class CircleIndicator extends View implements PageIndicator {
         if (mViewPager == view) {
             return;
         }
-        if (mViewPager != null) {
-            mViewPager.setOnPageChangeListener(null);
-        }
-        if (view.getAdapter() == null) {
-            throw new IllegalStateException("ViewPager does not have adapter instance.");
-        }
         mViewPager = view;
-        mViewPager.setOnPageChangeListener(this);
-        invalidate();
-    }
-
-    @Override
-    public void setViewPager(ViewPager view, int initialPosition) {
-        setViewPager(view);
-        setCurrentItem(initialPosition);
+        mRecyleAdapter = (RecyleAdapter) mViewPager.getAdapter();
     }
 
     @Override
     public void setCurrentItem(int item) {
-        if (mViewPager == null) {
-            throw new IllegalStateException("ViewPager has not been bound.");
-        }
-        mViewPager.setCurrentItem(item);
         mCurrentPage = item;
         invalidate();
     }
 
     @Override
     public void notifyDataSetChanged() {
+        mCurrentPage = 0;
         invalidate();
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
         mScrollState = state;
-
-        if (mListener != null) {
-            mListener.onPageScrollStateChanged(state);
-        }
     }
 
     @Override
@@ -415,9 +388,6 @@ public class CircleIndicator extends View implements PageIndicator {
         mCurrentPage = position;
         mPageOffset = positionOffset;
         invalidate();
-        if (mListener != null) {
-            mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
     }
 
     @Override
@@ -427,16 +397,8 @@ public class CircleIndicator extends View implements PageIndicator {
             mSnapPage = position;
             invalidate();
         }
-
-        if (mListener != null) {
-            mListener.onPageSelected(position);
-        }
     }
 
-    @Override
-    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mListener = listener;
-    }
 
     /*
      * (non-Javadoc)
@@ -469,8 +431,7 @@ public class CircleIndicator extends View implements PageIndicator {
             result = specSize;
         } else {
             //Calculate the width according the views count
-//            final int count = mRealCount;
-            final int count = ((RecyleAdapter)mViewPager.getAdapter()).getRealCount();
+            final int count = mRecyleAdapter.getRealCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
                     + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
@@ -506,53 +467,4 @@ public class CircleIndicator extends View implements PageIndicator {
         }
         return result;
     }
-
-//    @Override
-//    public void onRestoreInstanceState(Parcelable state) {
-//        SavedState savedState = (SavedState)state;
-//        super.onRestoreInstanceState(savedState.getSuperState());
-//        mCurrentPage = savedState.currentPage;
-//        mSnapPage = savedState.currentPage;
-//        requestLayout();
-//    }
-//
-//    @Override
-//    public Parcelable onSaveInstanceState() {
-//        Parcelable superState = super.onSaveInstanceState();
-//        SavedState savedState = new SavedState(superState);
-//        savedState.currentPage = mCurrentPage;
-//        return savedState;
-//    }
-//
-//    static class SavedState extends BaseSavedState {
-//        int currentPage;
-//
-//        public SavedState(Parcelable superState) {
-//            super(superState);
-//        }
-//
-//        private SavedState(Parcel in) {
-//            super(in);
-//            currentPage = in.readInt();
-//        }
-//
-//        @Override
-//        public void writeToParcel(Parcel dest, int flags) {
-//            super.writeToParcel(dest, flags);
-//            dest.writeInt(currentPage);
-//        }
-//
-//        @SuppressWarnings("UnusedDeclaration")
-//        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-//            @Override
-//            public SavedState createFromParcel(Parcel in) {
-//                return new SavedState(in);
-//            }
-//
-//            @Override
-//            public SavedState[] newArray(int size) {
-//                return new SavedState[size];
-//            }
-//        };
-//    }
 }

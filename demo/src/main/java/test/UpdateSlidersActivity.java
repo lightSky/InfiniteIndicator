@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.light.sky.infiniteindicatordemo.R;
+import cn.lightsky.infiniteindicator.IndicatorConfiguration;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.PicassoLoader;
 import cn.lightsky.infiniteindicator.UILoader;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
+import cn.lightsky.infiniteindicator.OnPageClickListener;
+import cn.lightsky.infiniteindicator.Page;
 
 
 public class UpdateSlidersActivity extends FragmentActivity{
@@ -20,6 +21,8 @@ public class UpdateSlidersActivity extends FragmentActivity{
 
     private List refreshPageViews = new ArrayList();
     private ArrayList<Page> pageViews = new ArrayList<>();
+    private List<Integer> updateUrls = new ArrayList<>();
+    private OnPageClickListener onPageClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +32,13 @@ public class UpdateSlidersActivity extends FragmentActivity{
         updateTest();
     }
 
-    private List<Integer> updateUrls = new ArrayList<>();
-
     private void updateTest() {
         mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new PicassoLoader())
+                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .build();
+        mAnimCircleIndicator.init(configuration);
 
         final Page a = new Page("update same size list", R.drawable.a);
         final Page b = new Page("update smaller size list", R.drawable.b);
@@ -44,103 +50,88 @@ public class UpdateSlidersActivity extends FragmentActivity{
         final Page g = new Page("", R.drawable.c_yypd);
         final Page h = new Page("", R.drawable.ic_launcher);
 
-        a.onPageClickListener = new OnPageClickListener() {
+        onPageClickListener = new OnPageClickListener() {
 
             @Override
             public void onPageClick(int position, Page page) {
+                if (position == 0) {
+
 //                a.res = R.drawable.a_yypd;
 //                b.res = R.drawable.b_yypd;
 //                c.res = R.drawable.c_yypd;
 //                d.res = R.drawable.d_yypd;
 
-                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
-                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
-                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
-                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
+                    a.res = R.drawable.a;
+                    b.res = R.drawable.b;
+                    c.res = R.drawable.c;
+                    d.res = R.drawable.d;
 
-                pageViews.clear();
-                pageViews.add(a);
-                pageViews.add(b);
-                pageViews.add(c);
-                pageViews.add(d);
+                    pageViews.clear();
+                    pageViews.add(a);
+                    pageViews.add(b);
+                    pageViews.add(c);
+                    pageViews.add(d);
 
-                mAnimCircleIndicator.addPages(pageViews);
+                    mAnimCircleIndicator.notifyDataChange(pageViews);
 
-                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
-                        Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                            Toast.LENGTH_LONG).show();
+                } else if (position == 1){
+                    a.res = R.drawable.a_yypd;
+                    b.res = R.drawable.b_yypd;
+
+                    pageViews.clear();
+                    pageViews.add(a);
+                    pageViews.add(b);
+
+                    mAnimCircleIndicator.notifyDataChange(pageViews);
+
+                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                            Toast.LENGTH_LONG).show();
+                } else if (position == 3) {
+                    pageViews.clear();
+
+                    a.res = R.drawable.a;
+                    b.res = R.drawable.b;
+                    c.res = R.drawable.c;
+                    d.res = R.drawable.d;
+
+                    pageViews.add(a);
+                    pageViews.add(e);
+                    pageViews.add(b);
+                    pageViews.add(f);
+                    pageViews.add(c);
+                    pageViews.add(g);
+                    pageViews.add(d);
+                    pageViews.add(h);
+
+                    mAnimCircleIndicator.notifyDataChange(pageViews);
+                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                            Toast.LENGTH_LONG).show();
+                } else if (position == 3) {
+                    a.res = R.drawable.ic_launcher;
+
+                    pageViews.clear();
+                    pageViews.add(a);
+
+                    mAnimCircleIndicator.notifyDataChange(pageViews);
+                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         };
 
-        b.onPageClickListener = new OnPageClickListener() {
-
-            @Override
-            public void onPageClick(int position, Page page) {
-                a.res = R.drawable.a_yypd;
-                b.res = R.drawable.b_yypd;
-
-                pageViews.clear();
-                pageViews.add(a);
-                pageViews.add(b);
-
-                mAnimCircleIndicator.addPages(pageViews);
-
-                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
-                        Toast.LENGTH_LONG).show();
-            }
-        };
-
-        c.onPageClickListener = new OnPageClickListener(){
-
-            @Override
-            public void onPageClick(int position, Page page) {
-                pageViews.clear();
-
-                a.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg";
-                b.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg";
-                c.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg";
-                d.res = "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg";
-
-                pageViews.add(a);
-                pageViews.add(e);
-                pageViews.add(b);
-                pageViews.add(f);
-                pageViews.add(c);
-                pageViews.add(g);
-                pageViews.add(d);
-                pageViews.add(h);
-
-                mAnimCircleIndicator.addPages(pageViews);
-                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
-                        Toast.LENGTH_LONG).show();
-            }
-        };
-
-        d.onPageClickListener = new OnPageClickListener() {
-
-            @Override
-            public void onPageClick(int position, Page page) {
-                a.res = R.drawable.ic_launcher;
-
-                pageViews.clear();
-                pageViews.add(a);
-
-                mAnimCircleIndicator.addPages(pageViews);
-                Toast.makeText(UpdateSlidersActivity.this, page.data + "",
-                        Toast.LENGTH_LONG).show();
-            }
-        };
 
         pageViews.add(a);
         pageViews.add(b);
         pageViews.add(c);
         pageViews.add(d);
 
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.notifyDataChange(pageViews);
     }
 
 
-    //To avoid memory leak ,you should release the res
+    //To save resource ,you should release the res
     @Override
     protected void onPause() {
         super.onPause();
