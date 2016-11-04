@@ -12,19 +12,19 @@ view recycle adapter.It contains two style.One is CircleIndicator seperated from
 
 
 ## Setting
-You can config all feature in the `IndicatorConfiguration` class.It's build design pattern.
+You can config all feature in the `IndicatorConfiguration` class.It adopt builder design pattern.
 
 
 - `interval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
 - `direction(int)` set auto scroll direction, default is `RIGHT`.
-- `isLoop(boolean)` set whether still scroll when scroll to the end page.
+- `isLoop(boolean)` set whether still scroll when scroll to the end page,default is true
 - `isDrawIndicator(boolean)`  whether draw indicator,default is true.
 - `isAutoScroll(boolean)`  whether start scroll while notiyDataChange.
 - `scrollDurationFactor(double)` set the factor of scroll duration 
 - `isStopWhenTouch(boolean)` whether stop scroll while touching, default is true.
 - `position` set the position of indicator.You can reference `IndicatorConfiguration.IndicatorPosition` enum
+- `pageResId` set custome page layout,if your page has imageview and want change it by res,you the id of imageview must is `slider_image` and you sholud provide a iamgeLoader
 - `imageLoader(ImageLoader)` set the loader engine to load image while page sliding.You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
-- `pageResId` set custome page layout,if your page has imageview and you want change it by res,you the id of imageview must is `slider_image` 
 - `onPageChangeListener` set click listener to page
 
 

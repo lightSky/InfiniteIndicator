@@ -11,7 +11,7 @@ import android.view.View;
 public class IndicatorConfiguration {
 
     public static final int DEFAULT_INTERVAL = 2500;
-    public static final double DEFAULT_SCROLL_FACTOR = 1.2;
+    public static final double DEFAULT_SCROLL_FACTOR = 1;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
 
@@ -67,7 +67,7 @@ public class IndicatorConfiguration {
         presentIndicator = builder.indicatorPosition;
         indicator = builder.indicator;
         mOnPageClickListener = builder.onPageClickListener;
-        isStopScrollWhenTouch = builder.isStopScrollWhenTouch;
+        isStopScrollWhenTouch = builder.isStopWhileTouch;
         onPageChangeListener = builder.onPageChangeListener;
     }
 
@@ -127,7 +127,7 @@ public class IndicatorConfiguration {
         private double scrollFactor = DEFAULT_SCROLL_FACTOR;
         private boolean isLoop = true;
         private boolean isAutoScroll = true;
-        private boolean isStopScrollWhenTouch = true;
+        private boolean isStopWhileTouch = true;
         private boolean isDrawIndicator = true;
         private View indicator;
         private OnPageClickListener onPageClickListener;
@@ -174,10 +174,10 @@ public class IndicatorConfiguration {
         }
 
         /**
-         * whether stop auto scroll when touching, default is true *
+         * whether stop auto scroll while touching, default is true *
          */
-        public Builder isStopWhenTouch(boolean isStopScrollWhenTouch) {
-            this.isStopScrollWhenTouch = isStopScrollWhenTouch;
+        public Builder isStopWhileTouch(boolean isStopScrollWhenTouch) {
+            this.isStopWhileTouch = isStopScrollWhenTouch;
             return this;
         }
 
@@ -230,6 +230,11 @@ public class IndicatorConfiguration {
             return this;
         }
 
+        /**
+         * set page change listener
+         * @param onPageChangeListener
+         * @return
+         */
         public Builder onPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
             this.onPageChangeListener = onPageChangeListener;
             return this;

@@ -87,7 +87,9 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
                 });
             }
 
-            mImageLoader.load(mContext, holder.target, page.res);
+            if (mImageLoader != null) {
+                mImageLoader.load(mContext, holder.target, page.res);
+            }
         }
 
         return convertView;
