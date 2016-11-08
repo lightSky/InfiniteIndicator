@@ -16,29 +16,28 @@ You can config all feature in the `IndicatorConfiguration` class.It adopt builde
 
 
 - `interval(long)` set interval time of scroll in milliseconds, default is `DEFAULT_INTERVAL`.
-- `direction(int)` set auto scroll direction, default is `RIGHT`.
+- `direction(int)` set scroll direction, default is `RIGHT`.
 - `isLoop(boolean)` set whether still scroll when scroll to the end page,default is true
-- `isDrawIndicator(boolean)`  whether draw indicator,default is true.
 - `isAutoScroll(boolean)`  whether start scroll while notiyDataChange.
 - `scrollDurationFactor(double)` set the factor of scroll duration 
 - `isStopWhenTouch(boolean)` whether stop scroll while touching, default is true.
-- `position` set the position of indicator.You can reference `IndicatorConfiguration.IndicatorPosition` enum
-- `pageResId` set custome page layout,if your page has imageview and want change it by res,you the id of imageview must is `slider_image` and you sholud provide a iamgeLoader
-- `imageLoader(ImageLoader)` set the loader engine to load image while page sliding.You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
+- `position` set the position of indicator.More value,you can reference `IndicatorConfiguration.IndicatorPosition` enum
 - `onPageChangeListener` set click listener to page
+- `imageLoader(ImageLoader)` set the loader engine to load image while page sliding.You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
+
 
 
 `indicator_type`    
-the style enum of Indicator,you can set the `indicator_type` in the xml layout to 
-change the indicator style.  
+the style of Indicator,you can set `indicator_type` attribute in the xml 
+layout to change the indicator style.  
 - `indicator_default` CirCleIndicator
 - `indicator_anim_circle`  AnimCircleIndicator
-- `indicator_anim_line` is AnimLineIndicator
+- `indicator_anim_line`  AnimLineIndicator
 
 
 ## Including In Your Project
 
-`compile 'cn.lightsky.infiniteindicator:library:1.1.0'`
+`compile 'cn.lightsky.infiniteindicator:library:1.2.0'`
 
 ## Usage
 
@@ -48,14 +47,12 @@ change the indicator style.
         app:indicator_type="indicator_anim_circle"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
-
 ```
 
-```java
-public class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener{
+``` java
+class AnimIndicatorActivity extends FragmentActivity implements ViewPager.OnPageChangeListener,OnPageClickListener {
     private ArrayList<Page> pageViews;
     private InfiniteIndicator mAnimCircleIndicator;
-    private InfiniteIndicator mAnimLineIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +60,26 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         setContentView(R.layout.activity_anim_indicator);
 
         initData();
-        mAnimCircleIndicator = (InfiniteIndicator)findViewById(R.id.infinite_anim_circle);
-        mAnimCircleIndicator.setImageLoader(new UILoader());
-        mAnimCircleIndicator.addPages(pageViews);
-        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
-        mAnimCircleIndicator.setOnPageChangeListener(this);
+        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new UILoader())
+                .isStopWhileTouch(true)
+                .onPageChangeListener(this)
+                .onPageClickListener(this)
+                .direction(LEFT)
+                .position(IndicatorConfiguration.IndicatorPosition.Center)
+                .build();
+        mAnimCircleIndicator.init(configuration);
+        mAnimCircleIndicator.notifyDataChange(pageViews);
 
     }
 
     private void initData() {
         pageViews = new ArrayList<>();
-        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
-        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
-        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
-        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
+        pageViews.add(new Page("A", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
+        pageViews.add(new Page("B", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
+        pageViews.add(new Page("C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
+        pageViews.add(new Page("D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
 
     }
 
@@ -111,12 +114,8 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-
+    }   
 }
-
-
-
 ```
 
 Thanks  

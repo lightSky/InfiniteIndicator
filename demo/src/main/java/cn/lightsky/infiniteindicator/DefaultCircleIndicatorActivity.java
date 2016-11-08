@@ -27,14 +27,10 @@ public class DefaultCircleIndicatorActivity extends FragmentActivity {
 //        pageViews.add(new Page("Page C", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg"));
 //        pageViews.add(new Page("Page D", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg"));
 
-        pageViews.add(new Page("A ", "drawable://" + R.drawable.a));
-        pageViews.add(new Page("B ", "drawable://" + R.drawable.b));
-        pageViews.add(new Page("C ", "drawable://" + R.drawable.c));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d));
+        pageViews.add(new Page("A ", R.drawable.a));
+        pageViews.add(new Page("B ", R.drawable.b));
+        pageViews.add(new Page("C ", R.drawable.c));
+        pageViews.add(new Page("D ", R.drawable.d));
         testCircleIndicator();
         testCustomeCircleIndicator();
     }

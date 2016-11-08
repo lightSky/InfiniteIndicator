@@ -9,6 +9,7 @@
 
         <activity
             android:name="cn.lightsky.infiniteindicator.AnimIndicatorActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +28,13 @@
             </intent-filter>
         </activity>-->
 
-        <activity android:name="cn.lightsky.infiniteindicator.DefaultCircleIndicatorActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="cn.lightsky.infiniteindicator.DefaultCircleIndicatorActivity"/>
 
-        <activity android:name="test.AddSlidersActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="test.AddSlidersActivity"/>
     </application>
 
 </manifest>

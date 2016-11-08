@@ -37,14 +37,10 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
 //        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg", this));
 //        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg", this));
 
-        /**
-         * drawabel:// is Universal-Image-Loader 's local drawable data format
-         * Picasso or Glide support drawable id directly
-         */
-        pageViews.add(new Page("A ", "drawable://" + R.drawable.a, this));
-        pageViews.add(new Page("B ", "drawable://" + R.drawable.b, this));
-        pageViews.add(new Page("C ", "drawable://" + R.drawable.c, this));
-        pageViews.add(new Page("D ", "drawable://" + R.drawable.d, this));
+        pageViews.add(new Page("A", R.drawable.a, this));
+        pageViews.add(new Page("B", R.drawable.b, this));
+        pageViews.add(new Page("C", R.drawable.c, this));
+        pageViews.add(new Page("D", R.drawable.d, this));
 
     }
 

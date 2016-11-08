@@ -50,6 +50,10 @@ public class UILoader implements ImageLoader {
 
         if (res instanceof String) {
             com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage((String) res, targetView,options);
+        } else {
+            com.nostra13.universalimageloader.core.ImageLoader.getInstance()
+                    .displayImage("drawable://" + res, targetView,options);
+
         }
     }
 }
