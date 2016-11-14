@@ -77,7 +77,6 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new UILoader())
                 .isStopWhileTouch(true)
-                .isLoop(false)
                 .onPageChangeListener(this)
                 .onPageClickListener(this)
                 .direction(LEFT)
