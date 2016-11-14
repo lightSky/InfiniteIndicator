@@ -120,7 +120,7 @@ public class InfiniteIndicator extends RelativeLayout implements
         if (configuration.isLoop() && getRealCount() > 1) {
             mViewPager.setCurrentItem(getIndex(offset));
         } else {
-            mViewPager.setCurrentItem(0);
+            mViewPager.setCurrentItem(offset);
         }
         if (mIndicator != null) {
             mIndicator.setCurrentItem(offset);

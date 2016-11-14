@@ -77,6 +77,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
         IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
                 .imageLoader(new UILoader())
                 .isStopWhileTouch(true)
+                .isLoop(false)
                 .onPageChangeListener(this)
                 .onPageClickListener(this)
                 .direction(LEFT)
@@ -84,7 +85,7 @@ public class AnimIndicatorActivity extends FragmentActivity implements ViewPager
                 .build();
         mAnimCircleIndicator.init(configuration);
         mAnimCircleIndicator.notifyDataChange(pageViews);
-        mAnimCircleIndicator.setCurrentItem(3);
+        mAnimCircleIndicator.setCurrentItem(2);
     }
 
     private void testAnimLineIndicator() {
