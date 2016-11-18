@@ -22,6 +22,9 @@ You can config all feature in the `IndicatorConfiguration` class.It adopt builde
 - `scrollDurationFactor(double)` set the factor of scroll duration 
 - `isStopWhenTouch(boolean)` whether stop scroll while touching, default is true.
 - `position` set the position of indicator.More value,you can reference `IndicatorConfiguration.IndicatorPosition` enum
+- `viewBinder` set custom view binder to handle page load logic,default provide 
+BaseViewBinder, just support load image,and you must provide a imageloader,if you 
+want to load complex page ,you can provide a custome viewbinder 
 - `onPageChangeListener` set click listener to page
 - `imageLoader(ImageLoader)` set the loader engine to load image while page sliding.You can use any image loader library you what,there are several imageloader of Glide ,Picasso and UIL,decide how to load image,is absolutely free.
 

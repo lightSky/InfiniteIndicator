@@ -18,8 +18,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
-import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 import cn.lightsky.infiniteindicator.recycle.RecyclingPagerAdapter;
+import cn.lightsky.infiniteindicator.recycle.RecyleAdapter;
 
 
 /**
@@ -73,7 +73,7 @@ public class InfiniteIndicator extends RelativeLayout implements
     public void init(IndicatorConfiguration configuration) {
         this.configuration = configuration;
         mRecyleAdapter = new RecyleAdapter(mContext
-                ,configuration.getPageResId()
+                ,configuration.getViewBinder()
                 ,configuration.getOnPageClickListener());
         mRecyleAdapter.setDataChangeListener(this);
         mViewPager.setAdapter(mRecyleAdapter);
