@@ -11,12 +11,11 @@ import cn.light.sky.infiniteindicatordemo.R;
 import cn.lightsky.infiniteindicator.IndicatorConfiguration;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.PicassoLoader;
-import cn.lightsky.infiniteindicator.UILoader;
 import cn.lightsky.infiniteindicator.OnPageClickListener;
 import cn.lightsky.infiniteindicator.Page;
 
 
-public class UpdateSlidersActivity extends FragmentActivity{
+public class UpdateSliderActivity extends FragmentActivity{
     private InfiniteIndicator mAnimCircleIndicator;
 
     private List refreshPageViews = new ArrayList();
@@ -33,13 +32,6 @@ public class UpdateSlidersActivity extends FragmentActivity{
     }
 
     private void updateTest() {
-        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
-        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
-                .imageLoader(new PicassoLoader())
-                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
-                .build();
-        mAnimCircleIndicator.init(configuration);
-
         final Page a = new Page("update same size list", R.drawable.a);
         final Page b = new Page("update smaller size list", R.drawable.b);
         final Page c = new Page("update larger size list", R.drawable.c);
@@ -74,7 +66,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
 
                     mAnimCircleIndicator.notifyDataChange(pageViews);
 
-                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                    Toast.makeText(UpdateSliderActivity.this, page.data + "",
                             Toast.LENGTH_LONG).show();
                 } else if (position == 1){
                     a.res = R.drawable.a_yypd;
@@ -86,7 +78,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
 
                     mAnimCircleIndicator.notifyDataChange(pageViews);
 
-                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                    Toast.makeText(UpdateSliderActivity.this, page.data + "",
                             Toast.LENGTH_LONG).show();
                 } else if (position == 3) {
                     pageViews.clear();
@@ -106,7 +98,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                     pageViews.add(h);
 
                     mAnimCircleIndicator.notifyDataChange(pageViews);
-                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                    Toast.makeText(UpdateSliderActivity.this, page.data + "",
                             Toast.LENGTH_LONG).show();
                 } else if (position == 3) {
                     a.res = R.drawable.ic_launcher;
@@ -115,7 +107,7 @@ public class UpdateSlidersActivity extends FragmentActivity{
                     pageViews.add(a);
 
                     mAnimCircleIndicator.notifyDataChange(pageViews);
-                    Toast.makeText(UpdateSlidersActivity.this, page.data + "",
+                    Toast.makeText(UpdateSliderActivity.this, page.data + "",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -127,6 +119,13 @@ public class UpdateSlidersActivity extends FragmentActivity{
         pageViews.add(c);
         pageViews.add(d);
 
+        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.infinite_anim_circle);
+        IndicatorConfiguration configuration = new IndicatorConfiguration.Builder()
+                .imageLoader(new PicassoLoader())
+                .onPageClickListener(onPageClickListener)
+                .position(IndicatorConfiguration.IndicatorPosition.Center_Bottom)
+                .build();
+        mAnimCircleIndicator.init(configuration);
         mAnimCircleIndicator.notifyDataChange(pageViews);
     }
 

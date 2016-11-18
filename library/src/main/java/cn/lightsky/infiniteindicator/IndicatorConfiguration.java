@@ -3,6 +3,9 @@ package cn.lightsky.infiniteindicator;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import cn.lightsky.infiniteindicator.recycle.BaseViewBinder;
+import cn.lightsky.infiniteindicator.recycle.ViewBinder;
+
 
 /**
  * Created by lightsky on 2016/10/29.
@@ -41,7 +44,6 @@ public class IndicatorConfiguration {
         }
     }
 
-    private int pageResId;
     private View indicator;
     private double scrollFactor;
     private boolean isAutoScroll;
@@ -50,6 +52,7 @@ public class IndicatorConfiguration {
     private boolean isStopScrollWhenTouch;
     private int direction;
     private long interval;
+    private final ViewBinder viewBinder;
     private final ImageLoader imageLoader;
     private final ViewPager.OnPageChangeListener onPageChangeListener;
     private final OnPageClickListener mOnPageClickListener;
@@ -58,7 +61,6 @@ public class IndicatorConfiguration {
     private IndicatorConfiguration(Builder builder) {
         imageLoader = builder.imageLoader;
         isLoop = builder.isLoop;
-        pageResId = builder.pageResId;
         interval = builder.interval;
         direction = builder.direction;
         isDrawIndicator = builder.isDrawIndicator;
@@ -66,6 +68,7 @@ public class IndicatorConfiguration {
         scrollFactor = builder.scrollFactor;
         presentIndicator = builder.indicatorPosition;
         indicator = builder.indicator;
+        viewBinder = builder.viewBinder;
         mOnPageClickListener = builder.onPageClickListener;
         isStopScrollWhenTouch = builder.isStopWhileTouch;
         onPageChangeListener = builder.onPageChangeListener;
@@ -118,24 +121,24 @@ public class IndicatorConfiguration {
         return mOnPageClickListener;
     }
 
-    public int getPageResId() {
-        return pageResId;
+    public ViewBinder getViewBinder() {
+        return viewBinder;
     }
 
     public static class Builder{
         private ImageLoader imageLoader;
-        private double scrollFactor = DEFAULT_SCROLL_FACTOR;
         private boolean isLoop = true;
         private boolean isAutoScroll = true;
         private boolean isStopWhileTouch = true;
         private boolean isDrawIndicator = true;
         private View indicator;
+        private ViewBinder viewBinder = new BaseViewBinder();
         private OnPageClickListener onPageClickListener;
+        private ViewPager.OnPageChangeListener onPageChangeListener;
         private int direction = RIGHT;
         private long interval = DEFAULT_INTERVAL;
-        private ViewPager.OnPageChangeListener onPageChangeListener;
+        private double scrollFactor = DEFAULT_SCROLL_FACTOR;
         private IndicatorPosition indicatorPosition = IndicatorPosition.Center_Bottom;
-        private int pageResId;
 
         public Builder imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
@@ -202,20 +205,23 @@ public class IndicatorConfiguration {
             return this;
         }
 
+        /**
+         * set page click listener for responsing
+         * @param onPageClickListener
+         * @return
+         */
         public Builder onPageClickListener(OnPageClickListener onPageClickListener) {
             this.onPageClickListener = onPageClickListener;
             return this;
         }
 
         /**
-         * provide custome page layout , but you should provide a imageview and
-         * it's id must is slider_image , otherwise the imageview will be empty
-         *
-         * @param resId the layout id of your custome page
+         * set custome view binder
+         * @param viewBinder
          * @return
          */
-        public Builder pageResId(int resId) {
-            this.pageResId = resId;
+        public Builder viewBinder(ViewBinder viewBinder) {
+            this.viewBinder = viewBinder;
             return this;
         }
 
