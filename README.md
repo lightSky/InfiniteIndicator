@@ -40,7 +40,7 @@ layout to change the indicator style.
 
 ## Including In Your Project
 
-`compile 'cn.lightsky.infiniteindicator:library:1.2.0'`
+`compile 'cn.lightsky.infiniteindicator:library:1.2.2'`
 
 ## Usage
 
