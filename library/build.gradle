@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 
-version = "1.2.3"
+version = "1.2.4"
 
 android {
     compileSdkVersion 23
@@ -13,8 +13,8 @@ android {
         resourcePrefix "lightsky"
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 122
-        versionName "1.2.2"
+        versionCode 124
+        versionName "1.2.4"
     }
     buildTypes {
         release {

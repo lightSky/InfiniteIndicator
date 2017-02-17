@@ -44,6 +44,9 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
 
     @Override
     public int getCount() {
+        if (mPageList.size() == 1) {
+            return 1;
+        }
         return isLoop ? getRealCount() * PAGE_COUNT_FACTOR : getRealCount();
     }
 
